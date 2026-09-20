@@ -1,0 +1,466 @@
+---
+// Formulaire de pré-réservation (Figma : desktop 10:625 / mobile 4:396)
+import { experiences, endpointFormulaire } from "../data/evenement";
+---
+
+<form class="formulaire" novalidate data-endpoint={endpointFormulaire ?? ""}>
+  <div class="formulaire__identite">
+    <p class="champ">
+      <label class="champ__libelle" for="prenom-nom">Prénom et nom</label>
+      <input
+        class="champ__saisie"
+        id="prenom-nom"
+        name="prenomNom"
+        type="text"
+        autocomplete="name"
+        placeholder="Camille Martin"
+        required
+      />
+    </p>
+
+    <p class="champ">
+      <label class="champ__libelle" for="email">E-mail</label>
+      <input
+        class="champ__saisie"
+        id="email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        placeholder="camille@exemple.fr"
+        required
+      />
+    </p>
+  </div>
+
+  <p class="champ">
+    <label class="champ__libelle" for="experience">Expérience souhaitée</label>
+    <span class="champ__selection">
+      <select class="champ__saisie" id="experience" name="experience" required>
+        <option value="" disabled selected>Choisir une expérience</option>
+        {
+          experiences
+            .filter((e) => e.reservable)
+            .map((e) => <option value={e.nom}>{e.nom}</option>)
+        }
+      </select>
+      <svg class="champ__chevron" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path
+          d="M6 3.5 10.5 8 6 12.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+    </span>
+  </p>
+
+  <div class="formulaire__participants">
+    {
+      [
+        { cle: "adultes", libelle: "Adultes", defaut: 2 },
+        { cle: "enfants", libelle: "Enfants", defaut: 0 },
+      ].map((p) => (
+        <p class="champ">
+          <label class="champ__libelle" for={`nombre-${p.cle}`}>
+            {p.libelle}
+          </label>
+          <span class="compteur">
+            <button class="compteur__pas" type="button" data-pas="-1" aria-label={`Retirer un ${p.libelle.toLowerCase().slice(0, -1)}`}>
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M3.33 8h9.34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+
+            <input
+              class="compteur__nombre"
+              id={`nombre-${p.cle}`}
+              name={p.cle}
+              type="number"
+              inputmode="numeric"
+              value={p.defaut}
+              min="0"
+              max="20"
+              step="1"
+            />
+
+            <button class="compteur__pas compteur__pas--plus" type="button" data-pas="1" aria-label={`Ajouter un ${p.libelle.toLowerCase().slice(0, -1)}`}>
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M3.33 8h9.34M8 3.33v9.34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+          </span>
+        </p>
+      ))
+    }
+  </div>
+
+  <p class="consentement">
+    <input class="consentement__case" id="consentement" name="consentement" type="checkbox" required />
+    <label class="consentement__texte" for="consentement">
+      J’accepte d’être contacté·e uniquement au sujet de Dernières Séances 2026.
+    </label>
+  </p>
+
+  {/* Champ piège : masqué aux visiteurs, souvent rempli par les robots. */}
+  <div class="piege" aria-hidden="true">
+    <label for="societe">Société</label>
+    <input id="societe" name="societe" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <button class="formulaire__action" type="submit">Je pré-réserve sans payer</button>
+
+  <p class="garantie">
+    <svg class="garantie__icone" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path
+        d="M4.667 6.667V4.666a3.333 3.333 0 0 1 6.666 0v2.001M8.667 10.667a.667.667 0 1 1-1.334 0 .667.667 0 0 1 1.334 0ZM3.333 6.667h9.334c.736 0 1.333.597 1.333 1.333v5.334c0 .736-.597 1.333-1.333 1.333H3.333A1.333 1.333 0 0 1 2 13.334V8c0-.736.597-1.333 1.333-1.333Z"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"></path>
+    </svg>
+    Aucun paiement maintenant. Vos coordonnées ne seront ni vendues ni partagées.
+  </p>
+
+  <p class="formulaire__avis" role="status" hidden></p>
+</form>
+
+<script>
+  const formulaire = document.querySelector<HTMLFormElement>(".formulaire");
+
+  if (formulaire) {
+    // ── Compteurs adultes / enfants ──
+    for (const bouton of formulaire.querySelectorAll<HTMLButtonElement>(".compteur__pas")) {
+      bouton.addEventListener("click", () => {
+        const champ = bouton.parentElement?.querySelector<HTMLInputElement>(".compteur__nombre");
+        if (!champ) return;
+
+        const pas = Number(bouton.dataset.pas ?? 0);
+        const min = Number(champ.min || 0);
+        const max = Number(champ.max || Infinity);
+        champ.value = String(Math.min(max, Math.max(min, Number(champ.value || 0) + pas)));
+        champ.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    }
+
+    // ── Soumission ──
+    const avis = formulaire.querySelector<HTMLElement>(".formulaire__avis");
+    const endpoint = formulaire.dataset.endpoint;
+
+    const annoncer = (message: string, erreur = false) => {
+      if (!avis) return;
+      avis.textContent = message;
+      avis.classList.toggle("formulaire__avis--erreur", erreur);
+      avis.hidden = false;
+    };
+
+    formulaire.addEventListener("submit", async (evenement) => {
+      evenement.preventDefault();
+
+      if (!formulaire.checkValidity()) {
+        formulaire.reportValidity();
+        return;
+      }
+
+      // TODO — tant qu'aucun endpoint n'est configuré, rien n'est envoyé.
+      if (!endpoint) {
+        annoncer(
+          "Le formulaire n’est pas encore relié : vos informations ne sont pas envoyées pour le moment.",
+          true,
+        );
+        return;
+      }
+
+      const bouton = formulaire.querySelector<HTMLButtonElement>(".formulaire__action");
+      if (bouton) bouton.disabled = true;
+
+      try {
+        const reponse = await fetch(endpoint, {
+          method: "POST",
+          body: new FormData(formulaire),
+        });
+
+        // Un web app Apps Script répond toujours 200 : seul le corps JSON dit
+        // si l'enregistrement a réellement eu lieu.
+        const resultat = await reponse.json().catch(() => null);
+        if (!reponse.ok || !resultat || resultat.ok !== true) {
+          throw new Error(resultat?.erreur ?? String(reponse.status));
+        }
+
+        formulaire.reset();
+        annoncer("C’est noté. Vous serez averti·e en priorité à l’ouverture de la billetterie.");
+      } catch {
+        annoncer("L’envoi a échoué. Réessayez dans un instant.", true);
+      } finally {
+        if (bouton) bouton.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  /* ───────── Mobile (référence Figma : 346 × 548) ───────── */
+  .formulaire {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 20px;
+    border-radius: 24px;
+    background: var(--panneau);
+    box-shadow: inset 0 0 0 1px var(--trait);
+  }
+
+  .champ {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 7px;
+    margin: 0;
+    min-width: 0;
+  }
+
+  .champ__libelle {
+    color: var(--creme);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.21;
+    text-transform: uppercase;
+  }
+
+  .champ__saisie {
+    width: 100%;
+    height: 52px;
+    padding: 0 15px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--champ);
+    box-shadow: inset 0 0 0 1px var(--trait);
+    color: var(--creme);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.21;
+  }
+
+  .champ__saisie::placeholder {
+    color: var(--brume);
+    opacity: 1;
+  }
+
+  /* Le select affiche le libellé de choix dans la même teinte qu'un placeholder. */
+  .champ__selection {
+    position: relative;
+    display: block;
+  }
+
+  select.champ__saisie {
+    appearance: none;
+    padding-right: 40px;
+    color: var(--brume);
+    cursor: pointer;
+  }
+
+  select.champ__saisie:valid { color: var(--creme); }
+
+  .champ__chevron {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    width: 16px;
+    height: 16px;
+    color: var(--brume);
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .formulaire__identite,
+  .formulaire__participants { display: flex; }
+
+  /* Empilés en mobile : l'écart doit égaler celui du formulaire, sinon le
+     regroupement des deux champs resserre la colonne par rapport à la maquette. */
+  .formulaire__identite {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .formulaire__participants { gap: 12px; }
+
+  /* ── Compteurs ── */
+  .compteur {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 14px;
+    border-radius: 8px;
+    background: var(--champ);
+  }
+
+  .compteur__pas {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    color: var(--brume);
+    cursor: pointer;
+  }
+
+  .compteur__pas--plus { color: var(--ambre); }
+
+  .compteur__pas svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .compteur__nombre {
+    width: 3ch;
+    border: 0;
+    background: none;
+    color: var(--creme);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.21;
+    text-align: center;
+    appearance: textfield;
+  }
+
+  .compteur__nombre::-webkit-outer-spin-button,
+  .compteur__nombre::-webkit-inner-spin-button {
+    margin: 0;
+    appearance: none;
+  }
+
+  /* ── Consentement ── */
+  .consentement {
+    display: flex;
+    gap: 10px;
+    margin: 0;
+  }
+
+  .consentement__case {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    box-shadow: inset 0 0 0 1px var(--ambre);
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .consentement__case:checked {
+    background:
+      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.5 8.5 6.5 11.5 12.5 4.5" fill="none" stroke="%23071525" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+      center / 14px no-repeat var(--ambre);
+  }
+
+  .consentement__texte {
+    color: var(--brume);
+    font-size: 11px;
+    line-height: 1.4;
+    cursor: pointer;
+  }
+
+  /* ── Action ── */
+  .formulaire__action {
+    height: 56px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--ambre);
+    color: var(--nuit-700);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.21;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.18s ease;
+  }
+
+  .formulaire__action:hover { background: var(--ambre-clair); }
+  .formulaire__action:disabled { cursor: progress; opacity: 0.6; }
+
+  /* ── Garantie ── */
+  .garantie {
+    display: flex;
+    gap: 9px;
+    margin: 0;
+    color: var(--menthe);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .garantie__icone {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    margin-top: 0.1em;
+  }
+
+  .piege {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 0;
+    clip-path: inset(50%);
+  }
+
+  .formulaire__avis {
+    margin: 0;
+    color: var(--menthe);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .formulaire__avis--erreur { color: var(--ambre-clair); }
+
+  /* ───────── Desktop (référence Figma : 624 × 460) ───────── */
+  @media (min-width: 900px) {
+    .formulaire {
+      gap: 20px;
+      padding: 28px;
+    }
+
+    .champ { gap: 8px; }
+
+    .champ__saisie { font-size: 12px; }
+
+    .formulaire__identite,
+    .formulaire__participants {
+      flex-direction: row;
+      gap: 16px;
+    }
+
+    /* 11 px de retrait : place l'encre des boutons à 23 px de chaque bord,
+       comme les glyphes − et + de la maquette. */
+    .compteur { padding: 0 11px; }
+
+    .compteur__nombre { font-size: 12px; }
+
+    .formulaire__action { height: 58px; }
+
+    /* La maquette desktop pose ici un glyphe de 9 px sur une seule ligne de 13 px,
+       là où le mobile utilise une vraie icône de 16 px. On garde l'icône, à l'échelle. */
+    .garantie {
+      align-items: center;
+      gap: 4px;
+      line-height: 1.21;
+    }
+
+    .garantie__icone {
+      width: 12px;
+      height: 12px;
+      margin-top: 0;
+    }
+  }
+</style>

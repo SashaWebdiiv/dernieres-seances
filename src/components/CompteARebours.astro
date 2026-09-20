@@ -1,0 +1,147 @@
+---
+// Compte à rebours (Figma : desktop 10:579 / mobile 4:356)
+import { ouvertureBilletterie, ouvertureBilletterieLisible } from "../data/evenement";
+
+/** Valeurs calculées au build ; le script client les corrige dès le premier rendu. */
+const restant = Math.max(0, new Date(ouvertureBilletterie).getTime() - Date.now());
+const minute = 60_000;
+const unites = [
+  { cle: "jours", libelle: "Jours", valeur: Math.floor(restant / (1440 * minute)) },
+  { cle: "heures", libelle: "Heures", valeur: Math.floor(restant / (60 * minute)) % 24 },
+  { cle: "minutes", libelle: "Minutes", valeur: Math.floor(restant / minute) % 60 },
+];
+---
+
+<div class="rebours" data-ouverture={ouvertureBilletterie}>
+  <p class="rebours__surtitre">Ouverture de la billetterie</p>
+
+  <div class="rebours__decompte">
+    {
+      unites.map((u) => (
+        <div class="unite">
+          <span class="unite__valeur" data-unite={u.cle}>
+            {String(u.valeur).padStart(2, "0")}
+          </span>
+          <span class="unite__libelle">{u.libelle}</span>
+        </div>
+      ))
+    }
+  </div>
+
+  <p class="rebours__precision">{ouvertureBilletterieLisible}</p>
+</div>
+
+<script>
+  const bloc = document.querySelector<HTMLElement>(".rebours");
+  const cible = bloc && Date.parse(bloc.dataset.ouverture ?? "");
+
+  if (bloc && cible && !Number.isNaN(cible)) {
+    const cases = {
+      jours: bloc.querySelector<HTMLElement>('[data-unite="jours"]'),
+      heures: bloc.querySelector<HTMLElement>('[data-unite="heures"]'),
+      minutes: bloc.querySelector<HTMLElement>('[data-unite="minutes"]'),
+    };
+
+    const rafraichir = () => {
+      const restant = Math.max(0, cible - Date.now());
+      const totalMinutes = Math.floor(restant / 60_000);
+      const valeurs = {
+        jours: Math.floor(totalMinutes / 1440),
+        heures: Math.floor(totalMinutes / 60) % 24,
+        minutes: totalMinutes % 60,
+      };
+
+      for (const [cle, element] of Object.entries(cases)) {
+        if (!element) continue;
+        const texte = String(valeurs[cle as keyof typeof valeurs]).padStart(2, "0");
+        if (element.textContent !== texte) element.textContent = texte;
+      }
+    };
+
+    rafraichir();
+    setInterval(rafraichir, 10_000);
+  }
+</script>
+
+<style>
+  /* ───────── Mobile (référence Figma : 346 × 172) ───────── */
+  .rebours {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 24px;
+    background: var(--panneau);
+    box-shadow:
+      inset 0 0 0 1px var(--ambre),
+      0 0 33.6px rgb(242 163 19 / 0.5);
+  }
+
+  .rebours__surtitre {
+    color: var(--ambre-clair);
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.21;
+    text-transform: uppercase;
+  }
+
+  .rebours__decompte {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .unite {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 12px 0;
+    border-radius: 8px;
+    background: var(--panneau-clair);
+  }
+
+  .unite__valeur {
+    color: var(--creme);
+    font-family: var(--fonte-chiffres);
+    font-size: 28px;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .unite__libelle {
+    color: var(--brume);
+    font-size: 9px;
+    line-height: 1.21;
+  }
+
+  .rebours__precision {
+    color: var(--brume);
+    font-size: 12px;
+    line-height: 1.21;
+  }
+
+  /* ───────── Desktop (référence Figma : 491 × 199) ───────── */
+  @media (min-width: 900px) {
+    .rebours {
+      gap: 18px;
+      width: 491px;
+      max-width: 100%;
+      padding: 28px;
+      box-shadow:
+        inset 0 0 0 1px var(--ambre),
+        0 0 34px rgb(242 163 19 / 0.4);
+    }
+
+    .rebours__decompte { gap: 10px; }
+
+    .unite {
+      gap: 4px;
+      padding: 14px 0;
+    }
+
+    .unite__valeur { font-size: 30px; }
+  }
+</style>

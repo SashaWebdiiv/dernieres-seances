@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Dernières Séances">
+  <rect width="32" height="32" rx="7" fill="#071525"/>
+  <mask id="croissant">
+    <rect width="32" height="32" fill="#000"/>
+    <circle cx="15" cy="16" r="10.5" fill="#fff"/>
+    <circle cx="22.5" cy="11.5" r="9.5" fill="#000"/>
+  </mask>
+  <rect width="32" height="32" fill="#f2a313" mask="url(#croissant)"/>
+</svg>
