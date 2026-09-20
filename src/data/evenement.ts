@@ -3,12 +3,15 @@
 export const emailContact = "contact@dernieresseances.fr";
 
 /**
- * TODO — brancher l'envoi des pré-réservations.
- * Tant que cette valeur vaut `null`, le formulaire reste inerte : il valide et
- * affiche un avis, mais n'envoie rien. Renseigner ici l'URL de l'endpoint
- * (Google Apps Script, Formspree, Brevo…) suffira à l'activer.
+ * Endpoint des pré-réservations : application web Apps Script attachée au Google Sheet
+ * de l'association. Elle enregistre la ligne puis notifie `emailContact`.
+ * Voir docs/brancher-le-formulaire.md — toute modification du script exige un
+ * nouveau déploiement, sans quoi l'ancienne version continue de répondre.
+ *
+ * Cette URL est publique par nature : c'est le navigateur du visiteur qui l'appelle.
  */
-export const endpointFormulaire: string | null = null;
+export const endpointFormulaire: string | null =
+  "https://script.google.com/macros/s/AKfycbxEP90e1wWzTChMkM1182GMStf9Uies0lOg8X8lA5qfMoCpy7sGKu9-M1E1wWb60eE/exec";
 
 /** Ouverture de la billetterie — heure de Paris (CEST en septembre). */
 export const ouvertureBilletterie = "2026-09-28T00:00:00+02:00";
