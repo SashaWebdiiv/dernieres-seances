@@ -57,8 +57,8 @@ export interface SceneConfig {
    * le temps d'apparaître entre les fondus d'entrée et de sortie.
    */
   length: { desktop: number; mobile: number };
-  /** Assombrissement permanent du décor, de 0 à 1, pour la lisibilité du texte. */
-  shade: number;
+  /** Voile posé sur le décor pour la lisibilité (valeur CSS `background`, calques de la maquette). */
+  overlay: string;
   animation: SceneAnimation;
   /** Uniquement la première scène : chargement prioritaire du média. */
   priority?: boolean;

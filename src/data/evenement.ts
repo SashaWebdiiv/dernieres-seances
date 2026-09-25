@@ -57,16 +57,3 @@ export const experiences: Experience[] = [
 
 export const exceptionProgramme =
   "Le samedi 31 octobre : horaires 14h–18h. Parade à 18h30 au départ du Château — venez déguisés.";
-
-export const lieu = "Château de Sucy-en-Brie";
-
-/** Jours d'ouverture, au format ISO (date locale de Paris). */
-export const joursEvenement = [
-  "2026-10-28",
-  "2026-10-29",
-  "2026-10-30",
-  "2026-10-31",
-  "2026-11-01",
-] as const;
-
-export const periodeLisible = "Du 28 octobre au 1er novembre 2026";

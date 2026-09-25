@@ -1,0 +1,44 @@
+---
+import PretixButton from "./PretixButton.astro";
+import type { Seance } from "../../data/billetterie";
+
+/** Carte de séance (maquette « TicketCard », 85:3656). */
+interface Props {
+  seance: Seance;
+  shopUrl: string | null;
+}
+
+const { seance, shopUrl } = Astro.props;
+---
+
+<article class="ticket flex w-80 max-w-full flex-col border border-sable/20 px-7 py-8">
+  <p class="kicker text-rouille">{seance.surtitre}</p>
+  <h3 class="pt-3 font-display text-[28.575px] leading-[1.5] tracking-[0.06em] text-creme">{seance.titre}</h3>
+  <span class="filet mt-3 bg-sable/35" aria-hidden="true"></span>
+  <p class="pt-3 text-base leading-[1.7] text-sable/75 italic">{seance.description}</p>
+  <p class="py-6 text-[22.4px] leading-[1.5] tracking-[0.05em] text-creme">{seance.prix}</p>
+  <PretixButton
+    shopUrl={shopUrl}
+    items={seance.pretixItems}
+    variant="outline"
+    class="h-11.25 w-full text-[9.6px] leading-[14.4px] tracking-[2.11px]"
+  >
+    Choisir cette séance
+  </PretixButton>
+</article>
+
+<style>
+  .ticket {
+    background: rgb(9 9 9 / 0.8);
+  }
+
+  /* Flou d'arrière-plan réservé au desktop (coût de rendu sur mobile pendant le scroll). */
+  @media (min-width: 768px) {
+    .ticket {
+      background: rgb(9 9 9 / 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 1px;
+    }
+  }
+</style>

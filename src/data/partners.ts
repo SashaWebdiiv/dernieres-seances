@@ -1,15 +1,15 @@
-import type { ImageMetadata } from "astro";
-import villeSucy from "../assets/partners/ville-sucy.png";
-import acompagnie from "../assets/partners/acompagnie-improvisee.png";
-
+/** Partenaires (maquette 68:2167), affichés en texte comme dans la maquette. */
 export interface Partner {
   name: string;
-  logo?: ImageMetadata;
   url?: string;
 }
 
-/** PROVISOIRE : liste et ordre des partenaires à confirmer. */
 export const partners: Partner[] = [
-  { name: "L'Acompagnie Improvisée", logo: acompagnie },
-  { name: "Ville de Sucy-en-Brie", logo: villeSucy },
+  { name: "Château de Sucy" },
+  { name: "L'Acompagnie Improvisée" },
+  { name: "Ville de Sucy-en-Brie" },
+  { name: "Webdiiv", url: "https://webdiiv.com" },
+  { name: "Val-de-Marne" },
+  // Nom générique dans la maquette : à remplacer par le nom du mécène.
+  { name: "Le Mécène" },
 ];

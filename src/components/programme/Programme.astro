@@ -1,0 +1,60 @@
+---
+import ActiviteCard from "./ActiviteCard.astro";
+import Button from "../ui/Button.astro";
+import type { Activite, RendezVous } from "../../data/programme";
+
+/** Panneau du programme (maquette 81:3111). */
+interface Props {
+  activites: Activite[];
+  rendezVous: RendezVous[];
+  ctaHref: string;
+}
+
+const { activites, rendezVous, ctaHref } = Astro.props;
+---
+
+<div class="panneau flex w-full max-w-157.5 flex-col gap-3 border border-sable/15 p-5 md:p-10">
+  <ul class="flex flex-col gap-3">
+    {activites.map((activite) => <li><ActiviteCard activite={activite} /></li>)}
+  </ul>
+
+  <ul class="grid gap-3 sm:grid-cols-2">
+    {
+      rendezVous.map((rdv) => (
+        <li class="flex flex-col gap-2 border border-sable/15 bg-noir/40 p-5">
+          {rdv.surtitre && (
+            <p class="text-[9.6px] leading-[14.4px] tracking-[0.2px] text-sable/50 uppercase">{rdv.surtitre}</p>
+          )}
+          <h3 class="text-base leading-5 font-semibold text-creme">{rdv.titre}</h3>
+          <p class="text-[12.8px] leading-4.5 text-ambre">
+            {rdv.lignes.map((ligne, index) => (index === 0 ? ligne : [<br />, ligne]))}
+          </p>
+          {rdv.mention && <p class="text-[11px] leading-4 text-sable/50">{rdv.mention}</p>}
+        </li>
+      ))
+    }
+  </ul>
+
+  <hr class="mt-3 border-sable/22" />
+
+  <Button href={ctaHref} class="mt-3 h-12.5 w-full text-[10.4px] leading-[15.6px] tracking-[2.6px]" data-jump>
+    Aller à la billetterie
+  </Button>
+</div>
+
+<style>
+  .panneau {
+    background: rgb(9 9 9 / 0.8);
+  }
+
+  /* Flou d'arrière-plan réservé au desktop : recalculé à chaque image pendant le scroll,
+     il coûte trop cher aux mobiles modestes. */
+  @media (min-width: 768px) {
+    .panneau {
+      background: rgb(9 9 9 / 0.55);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 2px;
+    }
+  }
+</style>

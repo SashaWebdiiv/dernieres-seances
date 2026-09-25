@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@fontsource/bebas-neue": "^5.3.0",
+    "@fontsource/eb-garamond": "^5.3.0",
     "@fontsource/inter": "^5.3.0",
     "@fontsource/new-rocker": "^5.3.0",
     "astro": "^7.3.5",

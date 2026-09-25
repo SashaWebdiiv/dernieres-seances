@@ -1,20 +1,32 @@
 ---
 import Scene from "./Scene.astro";
-import SectionTitle from "../ui/SectionTitle.astro";
-import Button from "../ui/Button.astro";
 import { scenes } from "../../data/scenes";
-import { lieu, periodeLisible } from "../../data/evenement";
-import { reserveLink } from "../../data/navigation";
 ---
 
+<!-- Façade (maquette « Hero », 62:9). Titres vectorisés : mêmes SVG que la page d'attente. -->
 <Scene scene={scenes.hero} labelledBy="titre-accueil">
-  <div class="flex h-full flex-col items-center justify-end gap-6 px-4 pb-14 text-center md:pb-20" data-hero-content>
-    <SectionTitle id="titre-accueil" level={1} eyebrow={`Halloween 2026 · ${lieu}`}>Dernières Séances</SectionTitle>
-    <p class="text-base md:text-lg">{periodeLisible}</p>
-    <div class="flex flex-wrap justify-center gap-3">
-      <Button href={reserveLink.href} data-jump>{reserveLink.label}</Button>
-      <Button href="#experience" variant="secondary" data-jump>Découvrir</Button>
+  <div
+    class="flex h-full flex-col items-center justify-center gap-4 px-5.5 pt-18 pb-10 md:gap-8 md:pt-21.5 md:pb-16"
+    data-hero-content
+  >
+    <h1 id="titre-accueil" tabindex="-1" class="flex w-76.75 max-w-full flex-col items-center gap-4 md:w-162 md:gap-8">
+      <img src="/assets/titre-halloween-2026.svg" alt="Halloween 2026" width="279" height="39" class="h-auto w-[53.42%] md:w-[43.06%]" />
+      <img src="/assets/titre-dernieres-seances.svg" alt="Dernières Séances" width="648" height="307" class="h-auto w-full" />
+    </h1>
+    <img
+      src="/assets/badge-oserez-vous-entrer.svg"
+      alt="Oserez-vous entrer ?"
+      width="237"
+      height="39"
+      class="h-auto w-59.25 max-w-[77%]"
+    />
+    <div class="flex flex-col items-center gap-1.5">
+      <p class="font-chiffres text-[28px] leading-[1.2] tracking-[1px] text-ambre-clair uppercase md:text-[34px]">
+        28 oct. — 1er nov. 2026
+      </p>
+      <p class="text-sm leading-[1.21] font-extrabold tracking-[1.4px] text-ivoire uppercase">
+        Château de Sucy · Sucy-en-Brie
+      </p>
     </div>
-    <p class="text-xs uppercase tracking-[0.2em] text-ink-muted" aria-hidden="true">Défilez pour entrer</p>
   </div>
 </Scene>

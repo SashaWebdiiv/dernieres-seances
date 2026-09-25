@@ -31,12 +31,16 @@ function syncScrollTriggers(): void {
 
 /**
  * Scène épinglée : on arrive à son début, décor en place. Scène à contenu défilant :
- * on arrive directement sur son contenu, sans quoi il serait encore sous la ligne de flottaison.
+ * on arrive directement sur son contenu, sous l'en-tête fixe, sans quoi il serait encore
+ * sous la ligne de flottaison.
  */
 function landingPosition(target: HTMLElement): number {
   const pinned = !target.matches("[data-scene]") || target.hasAttribute("data-pinned") || prefersReducedMotion();
-  const anchor = pinned ? target : (target.querySelector<HTMLElement>(":scope > .scene-content > *") ?? target);
-  return anchor.getBoundingClientRect().top + window.scrollY;
+  if (pinned) return target.getBoundingClientRect().top + window.scrollY;
+
+  const content = target.querySelector<HTMLElement>(":scope > .scene-content > *") ?? target;
+  const header = document.querySelector("header")?.offsetHeight ?? 0;
+  return content.getBoundingClientRect().top + window.scrollY - header;
 }
 
 function focusTarget(target: HTMLElement): void {

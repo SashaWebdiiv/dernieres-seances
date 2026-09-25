@@ -1,65 +1,80 @@
 ---
+import { Image } from "astro:assets";
 import Button from "../ui/Button.astro";
-import { navLinks, reserveLink } from "../../data/navigation";
+import { navLinks, ticketingHref } from "../../data/navigation";
+import logoCompagnie from "../../assets/logos/acompagnie-improvisee.png";
+import logoSucy from "../../assets/logos/ville-sucy.png";
 ---
 
 <a
   href="#contenu"
-  class="sr-only z-110 rounded bg-ink px-4 py-2 text-veil focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+  class="sr-only z-110 rounded bg-creme px-4 py-2 text-noir focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
 >
   Aller au contenu
 </a>
 
-<header class="fixed inset-x-0 top-0 z-50 bg-linear-to-b from-veil/80 to-transparent">
-  <nav aria-label="Navigation principale" class="relative flex items-center justify-between gap-4 px-4 py-3 md:px-8">
-    <a href="#accueil" class="font-semibold tracking-wide" data-jump>Dernières Séances</a>
+<!-- Barre supérieure (maquette 62:12) : logos, navigation centrée, billetterie. -->
+<header class="fixed inset-x-0 top-0 z-50 bg-linear-to-b from-noir/70 to-transparent">
+  <nav
+    aria-label="Navigation principale"
+    class="relative mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-5.5 py-4 md:px-20 md:pt-8 md:pb-4"
+  >
+    <div class="flex items-center gap-2.5 md:gap-6 xl:w-62.5">
+      <Image src={logoCompagnie} alt="L'Acompagnie Improvisée" width={113} class="h-7.25 w-auto md:h-13.5" />
+      <Image src={logoSucy} alt="Sucy-en-Brie" width={113} class="h-6 w-auto md:h-11" />
+    </div>
 
-    <button
-      type="button"
-      class="hidden min-h-11 rounded-full border border-line px-4 text-sm font-semibold max-md:[.js_&]:inline-flex max-md:[.js_&]:items-center"
-      aria-expanded="false"
-      aria-controls="menu-principal"
-      data-menu-toggle
-    >
-      Menu
-    </button>
-
-    <ul
-      id="menu-principal"
-      class="menu flex items-center gap-1 max-md:flex-col max-md:items-stretch md:gap-2"
-      data-menu
-    >
+    <ul id="menu-principal" class="menu flex items-center gap-8 max-lg:order-last max-lg:w-full max-lg:flex-col max-lg:items-stretch max-lg:gap-0" data-menu>
       {
         navLinks.map((link) => (
           <li>
-            <a href={link.href} class="flex min-h-11 items-center px-3 text-sm hover:underline" data-jump>
+            <a
+              href={link.href}
+              class="flex min-h-11 items-center text-sm font-medium text-white underline-offset-8 hover:underline"
+              data-jump
+            >
               {link.label}
             </a>
           </li>
         ))
       }
-      <li class="max-md:mt-2">
-        <Button href={reserveLink.href} class="w-full" data-jump>{reserveLink.label}</Button>
-      </li>
     </ul>
+
+    <div class="flex items-center justify-end gap-2 xl:w-62.5">
+      <Button href={ticketingHref} variant="header" class="h-10 max-md:px-3 max-md:text-[13px] md:h-11.5" data-jump>
+        Billetterie
+      </Button>
+      <button
+        type="button"
+        class="hidden h-10 rounded-lg border border-sable/40 px-3 text-sm font-medium text-white max-lg:[.js_&]:inline-flex max-lg:[.js_&]:items-center md:h-11.5 md:px-4"
+        aria-expanded="false"
+        aria-controls="menu-principal"
+        data-menu-toggle
+      >
+        Menu
+      </button>
+    </div>
   </nav>
 </header>
 
 <style>
-  /* Mobile avec JS : menu replié en panneau sous la barre. Sans JS, il reste affiché. */
-  @media (max-width: 767px) {
+  /* Sous 1024 px avec JS : menu replié en panneau sous la barre. Sans JS, il reste affiché. */
+  @media (max-width: 1023px) {
     :global(.js) .menu {
       position: absolute;
       top: 100%;
-      inset-inline: 1rem;
-      padding: 1rem;
-      border-radius: 0.75rem;
-      background: var(--color-veil);
-      border: 1px solid var(--color-line);
+      inset-inline: 22px;
+      padding: 8px 20px;
+      background: rgb(9 9 9 / 0.92);
+      border: 1px solid rgb(200 183 153 / 0.15);
     }
 
     :global(.js) .menu:not([data-open]) {
       display: none;
+    }
+
+    :global(.js) .menu li + li {
+      border-top: 1px solid rgb(200 183 153 / 0.15);
     }
   }
 </style>

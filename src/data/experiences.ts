@@ -1,31 +1,34 @@
-/**
- * Contenus de la première salle. Les faits (âges, horaires, tarifs) viennent de
- * `evenement.ts`, source unique partagée avec la page d'attente.
- *
- * PROVISOIRE : la correspondance « parcours enfant / adulte » avec les expériences
- * existantes est à confirmer, et les textes à reprendre de la maquette Figma Design.
- */
-import { exceptionProgramme, experiences, type Experience } from "./evenement";
-
+/** Publics présentés dans la première salle (maquette « Description », 67:788). */
 export interface ExperienceStep {
   id: string;
+  kicker: string;
   title: string;
-  lines: string[];
-}
-
-function experience(nom: string): Experience {
-  const found = experiences.find((e) => e.nom === nom);
-  if (!found) throw new Error(`Expérience introuvable dans evenement.ts : « ${nom} »`);
-  return found;
-}
-
-function describe({ nom, age, horaires, tarif }: Experience): string[] {
-  return [nom, `${age} · ${horaires}`, tarif];
+  text: string;
 }
 
 export const experienceSteps: ExperienceStep[] = [
-  { id: "parcours-enfant", title: "Parcours intérieur enfant", lines: describe(experience("Parcours immersif au Château")) },
-  { id: "parcours-adulte", title: "Parcours intérieur adulte", lines: describe(experience("Expérience horrifique")) },
-  { id: "jardin", title: "Activités du jardin", lines: describe(experience("Le Jardin Ensorcelé")) },
-  { id: "parade", title: "La parade", lines: [exceptionProgramme] },
+  {
+    id: "enfants",
+    kicker: "Parcours intérieur",
+    title: "Enfants",
+    text: "Une expérience immersive adaptée aux plus jeunes dans les pièces du château.",
+  },
+  {
+    id: "adultes",
+    kicker: "Parcours intérieur",
+    title: "Adultes",
+    text: "Lorsque la nuit tombe, le château change de visage.",
+  },
+  {
+    id: "jardin",
+    kicker: "Extérieur",
+    title: "Le jardin",
+    text: "Animations, maquillage et expériences autour du château.",
+  },
+  {
+    id: "parade",
+    kicker: "Extérieur",
+    title: "La parade",
+    text: "Les personnages quittent les salles du château pour envahir les rues de Sucy.",
+  },
 ];

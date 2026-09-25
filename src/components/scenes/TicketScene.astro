@@ -1,14 +1,28 @@
 ---
 import Scene from "./Scene.astro";
 import SectionTitle from "../ui/SectionTitle.astro";
-import PretixWidget from "../ticketing/PretixWidget.astro";
+import TicketCard from "../ticketing/TicketCard.astro";
+import PretixButton from "../ticketing/PretixButton.astro";
 import { scenes } from "../../data/scenes";
-import { pretixShopUrl } from "../../data/billetterie";
+import { pretixShopUrl, seances } from "../../data/billetterie";
 ---
 
+<!-- Dernière salle (maquette 85:3631). -->
 <Scene scene={scenes.tickets} labelledBy="titre-billetterie">
-  <div class="mx-auto flex w-full max-w-4xl flex-col justify-center gap-8 px-4 py-24 md:px-8">
-    <SectionTitle id="titre-billetterie" eyebrow="La dernière salle">Billetterie</SectionTitle>
-    <PretixWidget shopUrl={pretixShopUrl} />
+  <div class="mx-auto flex w-full max-w-360 flex-col items-center px-5.5 py-16 text-center md:px-16">
+    <SectionTitle id="titre-billetterie" class="pb-3">Votre séance vous attend</SectionTitle>
+    <p class="pb-12 text-base leading-normal text-sable/60 italic md:text-[16.8px]">
+      Choisissez votre parcours et réservez votre place
+    </p>
+    <ul class="flex flex-wrap justify-center gap-6 pb-10 text-left">
+      {seances.map((seance) => <li class="flex"><TicketCard seance={seance} shopUrl={pretixShopUrl} /></li>)}
+    </ul>
+    <PretixButton
+      shopUrl={pretixShopUrl}
+      variant="primary"
+      class="h-13.5 w-78.25 max-w-full text-[11.2px] leading-[16.8px] tracking-[3.36px]"
+    >
+      Réserver maintenant
+    </PretixButton>
   </div>
 </Scene>

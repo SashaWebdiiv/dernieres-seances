@@ -1,24 +1,13 @@
 ---
 interface Props {
   id: string;
-  /** Titre principal de la page : uniquement sur la façade. */
-  level?: 1 | 2;
-  eyebrow?: string;
   class?: string;
 }
 
-const { id, level = 2, eyebrow, class: className } = Astro.props;
-const Heading = level === 1 ? "h1" : "h2";
+const { id, class: className } = Astro.props;
 ---
 
-<div class:list={["flex flex-col gap-2", className]}>
-  {eyebrow && <p class="text-xs font-semibold uppercase tracking-[0.2em] text-ink-muted">{eyebrow}</p>}
-  <!-- tabindex="-1" : cible du focus après une navigation directe. -->
-  <Heading
-    id={id}
-    tabindex="-1"
-    class:list={["font-semibold text-balance", level === 1 ? "text-4xl md:text-7xl" : "text-3xl md:text-5xl"]}
-  >
-    <slot />
-  </Heading>
-</div>
+<!-- tabindex="-1" : cible du focus après une navigation directe. -->
+<h2 id={id} tabindex="-1" class:list={["title-section text-balance", className]}>
+  <slot />
+</h2>

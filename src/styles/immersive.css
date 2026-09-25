@@ -1,29 +1,40 @@
 @import "tailwindcss";
 
 /*
- * Jetons PROVISOIRES : apparence neutre de la fondation technique.
- * À remplacer intégralement par les variables de la maquette Figma Design.
+ * Jetons extraits de la maquette Figma Design « Halloween 2026 » (landing/desktop, 68:812).
+ * Les valeurs non entières (17.145px, 8.8px…) sont reprises telles quelles de la maquette.
  */
 @theme {
-  --color-veil: #050505;
-  --color-ink: #ecebe8;
-  --color-ink-muted: #a8a6a1;
-  --color-surface: rgb(12 12 12 / 0.72);
-  --color-line: rgb(236 235 232 / 0.22);
+  --color-noir: #090909;
+  --color-creme: #f3efe7;
+  --color-sable: #c8b799;
+  --color-rouille: #a25b32;
+  --color-ambre: #f5a923;
+  --color-brun: #817561;
 
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Façade : reprise de la page d'attente. */
+  --color-ambre-vif: #f2a313;
+  --color-ambre-clair: #ffc34a;
+  --color-nuit: #071525;
+  --color-ivoire: #f8f6f0;
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "New Rocker", "Times New Roman", serif;
+  --font-serif: "EB Garamond", Georgia, serif;
+  --font-chiffres: "Bebas Neue", "Inter", sans-serif;
 }
 
 @layer base {
   html {
-    background: var(--color-veil);
-    color: var(--color-ink);
+    background: var(--color-noir);
+    color: var(--color-sable);
     font-family: var(--font-sans);
+    font-synthesis-weight: none;
     -webkit-text-size-adjust: 100%;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid var(--color-ambre);
     outline-offset: 3px;
   }
 
@@ -31,4 +42,33 @@
   [tabindex="-1"]:focus {
     outline: none;
   }
+}
+
+/* Titre de section : New Rocker 40/60, capitales (28 px en mobile, faute de maquette mobile). */
+@utility title-section {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-creme);
+
+  @media (width >= 48rem) {
+    font-size: 40px;
+  }
+}
+
+/* Surtitre : Inter 8.8/13.2, capitales espacées. */
+@utility kicker {
+  font-size: 8.8px;
+  line-height: 13.2px;
+  letter-spacing: 2.64px;
+  text-transform: uppercase;
+}
+
+/* Filet séparateur court sous les titres. */
+@utility filet {
+  display: block;
+  width: 24px;
+  height: 1px;
 }

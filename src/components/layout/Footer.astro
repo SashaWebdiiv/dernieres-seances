@@ -1,16 +1,77 @@
 ---
-import { emailContact, lieu, periodeLisible } from "../../data/evenement";
+import { Image } from "astro:assets";
+import Button from "../ui/Button.astro";
+import { footerLinks, ticketingHref } from "../../data/navigation";
+import FooterItem from "./FooterItem.astro";
+import { infoLinks, socialLinks, websiteLink } from "../../data/footer";
+import { scenes } from "../../data/scenes";
+import logoCompagnie from "../../assets/logos/acompagnie-improvisee.png";
+import logoSucy from "../../assets/logos/ville-sucy.png";
+
+const columnTitle = "kicker text-sable/40";
+const link = "text-[15.2px] leading-[22.8px] text-sable/55 hover:text-sable";
+const social = "text-[8.8px] leading-[13.2px] tracking-[1.32px] text-sable/45 uppercase hover:text-sable";
 ---
 
-<footer class="relative z-10 border-t border-line bg-veil px-4 py-12 text-sm text-ink-muted md:px-8">
-  <div class="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row md:justify-between">
-    <div class="flex flex-col gap-1">
-      <p class="font-semibold text-ink">Dernières Séances — Halloween 2026</p>
-      <p>{periodeLisible} · {lieu}</p>
+<!-- Pied de page (maquette 85:3739) : il prolonge la vue sur le jardin de la dernière scène. -->
+<footer class="relative isolate overflow-hidden bg-noir text-left">
+  <Image
+    src={scenes.faq.media.image.desktop}
+    alt=""
+    width={1440}
+    loading="lazy"
+    class="absolute inset-0 -z-10 size-full object-cover object-top"
+  />
+  <div class="footer-voile absolute inset-0 -z-10" aria-hidden="true"></div>
+
+  <div class="mx-auto max-w-360 px-5.5 pt-16 pb-12 md:px-22.75 md:pt-22.75">
+    <div class="mx-auto grid max-w-240 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12">
+      <div class="flex flex-col items-start">
+        <p class="font-display text-[19.2px] leading-[28.8px] tracking-[2.88px] text-creme">Dernières Séances</p>
+        <p class="pt-2 pb-6 text-[14.4px] leading-[24.48px] text-sable/55 italic lg:whitespace-nowrap">
+          Halloween au Château de Sucy<br />28 octobre — 1er novembre 2026
+        </p>
+        <Button href={ticketingHref} class="h-10 w-33 text-[9.6px] leading-[14.4px] tracking-[2.4px]" data-jump>
+          Réserver
+        </Button>
+      </div>
+
+      <nav aria-labelledby="pied-navigation">
+        <p id="pied-navigation" class={columnTitle}>Navigation</p>
+        <ul class="flex flex-col gap-2.5 pt-5">
+          {footerLinks.map((item) => <li><a href={item.href} class={link} data-jump>{item.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <div>
+        <p class={columnTitle}>Informations</p>
+        <ul class="flex flex-col gap-2.5 pt-5">
+          {infoLinks.map((item) => <li><FooterItem item={item} class={link} /></li>)}
+        </ul>
+      </div>
+
+      <div>
+        <p class={columnTitle}>Suivez-nous</p>
+        <ul class="flex flex-wrap gap-x-5 gap-y-4 pt-4">
+          {[...socialLinks, websiteLink].map((item) => <li><FooterItem item={item} class={social} /></li>)}
+        </ul>
+      </div>
     </div>
-    <div class="flex flex-col gap-1 md:text-right">
-      <a href={`mailto:${emailContact}`} class="underline-offset-4 hover:underline">{emailContact}</a>
-      <p>Organisé par L'Acompagnie Improvisée · Site : <a href="https://webdiiv.com" class="underline-offset-4 hover:underline">Webdiiv</a></p>
+
+    <div class="mt-16 h-px bg-linear-to-r from-transparent via-sable/40 to-transparent" aria-hidden="true"></div>
+
+    <div class="flex flex-col items-center gap-6 pt-6 md:flex-row md:justify-between md:gap-4 md:py-3.5">
+      <Image src={logoCompagnie} alt="L'Acompagnie Improvisée" width={113} class="h-13.5 w-auto" />
+      <p class="text-center font-serif text-[12.8px] leading-[19.2px] tracking-[0.64px] text-sable/30">
+        © 2026 Dernières Séances — Château de Sucy-en-Brie
+      </p>
+      <Image src={logoSucy} alt="Sucy-en-Brie" width={113} class="h-11 w-auto" />
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-voile {
+    background: linear-gradient(180deg, rgb(9 9 9 / 0.4) 0%, rgb(9 9 9 / 0.92) 40%, rgb(9 9 9) 100%);
+  }
+</style>

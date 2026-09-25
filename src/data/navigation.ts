@@ -4,10 +4,20 @@ export interface NavLink {
   label: string;
 }
 
+/** Barre supérieure (maquette 63:5). */
 export const navLinks: NavLink[] = [
-  { href: "#experience", label: "Expériences" },
+  { href: "#experience", label: "L'expérience" },
+  { href: "#programme", label: "Programme" },
   { href: "#calendrier", label: "Calendrier" },
-  { href: "#faq", label: "Infos & FAQ" },
+  { href: "#faq", label: "FAQ" },
 ];
 
-export const reserveLink: NavLink = { href: "#billetterie", label: "Réserver" };
+/** Colonne « Navigation » du pied de page (maquette 85:3750). */
+export const footerLinks: NavLink[] = [
+  { href: "#experience", label: "L'expérience" },
+  { href: "#programme", label: "Programme" },
+  { href: "#billetterie", label: "Billetterie" },
+  { href: "#faq", label: "FAQ" },
+];
+
+export const ticketingHref = "#billetterie";

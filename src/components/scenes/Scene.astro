@@ -15,7 +15,6 @@ const decorative = labelledBy === undefined;
 const Tag = decorative ? "div" : "section";
 
 const style = {
-  "--shade": scene.shade,
   "--focus-d": focus?.desktop ?? "50% 50%",
   "--focus-m": focus?.mobile ?? "50% 50%",
   "--len-d": scene.length.desktop,
@@ -25,7 +24,7 @@ const style = {
 
 <Tag
   id={scene.id}
-  class:list={["scene relative bg-veil", className]}
+  class:list={["scene relative bg-noir", className]}
   style={style}
   aria-labelledby={labelledBy}
   aria-hidden={decorative ? "true" : undefined}
@@ -38,7 +37,7 @@ const style = {
     <div class="scene-media absolute inset-0" data-scene-media>
       <SceneMedia media={scene.media} priority={scene.priority} />
     </div>
-    <div class="absolute inset-0 bg-veil opacity-(--shade)" data-scene-shade></div>
+    <div class="absolute inset-0" style={{ background: scene.overlay }} data-scene-overlay></div>
     {
       !scene.pinned && (
         <>
@@ -112,7 +111,7 @@ const style = {
     position: absolute;
     inset: 0;
     z-index: 20;
-    background: var(--color-veil);
+    background: var(--color-noir);
     opacity: 0;
     pointer-events: none;
   }

@@ -4,7 +4,8 @@
  * Pour passer une scène en vidéo, lui ajouter `video: { desktop, mobile }` à côté
  * de `image` — l'image reste l'affiche et le repli.
  *
- * Les images hors façade sont des placeholders neutres à remplacer par les visuels définitifs.
+ * Les images hors façade sont des placeholders neutres : les visuels de la maquette Figma
+ * (grandepiece, deuxiemepiece, escalier, dernieresalle, sortie-chateau) restent à importer.
  */
 import type { SceneConfig } from "../types/scene";
 
@@ -29,6 +30,13 @@ const hallImage = {
   alt: "",
 } satisfies SceneConfig["media"]["image"];
 
+/* Voiles de la maquette : aplat, vignettage radial et fondus vers le noir (#090909). */
+const noir = (alpha: number) => `rgb(9 9 9 / ${alpha})`;
+const aplat = (alpha: number) => `linear-gradient(${noir(alpha)}, ${noir(alpha)})`;
+const vignette = (from: number, to: number, alpha: number) =>
+  `radial-gradient(ellipse at center, ${noir(0)} ${from * 100}%, ${noir(alpha)} ${to * 100}%)`;
+const fonduBas = `linear-gradient(0deg, ${noir(1)} 0%, ${noir(0)} 40%)`;
+
 export const scenes = {
   hero: {
     id: "accueil",
@@ -42,24 +50,25 @@ export const scenes = {
     },
     pinned: true,
     length: { desktop: 2.5, mobile: 2 },
-    shade: 0.25,
+    // « Voile nocturne » (62:11).
+    overlay: "linear-gradient(180deg, rgb(4 16 26 / 0.87) 0%, rgb(4 16 26 / 0.33) 48%, rgb(3 8 13 / 0.96) 100%)",
     animation: "hero",
     priority: true,
   },
   hall: {
-    id: "concept",
+    id: "experience",
     media: { image: hallImage },
     pinned: true,
     length: { desktop: 2.5, mobile: 2 },
-    shade: 0.35,
+    overlay: "rgb(0 0 0 / 0.5)",
     animation: "hall",
   },
   experiences: {
-    id: "experience",
+    id: "programme",
     media: { image: { desktop: premiereSalleDesktop, mobile: premiereSalleMobile, alt: "" } },
     pinned: true,
     length: { desktop: 5, mobile: 4 },
-    shade: 0.45,
+    overlay: [fonduBas, vignette(0.3, 1, 0.65), aplat(0.45)].join(", "),
     animation: "experiences",
   },
   retourHall: {
@@ -67,7 +76,7 @@ export const scenes = {
     media: { image: hallImage },
     pinned: true,
     length: { desktop: 1.5, mobile: 1.2 },
-    shade: 0.35,
+    overlay: "rgb(0 0 0 / 0.5)",
     animation: "passage",
   },
   partners: {
@@ -75,7 +84,12 @@ export const scenes = {
     media: { image: { desktop: escalierDesktop, mobile: escalierMobile, alt: "" } },
     pinned: true,
     length: { desktop: 3, mobile: 2.5 },
-    shade: 0.45,
+    overlay: [
+      `linear-gradient(180deg, ${noir(0.6)} 0%, ${noir(0)} 25%)`,
+      fonduBas,
+      vignette(0.3, 1, 0.6),
+      aplat(0.4),
+    ].join(", "),
     animation: "staircase",
   },
   calendar: {
@@ -83,7 +97,7 @@ export const scenes = {
     media: { image: { desktop: salleEtageDesktop, mobile: salleEtageMobile, alt: "" } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
-    shade: 0.6,
+    overlay: [vignette(0.2, 1, 0.7), aplat(0.5)].join(", "),
     animation: "still",
   },
   tickets: {
@@ -91,7 +105,7 @@ export const scenes = {
     media: { image: { desktop: derniereSalleDesktop, mobile: derniereSalleMobile, alt: "" } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
-    shade: 0.6,
+    overlay: [vignette(0.15, 1, 0.65), aplat(0.55)].join(", "),
     animation: "still",
   },
   faq: {
@@ -99,7 +113,7 @@ export const scenes = {
     media: { image: { desktop: fenetreJardinDesktop, mobile: fenetreJardinMobile, alt: "" } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
-    shade: 0.6,
+    overlay: [`linear-gradient(180deg, ${noir(1)} 0%, ${noir(0)} 30%)`, aplat(0.75)].join(", "),
     animation: "still",
   },
 } satisfies Record<string, SceneConfig>;

@@ -1,40 +1,23 @@
 /**
- * PROVISOIRE : questions construites à partir des seules informations déjà publiées
- * (evenement.ts). Rédaction définitive à reprendre de la maquette Figma Design.
+ * Questions de la maquette (« Préparez votre visite », 85:3673). La maquette ne contient
+ * aucune réponse : `null` signale une réponse à fournir par l'organisation.
  */
-import {
-  emailContact,
-  exceptionProgramme,
-  experiences,
-  lieu,
-  ouvertureBilletterieLisible,
-  periodeLisible,
-} from "./evenement";
+import { activites } from "./programme";
 
 export interface FaqItem {
   question: string;
-  answer: string[];
+  answer: string[] | null;
 }
 
 export const faqItems: FaqItem[] = [
+  { question: "Combien de temps dure le parcours ?", answer: null },
   {
-    question: "Quand et où a lieu Dernières Séances ?",
-    answer: [`${periodeLisible}, au ${lieu}.`],
+    question: "À partir de quel âge ?",
+    answer: activites.map((a) => `${a.titre} : ${a.public}.`),
   },
-  {
-    question: "Quelles expériences, et pour quel âge ?",
-    answer: experiences.map((e) => `${e.nom} — ${e.age}, ${e.horaires}. ${e.tarif}.`),
-  },
-  {
-    question: "Les horaires changent-ils le 31 octobre ?",
-    answer: [exceptionProgramme],
-  },
-  {
-    question: "Quand ouvre la billetterie ?",
-    answer: [`${ouvertureBilletterieLisible}.`],
-  },
-  {
-    question: "Comment nous contacter ?",
-    answer: [`Par e-mail : ${emailContact}.`],
-  },
+  { question: "Le parcours fait-il peur ?", answer: null },
+  { question: "Peut-on venir déguisé ?", answer: null },
+  { question: "Peut-on acheter des billets sur place ?", answer: null },
+  { question: "L'événement est-il accessible PMR ?", answer: null },
+  { question: "À quelle heure faut-il arriver ?", answer: null },
 ];

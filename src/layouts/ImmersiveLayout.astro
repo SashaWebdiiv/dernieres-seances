@@ -1,4 +1,13 @@
 ---
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/400-italic.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/800.css";
+import "@fontsource/new-rocker/400.css";
+import "@fontsource/bebas-neue/400.css";
+import "@fontsource/eb-garamond/400.css";
 import "../styles/immersive.css";
 import ogImage from "../assets/scenes/facade-desktop.webp";
 import { getImage } from "astro:assets";
@@ -28,7 +37,7 @@ const ogUrl = new URL(og.src, Astro.site);
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-    <meta name="theme-color" content="#050505" />
+    <meta name="theme-color" content="#090909" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

@@ -2,13 +2,32 @@
 import Scene from "./Scene.astro";
 import SectionTitle from "../ui/SectionTitle.astro";
 import { scenes } from "../../data/scenes";
+
+const highlights = ["Parcours immersif", "Restauration sur place", "Expérience enfants & adultes"];
 ---
 
-<Scene scene={scenes.hall} labelledBy="titre-concept">
-  <div class="mx-auto flex h-full max-w-6xl flex-col justify-center px-4 md:px-8" data-scene-content>
-    <div class="flex max-w-xl flex-col gap-4 rounded-lg bg-surface p-6 md:p-8">
-      <SectionTitle id="titre-concept" eyebrow="Le hall">Le concept</SectionTitle>
-      <p class="text-ink-muted">[Présentation du concept — texte à reprendre de la maquette Figma Design.]</p>
+<!-- Hall (maquette « Présentation », 67:787). -->
+<Scene scene={scenes.hall} labelledBy="titre-experience">
+  <div class="mx-auto flex h-full max-w-360 flex-col justify-center px-5.5 md:px-20 md:pb-[10vh] xl:px-41.75" data-scene-content>
+    <div class="flex max-w-175 flex-col">
+      <span class="h-px w-8 bg-ambre" aria-hidden="true"></span>
+      <SectionTitle id="titre-experience" class="pt-6 md:leading-[69.9px]">
+        Découvrez la collection Émile Vanderbeck
+      </SectionTitle>
+      <p class="max-w-122.25 pt-4 text-[15px] leading-[1.8] font-bold md:text-[17.145px] md:leading-[30.861px]">
+        Traversez les différentes pièces du château et plongez dans une histoire mise en scène par l'Acompagnie
+        Improvisée et ses comédiens.
+      </p>
+      <ul class="flex flex-wrap gap-x-10 gap-y-4 pt-7.5">
+        {
+          highlights.map((highlight) => (
+            <li class="flex flex-col gap-2">
+              <span class="h-px w-4 bg-rouille" aria-hidden="true" />
+              <span class="text-[9.6px] leading-[14.4px] tracking-[2.4px] uppercase">{highlight}</span>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </div>
 </Scene>

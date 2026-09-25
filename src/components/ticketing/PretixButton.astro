@@ -1,0 +1,71 @@
+---
+/**
+ * Bouton de réservation Pretix. Avec une boutique configurée, c'est un `<pretix-button>`
+ * officiel : le script Pretix, chargé à l'approche de la billetterie, en fait un bouton qui
+ * ouvre le panier et le paiement (Stripe, configuré côté Pretix) par-dessus la page.
+ * Sans JavaScript, un lien mène à la boutique.
+ *
+ * Selon le navigateur (cookies tiers bloqués, petit écran) ou le moyen de paiement
+ * (3-D Secure), Pretix peut ouvrir un nouvel onglet ou rediriger : le retour vers ce site
+ * se règle dans Pretix. La section reste atteignable directement par `#billetterie`.
+ *
+ * Sans boutique (`shopUrl` à `null`) : bouton inactif, aucun script tiers.
+ */
+import Button from "../ui/Button.astro";
+
+interface Props {
+  shopUrl: string | null;
+  /** Produits à mettre au panier (`item_12=1`). Absent : boutique complète. */
+  items?: string | undefined;
+  variant: "primary" | "outline";
+  class?: string;
+}
+
+const { shopUrl, items, variant, class: className } = Astro.props;
+
+const variants = {
+  primary: "border border-sable/40 bg-ambre text-noir hover:bg-ambre-clair",
+  outline: "border border-creme/30 text-creme hover:border-creme/60 hover:bg-creme/5",
+};
+---
+
+{
+  shopUrl ? (
+    <pretix-button
+      event={shopUrl}
+      items={items}
+      class:list={["pretix-button", variants[variant], className]}
+      data-pretix
+      data-script={new URL("/widget/v1.fr.js", shopUrl).href}
+      data-stylesheet={new URL("widget/v1.css", shopUrl).href}
+    >
+      <slot />
+    </pretix-button>
+    <noscript>
+      <a href={shopUrl} target="_blank" rel="noopener" class:list={["pretix-button", variants[variant], className]}>
+        <slot />
+      </a>
+    </noscript>
+  ) : (
+    <Button variant={variant} class={className} disabled title="Billetterie bientôt disponible">
+      <slot />
+    </Button>
+  )
+}
+
+<script>
+  import { loadPretixOnApproach } from "../../scripts/pretix";
+
+  loadPretixOnApproach();
+</script>
+
+<style>
+  .pretix-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+</style>

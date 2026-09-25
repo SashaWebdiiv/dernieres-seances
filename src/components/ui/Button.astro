@@ -1,20 +1,32 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-/** Lien si `href` est fourni (navigation), vrai `<button>` sinon (action). */
+/**
+ * Lien si `href` est fourni (navigation), vrai `<button>` sinon (action).
+ * - `primary` : aplat ambre, capitales espacées (boutons de la maquette 88:110, 85:3670, 85:3748).
+ * - `outline` : filet crème (« Choisir cette séance », 85:3668).
+ * - `header` : bouton « Billetterie » de la barre supérieure (62:180).
+ * La taille (hauteur, corps, largeur) est donnée par `class`, chaque bouton de la maquette ayant la sienne.
+ */
 interface Props extends Omit<HTMLAttributes<"a">, "class" | "type"> {
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "outline" | "header";
   type?: "button" | "submit";
+  disabled?: boolean;
   class?: string;
 }
 
-const { variant = "primary", class: className, href, type = "button", ...rest } = Astro.props;
+const { variant = "primary", class: className, href, type = "button", disabled, ...rest } = Astro.props;
+
+const variants = {
+  primary: "border border-sable/40 bg-ambre uppercase text-noir hover:bg-ambre-clair",
+  outline: "border border-creme/30 uppercase text-creme hover:border-creme/60 hover:bg-creme/5",
+  header: "rounded-lg bg-ambre-vif px-4.5 font-extrabold text-sm tracking-[0.05em] text-nuit uppercase hover:bg-ambre-clair",
+};
 
 const classes = [
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold uppercase tracking-wider transition-colors",
-  variant === "primary"
-    ? "bg-ink text-veil hover:bg-ink-muted"
-    : "border border-line text-ink hover:bg-ink/10",
+  "inline-flex items-center justify-center text-center transition-colors",
+  "disabled:cursor-not-allowed disabled:opacity-60",
+  variants[variant],
   className,
 ];
 ---
@@ -25,7 +37,7 @@ const classes = [
       <slot />
     </a>
   ) : (
-    <button type={type} class:list={classes} {...rest}>
+    <button type={type} class:list={classes} disabled={disabled} {...rest}>
       <slot />
     </button>
   )

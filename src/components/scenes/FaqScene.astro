@@ -5,19 +5,31 @@ import { scenes } from "../../data/scenes";
 import { faqItems } from "../../data/faq";
 ---
 
+<!-- Fenêtre sur le jardin (maquette « Préparez votre visite », 85:3673). -->
 <Scene scene={scenes.faq} labelledBy="titre-faq">
-  <div class="mx-auto flex w-full max-w-3xl flex-col justify-center gap-8 px-4 py-24 md:px-8">
-    <SectionTitle id="titre-faq" eyebrow="Vue sur le jardin">Infos pratiques & FAQ</SectionTitle>
-    <div class="rounded-lg bg-surface px-6">
+  <div class="mx-auto w-full max-w-220.5 px-5.5 py-20 md:px-22.75 md:py-28.5">
+    <span class="mx-auto block h-px w-8 bg-sable/40" aria-hidden="true"></span>
+    <SectionTitle id="titre-faq" class="pt-6 text-center">Préparez votre visite</SectionTitle>
+
+    <div class="pt-14">
       {
         faqItems.map((item) => (
-          <details class="group border-b border-line last:border-b-0">
-            <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold">
+          <details class="faq-item group">
+            <summary class="flex min-h-16.75 cursor-pointer list-none items-center justify-between gap-4 py-5 font-serif text-[17.6px] leading-[26.4px] tracking-[0.02em] text-creme/70 hover:text-creme">
               {item.question}
-              <span class="shrink-0 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              <span
+                class="grid size-4.5 shrink-0 place-items-center rounded-full border border-sable/30 font-serif text-[11.2px] leading-none text-sable transition-transform group-open:rotate-45"
+                aria-hidden="true"
+              >
+                +
+              </span>
             </summary>
-            <div class="flex flex-col gap-2 pb-4 text-ink-muted">
-              {item.answer.map((paragraph) => <p>{paragraph}</p>)}
+            <div class="flex flex-col gap-2 pb-5 text-[15.2px] leading-[22.8px] text-sable/70">
+              {item.answer ? (
+                item.answer.map((paragraph) => <p>{paragraph}</p>)
+              ) : (
+                <p>[Réponse à fournir par l'organisation.]</p>
+              )}
             </div>
           </details>
         ))
@@ -27,6 +39,11 @@ import { faqItems } from "../../data/faq";
 </Scene>
 
 <style>
+  /* Filet dégradé sous chaque question (maquette 85:3688). */
+  .faq-item {
+    background: linear-gradient(90deg, transparent, rgb(200 183 153 / 0.4), transparent) bottom / 100% 1px no-repeat;
+  }
+
   summary::-webkit-details-marker {
     display: none;
   }

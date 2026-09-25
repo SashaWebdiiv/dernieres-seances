@@ -1,14 +1,16 @@
 ---
 import Scene from "./Scene.astro";
 import SectionTitle from "../ui/SectionTitle.astro";
-import Calendar from "../calendar/Calendar.astro";
+import Programme from "../programme/Programme.astro";
 import { scenes } from "../../data/scenes";
-import { joursEvenement } from "../../data/evenement";
+import { activites, rendezVous } from "../../data/programme";
+import { ticketingHref } from "../../data/navigation";
 ---
 
+<!-- Salle à l'étage (maquette « Calendrier », 68:2602). -->
 <Scene scene={scenes.calendar} labelledBy="titre-calendrier">
-  <div class="mx-auto flex w-full max-w-6xl flex-col justify-center gap-8 px-4 py-24 md:px-8">
-    <SectionTitle id="titre-calendrier" eyebrow="La salle à l'étage">Calendrier</SectionTitle>
-    <Calendar days={joursEvenement} />
+  <div class="mx-auto flex w-full max-w-360 flex-col items-center px-5.5 py-15 md:px-6">
+    <SectionTitle id="titre-calendrier" class="pb-10 text-center">Des événements à couper le souffle</SectionTitle>
+    <Programme activites={activites} rendezVous={rendezVous} ctaHref={ticketingHref} />
   </div>
 </Scene>

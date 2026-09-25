@@ -59,21 +59,23 @@ Visite scrollée du château, qui remplacera la page d'attente au lancement. Ell
 `/visite`, en `noindex`, pour ne rien changer à `/` tant qu'elle n'est pas prête.
 Stack : Astro, Tailwind CSS v4, GSAP + ScrollTrigger (scroll natif, pas de smooth scroll).
 
-L'apparence est volontairement neutre : les jetons de `src/styles/immersive.css` et les
-images hors façade sont des placeholders, à remplacer par la maquette Figma Design.
+Intégration de la maquette Figma Design « Halloween 2026 » (`landing/desktop`, 1440 px).
+Il n'existe pas de maquette mobile : l'adaptation mobile est déduite du desktop et de la page
+d'attente. Les images des pièces sont encore des placeholders (seule la façade est définitive).
 
 | Chemin | Rôle |
 | --- | --- |
-| `src/data/scenes.ts` | **Les scènes** : ordre, médias desktop/mobile, longueur de scroll, animation |
-| `src/types/scene.ts` | Contrat d'une scène (image obligatoire, vidéo optionnelle) |
+| `src/styles/immersive.css` | Jetons de la maquette : couleurs, polices, styles de texte récurrents |
+| `src/data/scenes.ts` | **Les scènes** : ordre, médias desktop/mobile, voiles, longueur de scroll, animation |
+| `src/data/*.ts` | Contenus : programme, publics, séances, FAQ, partenaires, liens |
 | `src/components/scenes/Scene.astro` | Scène générique : décor sticky, contenu épinglé ou défilant, fondus au noir |
-| `src/components/scenes/SceneMedia.astro` | Image AVIF/WebP par écran, vidéo chargée à l'approche |
 | `src/components/scenes/*Scene.astro` | Contenu de chaque pièce |
+| `src/components/programme/` | Programme (cartes d'activités) de la salle à l'étage |
+| `src/components/ticketing/PretixButton.astro` | Bouton Pretix officiel, script chargé à l'approche de la billetterie |
 | `src/scripts/gsap/sceneAnimations.ts` | Une timeline par type de scène |
 | `src/scripts/gsap/initScroll.ts` | Création, responsive et nettoyage des ScrollTriggers |
 | `src/scripts/gsap/navigation.ts` | Navigation directe : fondu au noir → saut → synchronisation |
-| `src/components/ticketing/PretixWidget.astro` | Widget Pretix, chargé à l'approche de la billetterie |
-| `src/data/billetterie.ts` | URL de la boutique Pretix (`null` : encart d'attente) |
+| `src/data/billetterie.ts` | URL de la boutique Pretix (`null` : boutons inactifs) et séances |
 
 - **Passer une scène en vidéo** : ajouter `video: { desktop, mobile }` à côté de `image`
   dans `scenes.ts`. L'image reste l'affiche et le repli (mouvement réduit, économie de données).
