@@ -1,0 +1,14 @@
+---
+import Scene from "./Scene.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import Calendar from "../calendar/Calendar.astro";
+import { scenes } from "../../data/scenes";
+import { joursEvenement } from "../../data/evenement";
+---
+
+<Scene scene={scenes.calendar} labelledBy="titre-calendrier">
+  <div class="mx-auto flex w-full max-w-6xl flex-col justify-center gap-8 px-4 py-24 md:px-8">
+    <SectionTitle id="titre-calendrier" eyebrow="La salle à l'étage">Calendrier</SectionTitle>
+    <Calendar days={joursEvenement} />
+  </div>
+</Scene>

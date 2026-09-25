@@ -1,0 +1,29 @@
+---
+import { Image } from "astro:assets";
+import Scene from "./Scene.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import { scenes } from "../../data/scenes";
+import { partners } from "../../data/partners";
+---
+
+<Scene scene={scenes.partners} labelledBy="titre-partenaires">
+  <div class="mx-auto flex h-full max-w-6xl flex-col items-center justify-center gap-8 px-4 text-center md:px-8">
+    <SectionTitle id="titre-partenaires" eyebrow="L'escalier">Nos partenaires</SectionTitle>
+    <ul class="flex flex-wrap items-center justify-center gap-6 md:gap-12">
+      {
+        partners.map((partner) => {
+          const content = partner.logo ? (
+            <Image src={partner.logo} alt={partner.name} height={64} class="h-12 w-auto md:h-16" />
+          ) : (
+            <span class="text-lg font-semibold">{partner.name}</span>
+          );
+          return (
+            <li data-reveal>
+              {partner.url ? <a href={partner.url}>{content}</a> : content}
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</Scene>

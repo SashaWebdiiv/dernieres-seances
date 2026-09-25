@@ -1,0 +1,44 @@
+---
+import ImmersiveLayout from "../layouts/ImmersiveLayout.astro";
+import Navbar from "../components/layout/Navbar.astro";
+import Footer from "../components/layout/Footer.astro";
+import Scene from "../components/scenes/Scene.astro";
+import HeroScene from "../components/scenes/HeroScene.astro";
+import HallScene from "../components/scenes/HallScene.astro";
+import ExperienceScene from "../components/scenes/ExperienceScene.astro";
+import PartnersScene from "../components/scenes/PartnersScene.astro";
+import CalendarScene from "../components/scenes/CalendarScene.astro";
+import TicketScene from "../components/scenes/TicketScene.astro";
+import FaqScene from "../components/scenes/FaqScene.astro";
+import TransitionOverlay from "../components/ui/TransitionOverlay.astro";
+import { scenes } from "../data/scenes";
+
+/*
+ * Site immersif en construction. Il vit sur /visite pour ne pas toucher à la page d'attente
+ * servie sur / (QR codes des flyers) ; il prendra sa place au lancement.
+ */
+---
+
+<ImmersiveLayout
+  title="Dernières Séances — Halloween 2026 au Château de Sucy"
+  description="Du 28 octobre au 1er novembre 2026, visitez le Château de Sucy-en-Brie hanté : parcours immersifs, jardin ensorcelé et parade."
+  noindex
+>
+  <Navbar />
+  <main id="contenu" tabindex="-1">
+    <HeroScene />
+    <HallScene />
+    <ExperienceScene />
+    <Scene scene={scenes.retourHall} />
+    <PartnersScene />
+    <CalendarScene />
+    <TicketScene />
+    <FaqScene />
+  </main>
+  <Footer />
+  <TransitionOverlay />
+</ImmersiveLayout>
+
+<script>
+  import "../scripts/main";
+</script>

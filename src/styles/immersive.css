@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+/*
+ * Jetons PROVISOIRES : apparence neutre de la fondation technique.
+ * À remplacer intégralement par les variables de la maquette Figma Design.
+ */
+@theme {
+  --color-veil: #050505;
+  --color-ink: #ecebe8;
+  --color-ink-muted: #a8a6a1;
+  --color-surface: rgb(12 12 12 / 0.72);
+  --color-line: rgb(236 235 232 / 0.22);
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-veil);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  /* Cibles de navigation focalisées par script : pas de contour sur un titre. */
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
+}

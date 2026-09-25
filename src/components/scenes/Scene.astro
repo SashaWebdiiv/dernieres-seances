@@ -1,0 +1,155 @@
+---
+import type { SceneConfig } from "../../types/scene";
+import SceneMedia from "./SceneMedia.astro";
+
+interface Props {
+  scene: SceneConfig;
+  /** Id du titre de la scène. Absent : la scène est un simple passage décoratif. */
+  labelledBy?: string;
+  class?: string;
+}
+
+const { scene, labelledBy, class: className } = Astro.props;
+const { focus } = scene.media.image;
+const decorative = labelledBy === undefined;
+const Tag = decorative ? "div" : "section";
+
+const style = {
+  "--shade": scene.shade,
+  "--focus-d": focus?.desktop ?? "50% 50%",
+  "--focus-m": focus?.mobile ?? "50% 50%",
+  "--len-d": scene.length.desktop,
+  "--len-m": scene.length.mobile,
+};
+---
+
+<Tag
+  id={scene.id}
+  class:list={["scene relative bg-veil", className]}
+  style={style}
+  aria-labelledby={labelledBy}
+  aria-hidden={decorative ? "true" : undefined}
+  data-scene
+  data-scene-animation={scene.animation}
+  data-pinned={scene.pinned ? "" : undefined}
+  data-decorative={decorative ? "" : undefined}
+>
+  <div class="scene-backdrop sticky top-0 h-lvh overflow-hidden">
+    <div class="scene-media absolute inset-0" data-scene-media>
+      <SceneMedia media={scene.media} priority={scene.priority} />
+    </div>
+    <div class="absolute inset-0 bg-veil opacity-(--shade)" data-scene-shade></div>
+    {
+      !scene.pinned && (
+        <>
+          <div class="veil" data-veil-in />
+          <div class="veil" data-veil-out />
+        </>
+      )
+    }
+  </div>
+
+  <div class="scene-content relative z-10">
+    {
+      scene.pinned ? (
+        <div class="scene-stage">
+          <slot />
+          <div class="veil" data-veil-in />
+          <div class="veil" data-veil-out />
+        </div>
+      ) : (
+        <slot />
+      )
+    }
+  </div>
+</Tag>
+
+<style>
+  /*
+   * Par défaut (sans JS, ou mouvement réduit) : mise en page statique, chaque scène fait au
+   * moins un écran et son contenu défile normalement sur le décor sticky.
+   * Avec JS et mouvement autorisé : longueurs de scroll, scènes épinglées, portes de noir.
+   */
+  .scene {
+    --len: var(--len-m);
+  }
+
+  .scene-media {
+    transform-origin: var(--focus-m);
+  }
+
+  @media (min-width: 768px) {
+    .scene {
+      --len: var(--len-d);
+    }
+
+    .scene-media {
+      transform-origin: var(--focus-d);
+    }
+  }
+
+  /* Le contenu remonte sur le décor sticky qui le précède dans le flux. */
+  .scene-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: -100vh;
+    margin-top: -100lvh;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .scene-stage {
+    padding-block: 5rem;
+  }
+
+  .scene[data-decorative] {
+    display: none;
+  }
+
+  /* Portes de noir entre deux scènes : GSAP les pilote, invisibles par défaut. */
+  .veil {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    background: var(--color-veil);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .scene[data-decorative] {
+      display: block;
+    }
+
+    /* Longueur minimale : laisse au décor le temps d'apparaître entre les fondus. */
+    :global(.js) .scene:not([data-pinned]) > .scene-content {
+      min-height: calc(var(--len) * 100vh);
+      min-height: calc(var(--len) * 100lvh);
+    }
+
+    :global(.js) .scene[data-pinned] {
+      height: calc(var(--len) * 100vh);
+      height: calc(var(--len) * 100lvh);
+    }
+
+    /* La couche couvre toute la section pour que la scène reste collée d'un bout à l'autre. */
+    :global(.js) .scene[data-pinned] > .scene-content {
+      position: absolute;
+      inset: 0;
+      display: block;
+      margin-top: 0;
+    }
+
+    /* Couvre le grand viewport comme le décor, mais garde le contenu dans le petit viewport
+       (barres du navigateur mobile visibles). */
+    :global(.js) .scene-stage {
+      position: sticky;
+      top: 0;
+      overflow: hidden;
+      height: 100vh;
+      height: 100lvh;
+      padding-block: 0 calc(100lvh - 100svh);
+    }
+  }
+</style>

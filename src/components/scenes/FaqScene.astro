@@ -1,0 +1,33 @@
+---
+import Scene from "./Scene.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import { scenes } from "../../data/scenes";
+import { faqItems } from "../../data/faq";
+---
+
+<Scene scene={scenes.faq} labelledBy="titre-faq">
+  <div class="mx-auto flex w-full max-w-3xl flex-col justify-center gap-8 px-4 py-24 md:px-8">
+    <SectionTitle id="titre-faq" eyebrow="Vue sur le jardin">Infos pratiques & FAQ</SectionTitle>
+    <div class="rounded-lg bg-surface px-6">
+      {
+        faqItems.map((item) => (
+          <details class="group border-b border-line last:border-b-0">
+            <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold">
+              {item.question}
+              <span class="shrink-0 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <div class="flex flex-col gap-2 pb-4 text-ink-muted">
+              {item.answer.map((paragraph) => <p>{paragraph}</p>)}
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</Scene>
+
+<style>
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

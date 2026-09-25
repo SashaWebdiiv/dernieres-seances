@@ -1,0 +1,38 @@
+---
+import Scene from "./Scene.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import { scenes } from "../../data/scenes";
+import { experienceSteps } from "../../data/experiences";
+---
+
+<Scene scene={scenes.experiences} labelledBy="titre-experience">
+  <div class="mx-auto flex h-full max-w-6xl flex-col justify-center gap-6 px-4 pt-16 md:gap-10 md:px-8">
+    <SectionTitle id="titre-experience" eyebrow="Première salle">Les expériences</SectionTitle>
+    <ol class="steps">
+      {
+        experienceSteps.map((step) => (
+          <li class="flex max-w-md flex-col gap-3 rounded-lg bg-surface p-6" data-step>
+            <h3 class="text-xl font-semibold md:text-2xl">{step.title}</h3>
+            <ul class="flex flex-col gap-1 text-ink-muted">
+              {step.lines.map((line) => <li>{line}</li>)}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</Scene>
+
+<style>
+  .steps {
+    display: grid;
+    gap: 1rem;
+  }
+
+  /* Animé : les étapes se relaient au même emplacement. Sinon, elles se suivent. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .steps > li {
+      grid-area: 1 / 1;
+    }
+  }
+</style>

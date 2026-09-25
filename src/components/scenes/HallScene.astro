@@ -1,0 +1,14 @@
+---
+import Scene from "./Scene.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import { scenes } from "../../data/scenes";
+---
+
+<Scene scene={scenes.hall} labelledBy="titre-concept">
+  <div class="mx-auto flex h-full max-w-6xl flex-col justify-center px-4 md:px-8" data-scene-content>
+    <div class="flex max-w-xl flex-col gap-4 rounded-lg bg-surface p-6 md:p-8">
+      <SectionTitle id="titre-concept" eyebrow="Le hall">Le concept</SectionTitle>
+      <p class="text-ink-muted">[Présentation du concept — texte à reprendre de la maquette Figma Design.]</p>
+    </div>
+  </div>
+</Scene>

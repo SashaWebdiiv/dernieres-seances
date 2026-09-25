@@ -1,0 +1,14 @@
+---
+import Scene from "./Scene.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import PretixWidget from "../ticketing/PretixWidget.astro";
+import { scenes } from "../../data/scenes";
+import { pretixShopUrl } from "../../data/billetterie";
+---
+
+<Scene scene={scenes.tickets} labelledBy="titre-billetterie">
+  <div class="mx-auto flex w-full max-w-4xl flex-col justify-center gap-8 px-4 py-24 md:px-8">
+    <SectionTitle id="titre-billetterie" eyebrow="La dernière salle">Billetterie</SectionTitle>
+    <PretixWidget shopUrl={pretixShopUrl} />
+  </div>
+</Scene>
