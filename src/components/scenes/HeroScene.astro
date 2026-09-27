@@ -3,19 +3,30 @@ import Scene from "./Scene.astro";
 import Button from "../ui/Button.astro";
 import { scenes } from "../../data/scenes";
 import { ticketingHref } from "../../data/navigation";
+// Titres vectorisés de la page d'attente, allégés (SVGO, viewBox conservée) : URL hachée, cache long.
+import titreHalloween from "../../assets/hero/titre-halloween-2026.svg?url";
+import titreDernieresSeances from "../../assets/hero/titre-dernieres-seances.svg?url";
+import badgeOserez from "../../assets/hero/badge-oserez-vous-entrer.svg?url";
 ---
 
-<!-- Façade (maquette « Hero », 62:9). Titres vectorisés : mêmes SVG que la page d'attente. -->
+<!-- Façade (maquette « Hero », 62:9). Le grand titre est l'élément LCP en mobile : priorité haute. -->
 <Scene scene={scenes.hero} labelledBy="titre-accueil">
   <div class="flex h-full flex-col items-center px-5.5 pt-18 pb-8 md:justify-center md:gap-8 md:pt-21.5 md:pb-16" data-hero-content>
     <!-- Titre et bouton : centrés dans l'espace libre en mobile, pour que le bouton ressorte. -->
     <div class="flex flex-1 flex-col items-center justify-center gap-4 md:flex-none md:gap-8">
       <h1 id="titre-accueil" tabindex="-1" class="flex w-76.75 max-w-full flex-col items-center gap-4 md:w-162 md:gap-8">
-        <img src="/assets/titre-halloween-2026.svg" alt="Halloween 2026" width="279" height="39" class="h-auto w-[53.42%] md:w-[43.06%]" />
-        <img src="/assets/titre-dernieres-seances.svg" alt="Dernières Séances" width="648" height="307" class="h-auto w-full" />
+        <img src={titreHalloween} alt="Halloween 2026" width="279" height="39" class="h-auto w-[53.42%] md:w-[43.06%]" />
+        <img
+          src={titreDernieresSeances}
+          alt="Dernières Séances"
+          width="648"
+          height="307"
+          fetchpriority="high"
+          class="h-auto w-full"
+        />
       </h1>
       <img
-        src="/assets/badge-oserez-vous-entrer.svg"
+        src={badgeOserez}
         alt="Oserez-vous entrer ?"
         width="237"
         height="39"
