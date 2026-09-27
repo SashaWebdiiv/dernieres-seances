@@ -23,8 +23,6 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       validée (Google la recommande pour les événements).
 - [ ] **Tests sur vrais appareils** : iPhone (Safari), Android (Chrome), tablette ; scroll,
       menu burger, bouton de réservation fixe, widget Pretix, mode « mouvement réduit ».
-- [ ] **Page d'attente** : si elle reste en ligne d'ici la bascule, corriger le tarif du jardin
-      dans `src/data/evenement.ts` (« à partir de 3 € » → 5 €).
 
 ## Images
 

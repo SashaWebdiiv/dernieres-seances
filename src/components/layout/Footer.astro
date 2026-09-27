@@ -56,8 +56,9 @@ const link = "text-[15.2px] leading-[22.8px] text-sable/65 hover:text-sable";
     <!-- Mobile : les deux logos sur une ligne, le copyright dessous. Desktop : une seule ligne (maquette). -->
     <div class="grid grid-cols-2 items-center gap-y-6 pt-6 md:flex md:justify-between md:gap-4 md:py-3.5">
       <Image src={logoCompagnie} alt="L'Acompagnie Improvisée" width={113} class="h-13.5 w-auto justify-self-start" />
-      <p class="col-span-2 row-start-2 text-center font-serif text-[12.8px] leading-[19.2px] tracking-[0.64px] text-sable/65">
-        © 2026 Dernières Séances — Château de Sucy-en-Brie
+      <p class="col-span-2 row-start-2 text-center text-[12.8px] leading-[19.2px] tracking-[0.64px] text-sable/65">
+        <!-- Coupure après le tiret en mobile, jamais dans « Sucy-en-Brie ». -->
+        © 2026 Dernières Séances —{" "}<span class="whitespace-nowrap">Château de Sucy-en-Brie</span>
       </p>
       <Image src={logoSucy} alt="Sucy-en-Brie" width={113} class="h-11 w-auto justify-self-end" />
     </div>
