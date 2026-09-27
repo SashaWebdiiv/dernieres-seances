@@ -4,6 +4,7 @@ import Button from "../ui/Button.astro";
 import FooterItem from "./FooterItem.astro";
 import { footerLinks, ticketingHref } from "../../data/navigation";
 import { footerColumns } from "../../data/footer";
+import { evenement } from "../../data/seo";
 import logoCompagnie from "../../assets/logos/acompagnie-improvisee.png";
 import logoSucy from "../../assets/logos/ville-sucy.png";
 
@@ -61,8 +62,9 @@ const link = "text-[15.2px] leading-[22.8px] text-sable/80 hover:text-sable";
         <Image src={logoCompagnie} alt="" width={113} class="h-13.5 w-auto" />
       </a>
       <p class="col-span-2 row-start-2 text-center text-[12.8px] leading-[19.2px] tracking-[0.64px] text-sable/80">
-        <!-- Coupure après le tiret en mobile, jamais dans « Sucy-en-Brie ». -->
-        © 2026 Dernières Séances —{" "}<span class="whitespace-nowrap">Château de Sucy-en-Brie</span>
+        <!-- Coupures entre les morceaux de l'adresse, jamais au milieu. -->
+        © 2026 Dernières Séances —{" "}<span class="whitespace-nowrap">{evenement.rue},</span>{" "}
+        <span class="whitespace-nowrap">{evenement.codePostal} {evenement.ville}</span>
       </p>
       <a href="#accueil" aria-label="Sucy-en-Brie, retour à l'accueil" class:list={[logoLink, "justify-self-end"]} data-jump>
         <Image src={logoSucy} alt="" width={113} class="h-11 w-auto" />

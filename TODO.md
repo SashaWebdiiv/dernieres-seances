@@ -19,8 +19,6 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 - [ ] **Après la bascule** : déclarer le site dans Google Search Console, soumettre
       `https://dernieresseances.fr/sitemap.xml`, tester la page dans le
       [test des résultats enrichis](https://search.google.com/test/rich-results) (événement).
-- [ ] **Adresse du château** : ajouter `streetAddress` dans `src/data/seo.ts` dès qu'elle est
-      validée (Google la recommande pour les événements).
 - [ ] **Tests sur vrais appareils** : iPhone (Safari), Android (Chrome), tablette ; scroll,
       menu burger, bouton de réservation fixe, widget Pretix, mode « mouvement réduit ».
 

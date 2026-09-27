@@ -2,9 +2,6 @@
  * Données structurées schema.org (JSON-LD) du site immersif : l'événement, pour les
  * résultats enrichis « Événements » de Google. Tout est déduit des données du site
  * (programme, pied de page, billetterie) pour ne jamais diverger de ce qui est affiché.
- *
- * Adresse : seule la ville est renseignée, faute d'adresse postale validée. Ajouter
- * `streetAddress` dès qu'elle est confirmée (Google la recommande).
  */
 import { activites, rendezVous } from "./programme";
 import { footerColumns } from "./footer";
@@ -17,6 +14,8 @@ export const evenement = {
   debut: "2026-10-28",
   fin: "2026-11-01",
   lieu: "Château de Sucy",
+  /** Adresse du château, reprise dans le pied de page. */
+  rue: "1 avenue Georges Pompidou",
   ville: "Sucy-en-Brie",
   codePostal: "94370",
   organisateur: "L'Acompagnie Improvisée",
@@ -50,6 +49,7 @@ export const eventJsonLd = (pageUrl: URL, images: URL[]) => ({
     name: evenement.lieu,
     address: {
       "@type": "PostalAddress",
+      streetAddress: evenement.rue,
       addressLocality: evenement.ville,
       postalCode: evenement.codePostal,
       addressCountry: "FR",
