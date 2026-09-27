@@ -12,13 +12,13 @@ const link = "text-[15.2px] leading-[22.8px] text-sable/65 hover:text-sable";
 ---
 
 <!--
-  Pied de page (maquette 85:3739). Placé dans la dernière scène (slot `after` de FaqScene) :
+  Pied de page (maquette 85:3739). Marque et colonnes côte à côte dès 1280 px (trop étroit à 1024). Placé dans la dernière scène (slot `after` de FaqScene) :
   il défile sur la même photo que la FAQ au lieu d'en afficher une seconde copie.
 -->
 <footer class="relative z-10 text-left">
   <div class="mx-auto max-w-360 px-5.5 pt-16 pb-12 md:px-22.75 md:pt-22.75">
-    <div class="flex flex-col gap-12 lg:flex-row lg:justify-between">
-      <div class="flex flex-col items-start lg:w-62.5">
+    <div class="flex flex-col gap-12 xl:flex-row xl:justify-between">
+      <div class="flex flex-col items-start xl:w-62.5">
         <p class="font-display text-[19.2px] leading-[28.8px] tracking-[2.88px] text-creme">Dernières Séances</p>
         <p class="pt-2 pb-6 text-[14.4px] leading-[24.48px] whitespace-nowrap text-sable/65 italic">
           Halloween au Château de Sucy<br />28 octobre — 1er novembre 2026
@@ -26,7 +26,7 @@ const link = "text-[15.2px] leading-[22.8px] text-sable/65 hover:text-sable";
         <Button href={ticketingHref} variant="header" class="h-11.5 w-62.5 max-w-full text-sm" data-jump>J'achète mon billet !</Button>
       </div>
 
-      <div class="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:flex lg:w-234.75 lg:justify-between lg:gap-12">
+      <div class="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:flex lg:max-w-234.75 lg:justify-between xl:w-full lg:gap-12">
         <nav aria-labelledby="pied-navigation">
           <p id="pied-navigation" class={columnTitle}>Navigation</p>
           <ul class="flex flex-col gap-2.5 pt-5">

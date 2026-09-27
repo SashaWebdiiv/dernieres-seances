@@ -10,7 +10,10 @@ const highlights = ["Parcours immersif", "Restauration sur place", "Expériences
 <Scene scene={scenes.presentation} labelledBy="titre-experience">
   <div class="mx-auto flex h-full max-w-360 flex-col justify-center px-5.5 md:px-20 md:pb-[10vh] xl:px-41.75" data-scene-content>
     <div class="flex max-w-188.75 flex-col">
-      <SectionTitle id="titre-experience" class="md:leading-[69.9px]">Découvrez le collectionneur de l'horreur</SectionTitle>
+      <!-- Deux lignes comme la maquette dès 1024 px (en dessous, la première ne tient pas) : « Découvrez le collectionneur » / « de l'horreur ». -->
+      <SectionTitle id="titre-experience" class="md:leading-[69.9px]">
+        <span class="lg:block lg:whitespace-nowrap">Découvrez le collectionneur</span> de l'horreur
+      </SectionTitle>
       <p class="max-w-163.75 pt-4 text-base leading-[1.8] italic md:text-[17px] md:leading-[30.86px]">
         Traversez les différentes pièces du château et plongez dans une histoire mise en scène par l'Acompagnie
         Improvisée et ses comédiens.
@@ -20,7 +23,7 @@ const highlights = ["Parcours immersif", "Restauration sur place", "Expériences
           highlights.map((highlight) => (
             <li class="flex flex-col gap-2">
               <span class="h-px w-4 bg-rouille" aria-hidden="true" />
-              <span class="text-[9.6px] leading-[14.4px] font-medium tracking-[2.4px] uppercase">{highlight}</span>
+              <span class="text-xs leading-4.5 font-medium tracking-[2.4px] uppercase">{highlight}</span>
             </li>
           ))
         }

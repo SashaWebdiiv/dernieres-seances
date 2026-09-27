@@ -14,7 +14,7 @@ interface Props {
 const { activites, rendezVous, ctaHref } = Astro.props;
 ---
 
-<div class="panneau flex w-full max-w-259.5 flex-col gap-3 rounded-lg border border-sable/15 p-4 md:p-5">
+<div class="panneau flex w-full max-w-259.5 flex-col gap-3 rounded-lg border border-sable/15 p-3 md:p-5">
   <ul class="flex flex-col gap-3">
     {activites.map((activite) => <li><ActiviteCard activite={activite} /></li>)}
   </ul>
@@ -22,12 +22,12 @@ const { activites, rendezVous, ctaHref } = Astro.props;
   <ul class="grid gap-3 md:grid-cols-2">
     {
       rendezVous.map((rdv) => (
-        <li class="flex flex-col gap-2 rounded-lg border border-sable/15 bg-noir/40 p-5">
+        <li class="flex flex-col gap-2 rounded-lg border border-sable/15 bg-noir/40 p-4 sm:p-5">
           {rdv.surtitre && (
-            <p class="text-[9.6px] leading-[14.4px] tracking-[0.2px] text-sable/65 uppercase">{rdv.surtitre}</p>
+            <p class="text-xs leading-4.5 tracking-[0.2px] text-sable/65 uppercase">{rdv.surtitre}</p>
           )}
           <h3 class="text-base leading-5 font-semibold text-creme">{rdv.titre}</h3>
-          <p class="text-sm leading-4.5 text-ambre">
+          <p class="text-base leading-6 text-ambre">
             {rdv.lignes.map((ligne, index) => (index === 0 ? ligne : [<br />, ligne]))}
           </p>
           {rdv.tarifs && <Tarifs tarifs={rdv.tarifs} />}

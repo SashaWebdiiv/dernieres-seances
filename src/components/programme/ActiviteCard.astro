@@ -11,7 +11,7 @@ interface Props {
 const { activite } = Astro.props;
 ---
 
-<article class="flex flex-col gap-4 rounded-lg border border-sable/15 bg-noir/40 p-5">
+<article class="flex flex-col gap-4 rounded-lg border border-sable/15 bg-noir/40 p-4 sm:p-5">
   <header class="flex flex-col-reverse items-start gap-3 sm:flex-row sm:justify-between">
     <h3 class="text-lg leading-5.5 font-semibold text-creme">{activite.titre}</h3>
     <p class="shrink-0 rounded bg-ambre px-3 py-2 text-sm leading-[14.4px] font-bold tracking-[0.2px] text-noir uppercase">
@@ -20,8 +20,8 @@ const { activite } = Astro.props;
   </header>
 
   <div class="flex w-full flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
-    <p class="text-sm leading-4 text-sable/65 lg:max-w-119.5">{activite.description}</p>
-    <p class="text-sm leading-4.5 text-ambre lg:max-w-119.5 lg:text-right">
+    <p class="text-base leading-6 text-sable/85 lg:max-w-119.5">{activite.description}</p>
+    <p class="text-base leading-6 text-ambre lg:max-w-119.5 lg:text-right">
       {activite.horaires.map((ligne) => <span class="block">{insecables(ligne)}</span>)}
     </p>
   </div>

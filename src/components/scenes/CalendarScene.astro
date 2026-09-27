@@ -7,9 +7,9 @@ import { activites, rendezVous } from "../../data/programme";
 import { ticketingHref } from "../../data/navigation";
 ---
 
-<!-- Hall (maquette « Calendrier », 68:2602). -->
+<!-- Hall (maquette « Calendrier », 68:2602). Marges serrées en mobile : les horaires en 16 px tiennent sur une ligne dès 360 px. -->
 <Scene scene={scenes.calendar} labelledBy="titre-calendrier">
-  <div class="mx-auto flex w-full max-w-360 flex-col items-center px-5.5 py-15 md:px-6">
+  <div class="mx-auto flex w-full max-w-360 flex-col items-center px-4 py-15 md:px-6">
     <SectionTitle id="titre-calendrier" class="pb-10 text-center">Des événements à couper le souffle</SectionTitle>
     <Programme activites={activites} rendezVous={rendezVous} ctaHref={ticketingHref} />
   </div>
