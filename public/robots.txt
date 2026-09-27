@@ -1,0 +1,7 @@
+# Tout est ouvert aux robots. /visite (site immersif avant lancement) est exclu de l'index par
+# sa balise <meta name="robots" content="noindex"> : ne pas l'interdire ici, sinon les robots
+# ne liraient plus cette balise.
+User-agent: *
+Allow: /
+
+Sitemap: https://dernieresseances.fr/sitemap.xml

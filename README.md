@@ -82,3 +82,6 @@ d'attente. Images des pièces issues de la maquette (1536 × 1024) ; versions mo
 - **Mouvement réduit, ou JavaScript absent** : aucune animation, scènes statiques,
   tout le contenu reste lisible et navigable.
 - **Liens internes** : `data-jump` sur un lien `#ancre` déclenche la navigation directe.
+- **SEO** : données structurées de l'événement dans `src/data/seo.ts` (JSON-LD), `public/robots.txt`,
+  plan du site dans `src/pages/sitemap.xml.ts` (pages indexables uniquement).
+- **Reste à faire** (lancement, images, mesure d'audience, vidéos, maintenance) : voir `TODO.md`.

@@ -10,16 +10,34 @@ import ExperienceScene from "../components/scenes/ExperienceScene.astro";
 import TicketScene from "../components/scenes/TicketScene.astro";
 import FaqScene from "../components/scenes/FaqScene.astro";
 import TransitionOverlay from "../components/ui/TransitionOverlay.astro";
+import StickyCta from "../components/ui/StickyCta.astro";
+import { getImage } from "astro:assets";
+import facade from "../assets/scenes/facade-desktop.webp";
+import { eventJsonLd } from "../data/seo";
 
 /*
  * Site immersif en construction. Il vit sur /visite pour ne pas toucher à la page d'attente
  * servie sur / (QR codes des flyers) ; il prendra sa place au lancement.
  */
+
+// Google recommande trois formats d'image (16:9, 4:3, 1:1) pour les résultats « Événements ».
+const pageUrl = new URL(Astro.url.pathname, Astro.site);
+const eventImages = await Promise.all(
+  [
+    [1600, 900],
+    [1600, 1200],
+    [1200, 1200],
+  ].map(async ([width, height]) => {
+    const image = await getImage({ src: facade, width, height, format: "jpg" });
+    return new URL(image.src, Astro.site);
+  }),
+);
 ---
 
 <ImmersiveLayout
   title="Dernières Séances — Halloween 2026 au Château de Sucy"
-  description="Du 28 octobre au 1er novembre 2026, visitez un château un peu trop vivant : parcours immersif, expérience horrifique, jardin ensorcelé et parade au Château de Sucy-en-Brie."
+  description="Du 28 octobre au 1er novembre 2026, visitez un château un peu trop vivant : parcours immersif, expérience horrifique et parade à Sucy-en-Brie."
+  jsonLd={eventJsonLd(pageUrl, eventImages)}
   noindex
 >
   <Navbar />
@@ -34,6 +52,7 @@ import TransitionOverlay from "../components/ui/TransitionOverlay.astro";
       <Footer />
     </FaqScene>
   </main>
+  <StickyCta />
   <TransitionOverlay />
 </ImmersiveLayout>
 
