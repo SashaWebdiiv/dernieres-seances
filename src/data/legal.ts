@@ -15,12 +15,16 @@ export const editeur = {
   /** Adresse du siège social. */
   siege: "21 rue du Moulin à Vent, 94370 Sucy-en-Brie" as string | null,
   /** Numéro RNA (W + 9 chiffres), au Journal officiel des associations. */
-  rna: null as string | null,
+  rna: "W941017604" as string | null,
   /** Facultatif : seulement si l'association en a un. */
   siret: null as string | null,
   email: emailContact,
   telephone: { affiche: "+33 6 47 67 30 41", lien: "tel:+33647673041" },
-  /** Prénom et nom de la personne responsable de la publication (en général la présidence). */
+  /**
+   * Prénom et nom du représentant légal de l'association (présidence) : pour une personne
+   * morale, c'est lui le directeur de la publication (loi n° 82-652, art. 93-2). Pas le
+   * prestataire qui a réalisé le site.
+   */
   directeurPublication: null as string | null,
 };
 
