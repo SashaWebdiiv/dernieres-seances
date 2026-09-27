@@ -8,9 +8,8 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       (URL de la boutique, avec le « / » final), puis tester un achat complet en mode test
       Pretix : widget, panier, paiement Stripe, 3-D Secure, retour sur le site, e-mail du billet.
 - [ ] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans
-      `src/data/legal.ts`) : renseigner le directeur de la publication (prénom et nom
-      de la présidence de l'association) — la page affiche « [À compléter] » et le build
-      les liste tant qu'elles manquent. Valider les durées de conservation proposées, confirmer
+      `src/data/legal.ts`) : toutes les informations sont renseignées (le build signale
+      tout champ remis à `null`). Valider les durées de conservation proposées, confirmer
       l'hébergeur (Vercel) et mettre à jour la date `miseAJour`.
 - [ ] **Conditions générales de vente** (`/cgv/`) : faire relire et valider par le bureau,
       puis renseigner l'URL `https://dernieresseances.fr/cgv/` dans Pretix comme conditions à

@@ -25,7 +25,7 @@ export const editeur = {
    * morale, c'est lui le directeur de la publication (loi n° 82-652, art. 93-2). Pas le
    * prestataire qui a réalisé le site.
    */
-  directeurPublication: null as string | null,
+  directeurPublication: "Sasha Cohen" as string | null,
 };
 
 /** Hébergeur du site en ligne. Vercel : à confirmer si le site est servi ailleurs. */
