@@ -27,7 +27,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "Combien de temps dure le parcours ?",
     answer: [
-      "Le parcours dure 15 minutes. Les sessions démarrent toutes les 10 minutes, pendant les horaires de chaque expérience.",
+      "Le Parcours immersif au château et l'Expérience horrifique durent chacun 15 minutes. Les sessions démarrent toutes les 10 minutes, pendant les horaires de chaque expérience.",
     ],
   },
   {
