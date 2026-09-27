@@ -14,6 +14,7 @@ export interface Activite {
   titre: string;
   description: string;
   public: string;
+  /** Une entrée par ligne affichée. */
   horaires: string[];
   tarifs: Tarif[];
   note?: string;
@@ -36,7 +37,7 @@ export const activites: Activite[] = [
     description:
       "Le maître des lieux recrute ! Traversez les salles, relevez les épreuves et tentez de rejoindre son équipe.",
     public: "8 ans et +",
-    horaires: ["15h00 - 19h00 (sauf sam. 31 oct. : 14h00 - 18h00)", "Sessions toutes les 10 minutes"],
+    horaires: ["15h00 - 19h00", "(sauf sam. 31 oct. : 14h00 - 18h00)", "Sessions toutes les 10 minutes"],
     tarifs: [
       { label: "8-13 ans :", prix: "8 €" },
       { label: "14 ans et + :", prix: "15 €" },
@@ -56,7 +57,7 @@ export const activites: Activite[] = [
     titre: "Le jardin ensorcelé",
     description: "Une aventure dans les jardins à la rencontre de personnages drôles et effrayants.",
     public: "4-7 ans",
-    horaires: ["15h00 - 18h30 (sauf sam. 31 oct. : 14h00 - 18h00)"],
+    horaires: ["15h00 - 18h30", "(sauf sam. 31 oct. : 14h00 - 18h00)"],
     tarifs: [
       { label: "Tarif :", prix: "5 €" },
       { label: "Avec maquillage :", prix: "8 €" },

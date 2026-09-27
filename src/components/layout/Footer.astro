@@ -60,12 +60,13 @@ const link = "text-[15.2px] leading-[22.8px] text-sable/55 hover:text-sable";
 
     <div class="mt-16 h-px bg-linear-to-r from-transparent via-sable/40 to-transparent" aria-hidden="true"></div>
 
-    <div class="flex flex-col items-center gap-6 pt-6 md:flex-row md:justify-between md:gap-4 md:py-3.5">
-      <Image src={logoCompagnie} alt="L'Acompagnie Improvisée" width={113} class="h-13.5 w-auto" />
-      <p class="text-center font-serif text-[12.8px] leading-[19.2px] tracking-[0.64px] text-sable/30">
+    <!-- Mobile : les deux logos sur une ligne, le copyright dessous. Desktop : une seule ligne (maquette). -->
+    <div class="grid grid-cols-2 items-center gap-y-6 pt-6 md:flex md:justify-between md:gap-4 md:py-3.5">
+      <Image src={logoCompagnie} alt="L'Acompagnie Improvisée" width={113} class="h-13.5 w-auto justify-self-start" />
+      <p class="col-span-2 row-start-2 text-center font-serif text-[12.8px] leading-[19.2px] tracking-[0.64px] text-sable/30">
         © 2026 Dernières Séances — Château de Sucy-en-Brie
       </p>
-      <Image src={logoSucy} alt="Sucy-en-Brie" width={113} class="h-11 w-auto" />
+      <Image src={logoSucy} alt="Sucy-en-Brie" width={113} class="h-11 w-auto justify-self-end" />
     </div>
   </div>
 </footer>
