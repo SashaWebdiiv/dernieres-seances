@@ -1,6 +1,8 @@
 ---
 import Scene from "./Scene.astro";
+import Button from "../ui/Button.astro";
 import { scenes } from "../../data/scenes";
+import { ticketingHref } from "../../data/navigation";
 ---
 
 <!-- Façade (maquette « Hero », 62:9). Titres vectorisés : mêmes SVG que la page d'attente. -->
@@ -20,7 +22,9 @@ import { scenes } from "../../data/scenes";
       height="39"
       class="h-auto w-59.25 max-w-[77%]"
     />
-    <div class="flex flex-col items-center gap-1.5">
+    <Button href={ticketingHref} variant="header" class="h-11.5 w-62.5" data-jump>J'achète mon billet !</Button>
+    <!-- Repères : centrés en mobile, calés à droite sur desktop comme dans la maquette. -->
+    <div class="flex w-full max-w-320 flex-col items-center gap-1.5 md:items-end md:text-right">
       <p class="font-chiffres text-[28px] leading-[1.2] tracking-[1px] text-ambre-clair uppercase md:text-[34px]">
         28 oct. — 1er nov. 2026
       </p>

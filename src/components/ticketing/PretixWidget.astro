@@ -1,0 +1,55 @@
+---
+/**
+ * Widget officiel Pretix (produits, créneaux, panier, checkout). Le paiement Stripe est
+ * configuré côté Pretix : aucun traitement de paiement n'a lieu sur ce site.
+ *
+ * Le script et la feuille de style Pretix ne sont chargés qu'à l'approche de la section,
+ * jamais au chargement de la page. Selon le navigateur (cookies tiers bloqués, petit écran)
+ * ou le moyen de paiement (3-D Secure), Pretix peut ouvrir un nouvel onglet ou rediriger vers
+ * une page externe : le retour vers ce site se règle dans Pretix. La section reste atteignable
+ * directement par `#billetterie`.
+ */
+interface Props {
+  /** Boutique Pretix de l'événement, avec le « / » final. `null` : encart d'attente. */
+  shopUrl: string | null;
+  /** Force le checkout sur le site Pretix au lieu de la fenêtre intégrée. */
+  disableIframe?: boolean;
+}
+
+const { shopUrl, disableIframe = false } = Astro.props;
+---
+
+<!-- Emplacement de la maquette : 664 × 450 px sous le titre (85:3641). -->
+<div class="min-h-112.5 w-full max-w-166 text-left">
+  {
+    shopUrl ? (
+      <div
+        data-pretix
+        data-script={new URL("/widget/v1.fr.js", shopUrl).href}
+        data-stylesheet={new URL("widget/v1.css", shopUrl).href}
+      >
+        <pretix-widget event={shopUrl} disable-iframe={disableIframe ? "" : undefined} />
+        <noscript>
+          <p>
+            La billetterie nécessite JavaScript.{" "}
+            <a href={shopUrl} target="_blank" rel="noopener" class="underline">
+              Ouvrir la billetterie dans un nouvel onglet
+            </a>
+            .
+          </p>
+        </noscript>
+      </div>
+    ) : (
+      <p class="rounded-lg border border-dashed border-sable/30 p-8 text-center text-sm text-sable/60">
+        [Emplacement du widget Pretix — renseigner <code>pretixShopUrl</code> dans{" "}
+        <code>src/data/billetterie.ts</code>.]
+      </p>
+    )
+  }
+</div>
+
+<script>
+  import { loadPretixOnApproach } from "../../scripts/pretix";
+
+  loadPretixOnApproach();
+</script>

@@ -5,7 +5,7 @@
  * de `image` — l'image reste l'affiche et le repli.
  *
  * Les images hors façade sont des placeholders neutres : les visuels de la maquette Figma
- * (grandepiece, deuxiemepiece, escalier, dernieresalle, sortie-chateau) restent à importer.
+ * restent à importer (le téléchargement depuis Figma est bloqué dans cet environnement).
  */
 import type { SceneConfig } from "../types/scene";
 
@@ -24,19 +24,19 @@ import derniereSalleMobile from "../assets/scenes/derniere-salle-mobile.webp";
 import fenetreJardinDesktop from "../assets/scenes/fenetre-jardin-desktop.webp";
 import fenetreJardinMobile from "../assets/scenes/fenetre-jardin-mobile.webp";
 
-const hallImage = {
-  desktop: hallDesktop,
-  mobile: hallMobile,
-  alt: "",
-} satisfies SceneConfig["media"]["image"];
-
-/* Voiles de la maquette : aplat, vignettage radial et fondus vers le noir (#090909). */
+/*
+ * Voile commun à toutes les pièces (groupes « Overlay » de la maquette) : fondu noir en haut,
+ * fondu noir en bas, vignettage radial et aplat #090909 à 60 %.
+ */
 const noir = (alpha: number) => `rgb(9 9 9 / ${alpha})`;
-const aplat = (alpha: number) => `linear-gradient(${noir(alpha)}, ${noir(alpha)})`;
-const vignette = (from: number, to: number, alpha: number) =>
-  `radial-gradient(ellipse at center, ${noir(0)} ${from * 100}%, ${noir(alpha)} ${to * 100}%)`;
-const fonduBas = `linear-gradient(0deg, ${noir(1)} 0%, ${noir(0)} 40%)`;
+const voile = [
+  `linear-gradient(180deg, ${noir(0.6)} 0%, ${noir(0)} 25%)`,
+  `linear-gradient(0deg, ${noir(1)} 0%, ${noir(0)} 40%)`,
+  `radial-gradient(ellipse at center, ${noir(0)} 30%, ${noir(0.6)} 100%)`,
+  `linear-gradient(${noir(0.6)}, ${noir(0.6)})`,
+].join(", ");
 
+/* Ordre de la visite : façade, hall, escalier, salle à l'étage, salon, dernière salle, fenêtre. */
 export const scenes = {
   hero: {
     id: "accueil",
@@ -55,57 +55,44 @@ export const scenes = {
     animation: "hero",
     priority: true,
   },
-  hall: {
-    id: "experience",
-    media: { image: hallImage },
-    pinned: true,
-    length: { desktop: 2.5, mobile: 2 },
-    overlay: "rgb(0 0 0 / 0.5)",
-    animation: "hall",
-  },
-  experiences: {
-    id: "programme",
-    media: { image: { desktop: premiereSalleDesktop, mobile: premiereSalleMobile, alt: "" } },
-    pinned: true,
-    length: { desktop: 5, mobile: 4 },
-    overlay: [fonduBas, vignette(0.3, 1, 0.65), aplat(0.45)].join(", "),
-    animation: "experiences",
-  },
-  retourHall: {
-    id: "retour-hall",
-    media: { image: hallImage },
-    pinned: true,
-    length: { desktop: 1.5, mobile: 1.2 },
-    overlay: "rgb(0 0 0 / 0.5)",
-    animation: "passage",
+  calendar: {
+    id: "calendrier",
+    media: { image: { desktop: hallDesktop, mobile: hallMobile, alt: "" } },
+    pinned: false,
+    length: { desktop: 2, mobile: 2 },
+    overlay: voile,
+    animation: "still",
   },
   partners: {
     id: "partenaires",
     media: { image: { desktop: escalierDesktop, mobile: escalierMobile, alt: "" } },
     pinned: true,
     length: { desktop: 3, mobile: 2.5 },
-    overlay: [
-      `linear-gradient(180deg, ${noir(0.6)} 0%, ${noir(0)} 25%)`,
-      fonduBas,
-      vignette(0.3, 1, 0.6),
-      aplat(0.4),
-    ].join(", "),
+    overlay: voile,
     animation: "staircase",
   },
-  calendar: {
-    id: "calendrier",
+  presentation: {
+    id: "experience",
     media: { image: { desktop: salleEtageDesktop, mobile: salleEtageMobile, alt: "" } },
-    pinned: false,
-    length: { desktop: 2, mobile: 2 },
-    overlay: [vignette(0.2, 1, 0.7), aplat(0.5)].join(", "),
-    animation: "still",
+    pinned: true,
+    length: { desktop: 2.5, mobile: 2 },
+    overlay: voile,
+    animation: "presentation",
+  },
+  experiences: {
+    id: "programme",
+    media: { image: { desktop: premiereSalleDesktop, mobile: premiereSalleMobile, alt: "" } },
+    pinned: true,
+    length: { desktop: 5, mobile: 4 },
+    overlay: voile,
+    animation: "experiences",
   },
   tickets: {
     id: "billetterie",
     media: { image: { desktop: derniereSalleDesktop, mobile: derniereSalleMobile, alt: "" } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
-    overlay: [vignette(0.15, 1, 0.65), aplat(0.55)].join(", "),
+    overlay: voile,
     animation: "still",
   },
   faq: {
@@ -113,7 +100,7 @@ export const scenes = {
     media: { image: { desktop: fenetreJardinDesktop, mobile: fenetreJardinMobile, alt: "" } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
-    overlay: [`linear-gradient(180deg, ${noir(1)} 0%, ${noir(0)} 30%)`, aplat(0.75)].join(", "),
+    overlay: voile,
     animation: "still",
   },
 } satisfies Record<string, SceneConfig>;

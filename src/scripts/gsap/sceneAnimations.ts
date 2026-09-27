@@ -1,5 +1,5 @@
 import type { SceneAnimation } from "../../types/scene";
-import { gsap, ScrollTrigger } from "./gsap";
+import { gsap } from "./gsap";
 
 export interface SceneAnimationContext {
   /** Facteur d'amplitude des mouvements : 1 sur desktop, réduit sur mobile. */
@@ -12,10 +12,10 @@ type SceneAnimationFactory = (scene: HTMLElement, context: SceneAnimationContext
 const SCRUB = 0.5;
 
 /** Timeline couvrant toute la durée où la scène est épinglée. Durée arbitraire : 1 = scène entière. */
-function sceneTimeline(scene: HTMLElement, triggerVars: ScrollTrigger.Vars = {}): gsap.core.Timeline {
+function sceneTimeline(scene: HTMLElement): gsap.core.Timeline {
   return gsap.timeline({
     defaults: { ease: "none" },
-    scrollTrigger: { trigger: scene, start: "top top", end: "bottom bottom", scrub: SCRUB, ...triggerVars },
+    scrollTrigger: { trigger: scene, start: "top top", end: "bottom bottom", scrub: SCRUB },
   });
 }
 
@@ -33,10 +33,10 @@ export const sceneAnimations: Record<SceneAnimation, SceneAnimationFactory> = {
   },
 
   /**
-   * Hall : légère avancée, puis le regard glisse vers la droite. Le texte apparaît avec le
-   * fondu d'entrée de la scène : il est donc lisible dès l'arrivée par le menu « L'expérience ».
+   * Présentation : légère avancée, puis le regard glisse vers la droite. Le texte apparaît avec
+   * le fondu d'entrée de la scène : il est donc lisible dès l'arrivée par le menu « L'expérience ».
    */
-  hall(scene, { amplitude }) {
+  presentation(scene, { amplitude }) {
     const media = select(scene, "[data-scene-media]");
     const content = select(scene, "[data-scene-content]");
     sceneTimeline(scene)
@@ -46,21 +46,10 @@ export const sceneAnimations: Record<SceneAnimation, SceneAnimationFactory> = {
       .to(media, { xPercent: -5 * amplitude, ease: "power1.in", duration: 0.3 }, 0.7);
   },
 
-  /** Première salle : le décor avance à peine, les publics se relaient, les points suivent. */
+  /** Salon : le décor avance à peine, les étapes de l'expérience se relaient. */
   experiences(scene, { amplitude }) {
     const steps = select(scene, "[data-step]");
-    const dots = select(scene, "[data-step-dots] > li");
-    let active = 0;
-    const onUpdate = ({ progress }: ScrollTrigger) => {
-      // Bascule au milieu du fondu entre deux étapes (voir les positions ci-dessous).
-      const index = Math.min(steps.length - 1, Math.floor(progress * steps.length + 0.15));
-      if (index === active) return;
-      dots[active]?.removeAttribute("data-active");
-      dots[index]?.setAttribute("data-active", "");
-      active = index;
-    };
-
-    const timeline = sceneTimeline(scene, { onUpdate }).fromTo(
+    const timeline = sceneTimeline(scene).fromTo(
       select(scene, "[data-scene-media]"),
       { scale: 1 },
       { scale: 1.08, duration: steps.length },
@@ -72,15 +61,6 @@ export const sceneAnimations: Record<SceneAnimation, SceneAnimationFactory> = {
       if (index > 0) timeline.from(step, { autoAlpha: 0, y: 30 * amplitude, duration: 0.25 }, index);
       if (index < steps.length - 1) timeline.to(step, { autoAlpha: 0, y: -30 * amplitude, duration: 0.25 }, index + 0.7);
     });
-  },
-
-  /** Retour dans le hall : panoramique vers l'escalier. */
-  passage(scene, { amplitude }) {
-    sceneTimeline(scene).fromTo(
-      select(scene, "[data-scene-media]"),
-      { scale: 1.12, xPercent: 4 * amplitude },
-      { scale: 1.16, xPercent: -4 * amplitude, duration: 1 },
-    );
   },
 
   /** Escalier : l'image descend pendant que l'on « monte », les partenaires apparaissent. */

@@ -31,14 +31,7 @@ export interface SceneMedia {
 }
 
 /** Nom de la timeline GSAP associée, résolu dans `scripts/gsap/sceneAnimations.ts`. */
-export const sceneAnimations = [
-  "hero",
-  "hall",
-  "experiences",
-  "passage",
-  "staircase",
-  "still",
-] as const;
+export const sceneAnimations = ["hero", "presentation", "experiences", "staircase", "still"] as const;
 
 export type SceneAnimation = (typeof sceneAnimations)[number];
 

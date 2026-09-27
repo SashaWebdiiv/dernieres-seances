@@ -6,17 +6,36 @@ export interface FooterLink {
   href: string | null;
 }
 
-/** Colonne « Informations » (maquette 85:3761). Les pages légales restent à créer. */
-export const infoLinks: FooterLink[] = [
-  { label: "Contact", href: `mailto:${emailContact}` },
-  { label: "Mentions légales", href: null },
-  { label: "Politique de confidentialité", href: null },
-];
+export interface FooterColumn {
+  title: string;
+  links: FooterLink[];
+}
 
-/** Colonne « Suivez-nous » (maquette 85:3770). */
-export const socialLinks: FooterLink[] = [
-  { label: "Instagram", href: null },
-  { label: "Facebook", href: null },
+/** Colonnes du pied de page (maquette 166:6180), après « Navigation ». */
+export const footerColumns: FooterColumn[] = [
+  {
+    title: "Suivez-nous",
+    links: [
+      { label: "Instagram", href: null },
+      { label: "Facebook", href: null },
+      { label: "lacompagnie.net", href: "https://lacompagnie.net" },
+    ],
+  },
+  {
+    title: "Support",
+    links: [
+      { label: "+33 6 47 67 30 41", href: "tel:+33647673041" },
+      // La maquette écrit « dernieressences.fr » : corrigé vers le domaine du site, à confirmer.
+      { label: "support@dernieresseances.fr", href: "mailto:support@dernieresseances.fr" },
+    ],
+  },
+  {
+    title: "Informations",
+    links: [
+      { label: emailContact, href: `mailto:${emailContact}` },
+      // Pages légales à créer.
+      { label: "Mentions légales", href: null },
+      { label: "Politique de confidentialité", href: null },
+    ],
+  },
 ];
-
-export const websiteLink: FooterLink = { label: "lacompagnie.net", href: "https://lacompagnie.net" };

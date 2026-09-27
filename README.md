@@ -67,15 +67,15 @@ d'attente. Les images des pièces sont encore des placeholders (seule la façade
 | --- | --- |
 | `src/styles/immersive.css` | Jetons de la maquette : couleurs, polices, styles de texte récurrents |
 | `src/data/scenes.ts` | **Les scènes** : ordre, médias desktop/mobile, voiles, longueur de scroll, animation |
-| `src/data/*.ts` | Contenus : programme, publics, séances, FAQ, partenaires, liens |
+| `src/data/*.ts` | Contenus : programme, étapes de l'expérience, FAQ, partenaires, liens |
 | `src/components/scenes/Scene.astro` | Scène générique : décor sticky, contenu épinglé ou défilant, fondus au noir |
 | `src/components/scenes/*Scene.astro` | Contenu de chaque pièce |
-| `src/components/programme/` | Programme (cartes d'activités) de la salle à l'étage |
-| `src/components/ticketing/PretixButton.astro` | Bouton Pretix officiel, script chargé à l'approche de la billetterie |
+| `src/components/programme/` | Programme (cartes d'activités), affiché dans le hall |
+| `src/components/ticketing/PretixWidget.astro` | Widget Pretix officiel, script chargé à l'approche de la billetterie |
 | `src/scripts/gsap/sceneAnimations.ts` | Une timeline par type de scène |
 | `src/scripts/gsap/initScroll.ts` | Création, responsive et nettoyage des ScrollTriggers |
 | `src/scripts/gsap/navigation.ts` | Navigation directe : fondu au noir → saut → synchronisation |
-| `src/data/billetterie.ts` | URL de la boutique Pretix (`null` : boutons inactifs) et séances |
+| `src/data/billetterie.ts` | URL de la boutique Pretix (`null` : encart d'attente) |
 
 - **Passer une scène en vidéo** : ajouter `video: { desktop, mobile }` à côté de `image`
   dans `scenes.ts`. L'image reste l'affiche et le repli (mouvement réduit, économie de données).

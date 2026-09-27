@@ -1,7 +1,8 @@
 ---
+import Tarifs from "./Tarifs.astro";
 import type { Activite } from "../../data/programme";
 
-/** Carte d'activité (maquette 88:55). */
+/** Carte d'activité (maquette 158:5986) : description à gauche, horaires à droite sur desktop. */
 interface Props {
   activite: Activite;
 }
@@ -9,31 +10,22 @@ interface Props {
 const { activite } = Astro.props;
 ---
 
-<article class="flex flex-col gap-4 border border-sable/15 bg-noir/40 p-5">
+<article class="flex flex-col gap-4 rounded-lg border border-sable/15 bg-noir/40 p-5">
   <header class="flex flex-col-reverse items-start gap-3 sm:flex-row sm:justify-between">
-    <div class="flex max-w-81 flex-col gap-1">
-      <h3 class="text-lg leading-5.5 font-semibold text-creme">{activite.titre}</h3>
-      <p class="text-[11px] leading-4 text-sable/60">{activite.description}</p>
-    </div>
-    <p class="shrink-0 bg-ambre px-3 py-2 text-[9.6px] leading-[14.4px] tracking-[0.2px] text-noir uppercase">
+    <h3 class="text-lg leading-5.5 font-semibold text-creme">{activite.titre}</h3>
+    <p class="shrink-0 rounded bg-ambre px-3 py-2 text-sm leading-[14.4px] font-bold tracking-[0.2px] text-noir uppercase">
       {activite.public}
     </p>
   </header>
 
-  <p class="text-[12.8px] leading-4.5 text-ambre">
-    {activite.horaires.map((ligne, index) => (index === 0 ? ligne : [<br />, ligne]))}
-  </p>
+  <div class="flex flex-col gap-2.5 md:flex-row md:items-center md:justify-between">
+    <p class="text-sm leading-4 text-sable/60 md:max-w-119.5">{activite.description}</p>
+    <p class="text-sm leading-4.5 text-ambre md:w-119.5">
+      {activite.horaires.map((ligne, index) => (index === 0 ? ligne : [<br />, ligne]))}
+    </p>
+  </div>
 
-  <ul class="flex flex-wrap gap-2">
-    {
-      activite.tarifs.map((tarif) => (
-        <li class="flex items-center gap-1.5 border border-sable/15 bg-sable/8 px-2.5 py-1">
-          <span class="text-[10px] tracking-[1px] text-sable/60 uppercase">{tarif.label}</span>
-          <span class="text-[11px] font-semibold text-creme">{tarif.prix}</span>
-        </li>
-      ))
-    }
-  </ul>
+  <Tarifs tarifs={activite.tarifs} />
 
   {activite.note && <p class="text-[11px] leading-4 text-brun italic">{activite.note}</p>}
 </article>
