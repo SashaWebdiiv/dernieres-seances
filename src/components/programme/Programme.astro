@@ -31,7 +31,7 @@ const { activites, rendezVous, ctaHref } = Astro.props;
             {rdv.lignes.map((ligne, index) => (index === 0 ? ligne : [<br />, ligne]))}
           </p>
           {rdv.tarifs && <Tarifs tarifs={rdv.tarifs} />}
-          {rdv.mention && <p class="text-[11px] leading-4 text-sable/65">{rdv.mention}</p>}
+          {rdv.mention && <p class="text-xs leading-4.5 text-sable/65">{rdv.mention}</p>}
         </li>
       ))
     }

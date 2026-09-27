@@ -3,6 +3,7 @@
 /*
  * Jetons extraits de la maquette Figma Design « Halloween 2026 » (landing/desktop, 68:812).
  * Les valeurs non entières (17.145px, 8.8px…) sont reprises telles quelles de la maquette.
+ * Aucun texte sous 12 px (petits libellés de 8,8 à 11 px dans la maquette), pour la lisibilité.
  * Textes secondaires : sable à 65 % minimum (au lieu de 30 à 60 % dans la maquette), seuil
  * du contraste AA (4,5) sur le fond #090909.
  */
@@ -59,10 +60,10 @@
   }
 }
 
-/* Surtitre : Inter 8.8/13.2, capitales espacées. */
+/* Surtitre : capitales espacées. 12 px minimum pour la lisibilité (8,8 px dans la maquette). */
 @utility kicker {
-  font-size: 8.8px;
-  line-height: 13.2px;
+  font-size: 12px;
+  line-height: 18px;
   letter-spacing: 2.64px;
   text-transform: uppercase;
 }
