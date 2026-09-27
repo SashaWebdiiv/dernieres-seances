@@ -4,8 +4,7 @@
  * Jetons extraits de la maquette Figma Design « Halloween 2026 » (landing/desktop, 68:812).
  * Les valeurs non entières (17.145px, 8.8px…) sont reprises telles quelles de la maquette.
  * Aucun texte sous 12 px (petits libellés de 8,8 à 11 px dans la maquette), pour la lisibilité.
- * Textes secondaires : sable à 65 % minimum (au lieu de 30 à 60 % dans la maquette), seuil
- * du contraste AA (4,5) sur le fond #090909.
+ * Textes secondaires : sable à 80 % (85 % pour les descriptions), lisibles sur les photos.
  */
 @theme {
   --color-noir: #090909;

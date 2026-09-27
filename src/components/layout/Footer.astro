@@ -10,7 +10,7 @@ import logoSucy from "../../assets/logos/ville-sucy.png";
 /** Logos du bas : ils ramènent à l'accueil, comme ceux de la barre. */
 const logoLink = "block rounded transition-opacity hover:opacity-80";
 const columnTitle = "font-display text-xs leading-4.5 tracking-[2.64px] text-creme uppercase";
-const link = "text-[15.2px] leading-[22.8px] text-sable/65 hover:text-sable";
+const link = "text-[15.2px] leading-[22.8px] text-sable/80 hover:text-sable";
 ---
 
 <!--
@@ -22,7 +22,7 @@ const link = "text-[15.2px] leading-[22.8px] text-sable/65 hover:text-sable";
     <div class="flex flex-col gap-12 xl:flex-row xl:justify-between">
       <div class="flex flex-col items-start xl:w-62.5">
         <p class="font-display text-[19.2px] leading-[28.8px] tracking-[2.88px] text-creme">Dernières Séances</p>
-        <p class="pt-2 pb-6 text-[14.4px] leading-[24.48px] whitespace-nowrap text-sable/65 italic">
+        <p class="pt-2 pb-6 text-[14.4px] leading-[24.48px] whitespace-nowrap text-sable/80 italic">
           Halloween au Château de Sucy<br />28 octobre — 1er novembre 2026
         </p>
         <Button href={ticketingHref} variant="header" class="h-11.5 w-62.5 max-w-full text-sm" data-jump>J'achète mon billet !</Button>
@@ -60,7 +60,7 @@ const link = "text-[15.2px] leading-[22.8px] text-sable/65 hover:text-sable";
       <a href="#accueil" aria-label="L'Acompagnie Improvisée, retour à l'accueil" class:list={[logoLink, "justify-self-start"]} data-jump>
         <Image src={logoCompagnie} alt="" width={113} class="h-13.5 w-auto" />
       </a>
-      <p class="col-span-2 row-start-2 text-center text-[12.8px] leading-[19.2px] tracking-[0.64px] text-sable/65">
+      <p class="col-span-2 row-start-2 text-center text-[12.8px] leading-[19.2px] tracking-[0.64px] text-sable/80">
         <!-- Coupure après le tiret en mobile, jamais dans « Sucy-en-Brie ». -->
         © 2026 Dernières Séances —{" "}<span class="whitespace-nowrap">Château de Sucy-en-Brie</span>
       </p>

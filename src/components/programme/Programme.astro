@@ -24,14 +24,14 @@ const { activites, rendezVous, ctaHref } = Astro.props;
       rendezVous.map((rdv) => (
         <li class="flex flex-col gap-2 rounded-lg border border-sable/15 bg-noir/40 p-4 sm:p-5">
           {rdv.surtitre && (
-            <p class="text-xs leading-4.5 tracking-[0.2px] text-sable/65 uppercase">{rdv.surtitre}</p>
+            <p class="text-xs leading-4.5 tracking-[0.2px] text-sable/80 uppercase">{rdv.surtitre}</p>
           )}
           <h3 class="text-base leading-5 font-semibold text-creme">{rdv.titre}</h3>
           <p class="text-base leading-6 text-ambre">
             {rdv.lignes.map((ligne, index) => (index === 0 ? ligne : [<br />, ligne]))}
           </p>
           {rdv.tarifs && <Tarifs tarifs={rdv.tarifs} />}
-          {rdv.mention && <p class="text-xs leading-4.5 text-sable/65">{rdv.mention}</p>}
+          {rdv.mention && <p class="text-xs leading-4.5 text-sable/80">{rdv.mention}</p>}
         </li>
       ))
     }
