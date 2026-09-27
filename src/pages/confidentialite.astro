@@ -1,7 +1,7 @@
 ---
 import LegalLayout from "../layouts/LegalLayout.astro";
 import AComplete from "../components/legal/AComplete.astro";
-import { conservation, editeur, hebergeur, prestataires } from "../data/legal";
+import { conservation, editeur, hebergeur, manquants, prestataires } from "../data/legal";
 
 /*
  * Information des personnes (RGPD, art. 13). Décrit ce que le site fait réellement :
@@ -13,6 +13,7 @@ const { billetterie, paiement, formulaire } = prestataires;
 ---
 
 <LegalLayout
+  manquants={manquants}
   title="Politique de confidentialité"
   description="Données collectées par le site Dernières Séances, utilisation, durées de conservation et droits des personnes."
 >

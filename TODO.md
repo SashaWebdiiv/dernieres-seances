@@ -12,10 +12,10 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       numéro RNA, directeur de la publication) — la page affiche « [À compléter] » et le build
       les liste tant qu'elles manquent. Valider les durées de conservation proposées, confirmer
       l'hébergeur (Vercel) et mettre à jour la date `miseAJour`.
-- [ ] **Conditions générales de vente** : les rédiger et les activer dans Pretix (case à cocher
-      au paiement). Y indiquer l'absence de droit de rétractation pour une prestation de loisirs
-      à date déterminée (art. L221-28 12° du Code de la consommation) et la politique
-      d'annulation / remboursement.
+- [ ] **Conditions générales de vente** (`/cgv/`, trame) : faire relire et valider par le
+      bureau, compléter les choix dans `cgv` de `src/data/legal.ts` (TVA, frais, échange,
+      délai de remboursement, médiateur), puis renseigner l'URL
+      `https://dernieresseances.fr/cgv/` dans Pretix comme conditions à accepter au paiement.
 - [ ] **Bascule `/visite` → `/`** :
   - remplacer le contenu de `src/pages/index.astro` par celui de `src/pages/visite.astro` ;
   - retirer la prop `noindex` ;

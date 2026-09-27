@@ -1,0 +1,143 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import AComplete from "../components/legal/AComplete.astro";
+import { cgv, editeur, manquantsCgv, prestataires } from "../data/legal";
+import { evenement } from "../data/seo";
+import { activites } from "../data/programme";
+
+/*
+ * Trame de conditions générales de vente, à relire et valider par le bureau de l'association.
+ * Les choix commerciaux (échange, remboursement, TVA, médiateur) sont dans `data/legal.ts`.
+ * L'URL de cette page est à renseigner dans Pretix comme conditions à accepter au paiement.
+ */
+const agesMinimum = activites.map((a) => `${a.titre} : ${a.public}`);
+---
+
+<LegalLayout
+  manquants={manquantsCgv}
+  title="Conditions générales de vente"
+  description="Conditions de vente des billets de Dernières Séances, Halloween 2026 au Château de Sucy."
+>
+  <h2>1. Objet</h2>
+  <p>
+    Les présentes conditions régissent la vente des billets de l'événement <strong>{evenement.nom}</strong>,
+    organisé au {evenement.lieu}, {evenement.rue}, {evenement.codePostal} {evenement.ville}, du 28 octobre
+    au 1er novembre 2026. Elles s'appliquent aux billets achetés en ligne comme sur place. Toute commande
+    vaut acceptation sans réserve des présentes conditions.
+  </p>
+
+  <h2>2. Organisateur</h2>
+  <p>
+    <strong>{editeur.nom}</strong>, {editeur.forme ?? <AComplete label="forme juridique" />}, dont le siège est
+    situé {editeur.siege ?? <AComplete label="adresse du siège" />}.<br />
+    Contact : <a href={`mailto:${editeur.email}`}>{editeur.email}</a> —{" "}
+    <a href={editeur.telephone.lien} class="whitespace-nowrap">{editeur.telephone.affiche}</a>
+  </p>
+
+  <h2>3. Billets et prix</h2>
+  <p>
+    Les activités, créneaux et tarifs sont ceux présentés sur le site et sur la billetterie au moment de la
+    commande. Les prix sont indiqués en euros, par personne.
+    {" "}{cgv.mentionTva ?? <AComplete label="mention de TVA, ex. « TVA non applicable, article 293 B du CGI »" />}
+  </p>
+  <p>
+    {cgv.fraisReservation ?? <AComplete label="frais de réservation, ex. « Aucun frais ne s'ajoute au prix affiché. »" />}
+  </p>
+  <p>
+    Les tarifs dépendent de l'âge du participant. Un justificatif d'âge peut être demandé à l'entrée ; à
+    défaut, le tarif correspondant à l'âge réel pourra être appliqué.
+  </p>
+
+  <h2>4. Commande en ligne</h2>
+  <p>
+    La commande s'effectue sur la billetterie en ligne, opérée par {prestataires.billetterie.nom} (Pretix) :
+    choix de l'activité, du créneau et du nombre de billets, saisie des coordonnées, acceptation des présentes
+    conditions, puis paiement. La commande est définitive une fois le paiement accepté. Un e-mail de
+    confirmation contenant le ou les billets est alors envoyé à l'adresse indiquée.
+  </p>
+  <p>
+    Les places étant limitées par créneau, elles sont attribuées dans l'ordre des commandes, dans la limite des
+    disponibilités.
+  </p>
+
+  <h2>5. Paiement</h2>
+  <p>
+    En ligne, le paiement s'effectue par carte bancaire via {prestataires.paiement.nom}, prestataire de paiement
+    sécurisé. Les données bancaires ne sont jamais transmises à l'organisateur.
+  </p>
+  <p>Sur place, pendant l'événement et dans la limite des places disponibles, le paiement s'effectue en espèces ou par carte bancaire.</p>
+
+  <h2>6. Absence de droit de rétractation</h2>
+  <p>
+    Conformément à l'article L221-28, 12° du Code de la consommation, le droit de rétractation ne s'applique
+    pas aux prestations d'activités de loisirs fournies à une date ou à une période déterminée.{" "}
+    <strong>Une fois la commande validée, les billets ne peuvent donc pas faire l'objet d'une rétractation.</strong>
+  </p>
+
+  <h2>7. Échange et annulation à votre demande</h2>
+  <p>
+    {cgv.echange ?? <AComplete label="politique d'échange, ex. « Un changement de créneau est possible jusqu'à 48 h avant, selon les disponibilités, sur demande par e-mail. Les billets ne sont pas remboursés. »" />}
+  </p>
+
+  <h2>8. Accès et déroulement</h2>
+  <p>
+    Chaque billet donne accès à une session de l'activité et du créneau choisis. Il est présenté à l'entrée,
+    imprimé ou sur téléphone, et n'est valable qu'une fois : toute copie est inutile.
+  </p>
+  <p>
+    Merci de vous présenter au moins 10 minutes avant votre créneau. Les sessions démarrent à l'heure exacte :
+    en cas de retard, l'accès à une autre session n'est pas garanti et le billet n'est pas remboursé.
+  </p>
+  <p>Âges requis par activité :</p>
+  <ul>
+    {agesMinimum.map((ligne) => <li>{ligne}</li>)}
+  </ul>
+  <p>
+    L'accès peut être refusé, sans remboursement, à un participant qui ne respecte pas l'âge requis pour
+    l'activité. Les mineurs restent sous la responsabilité de leurs parents ou accompagnateurs.
+    L'Expérience horrifique est déconseillée aux personnes cardiaques, aux femmes enceintes et aux personnes
+    sensibles.
+  </p>
+  <p>
+    L'organisateur peut exclure, sans remboursement, toute personne dont le comportement met en danger ou
+    gêne les autres participants, les comédiens ou le lieu.
+  </p>
+
+  <h2>9. Annulation ou modification par l'organisateur</h2>
+  <p>
+    En cas d'annulation d'une session ou de l'événement du fait de l'organisateur, les billets concernés sont
+    remboursés {cgv.delaiRemboursement ?? <AComplete label="délai, ex. « dans un délai de 30 jours »" />},
+    par le moyen de paiement utilisé lors de la commande.
+  </p>
+  <p>
+    Si les horaires ou le contenu d'une activité doivent être modifiés, les acheteurs sont prévenus par e-mail.
+    Ceux qui ne peuvent pas se présenter au nouveau créneau peuvent demander le remboursement de leurs billets.
+  </p>
+
+  <h2>10. Responsabilité</h2>
+  <p>
+    Les participants sont tenus de respecter les consignes de l'équipe et le règlement du lieu. L'organisateur
+    ne saurait être tenu responsable de la perte, du vol ou de la détérioration des effets personnels.
+  </p>
+
+  <h2>11. Données personnelles</h2>
+  <p>
+    Les données collectées lors de la commande sont traitées conformément à notre
+    {" "}<a href="/confidentialite/">politique de confidentialité</a>.
+  </p>
+
+  <h2>12. Réclamations et médiation</h2>
+  <p>
+    Toute réclamation peut être adressée à <a href={`mailto:${editeur.email}`}>{editeur.email}</a>.
+  </p>
+  <p>
+    En cas de litige non résolu, vous pouvez recourir gratuitement au médiateur de la consommation suivant :
+    {" "}{cgv.mediateur ?? <AComplete label="nom et site du médiateur, si l'association y est tenue" />}.
+  </p>
+
+  <h2>13. Droit applicable</h2>
+  <p>
+    Les présentes conditions sont soumises au droit français. À défaut d'accord amiable, le litige est porté
+    devant les juridictions compétentes selon les règles de droit commun.
+  </p>
+</LegalLayout>

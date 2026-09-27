@@ -61,15 +61,43 @@ export const conservation = {
   contact: "le temps de traiter la demande, et au plus tard un an après l'événement",
 };
 
-/** Date affichée en tête des deux pages. À mettre à jour à chaque modification du contenu. */
+/**
+ * Conditions générales de vente : choix que seul le bureau peut faire. `null` affiche
+ * un repère « [À compléter] » avec une suggestion sur la page `/cgv/`.
+ */
+export const cgv = {
+  /** Ex. « TVA non applicable, article 293 B du CGI » si l'association n'y est pas assujettie. */
+  mentionTva: null as string | null,
+  /** Ex. « Aucun frais de réservation ne s'ajoute au prix affiché. » */
+  fraisReservation: null as string | null,
+  /** Échange de créneau ou d'activité à la demande du client. */
+  echange: null as string | null,
+  /** Délai de remboursement si l'organisateur annule. */
+  delaiRemboursement: null as string | null,
+  /** Médiateur de la consommation (nom, site) si l'association y est tenue. */
+  mediateur: null as string | null,
+};
+
+/** Date affichée en tête des pages légales. À mettre à jour à chaque modification du contenu. */
 export const miseAJour = "27 septembre 2026";
 
-/** Informations encore manquantes, signalées au build. */
-export const manquants = [
+const manquantes = (champs: [string, string | null][]) =>
+  champs.filter(([, valeur]) => valeur === null).map(([libelle]) => libelle);
+
+/** Informations encore manquantes, signalées au build page par page. */
+export const manquants = manquantes([
   ["forme juridique", editeur.forme],
   ["adresse du siège", editeur.siege],
   ["numéro RNA", editeur.rna],
   ["directeur de la publication", editeur.directeurPublication],
-]
-  .filter(([, valeur]) => valeur === null)
-  .map(([libelle]) => libelle as string);
+]);
+
+export const manquantsCgv = manquantes([
+  ["forme juridique", editeur.forme],
+  ["adresse du siège", editeur.siege],
+  ["mention de TVA", cgv.mentionTva],
+  ["frais de réservation", cgv.fraisReservation],
+  ["échange de billets", cgv.echange],
+  ["délai de remboursement", cgv.delaiRemboursement],
+  ["médiateur de la consommation", cgv.mediateur],
+]);

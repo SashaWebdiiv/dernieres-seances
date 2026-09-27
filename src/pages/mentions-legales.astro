@@ -1,7 +1,7 @@
 ---
 import LegalLayout from "../layouts/LegalLayout.astro";
 import AComplete from "../components/legal/AComplete.astro";
-import { conception, editeur, hebergeur } from "../data/legal";
+import { conception, editeur, hebergeur, manquants } from "../data/legal";
 
 /*
  * Mentions obligatoires pour un site édité par une association (loi n° 2004-575 du 21 juin 2004
@@ -11,6 +11,7 @@ import { conception, editeur, hebergeur } from "../data/legal";
 ---
 
 <LegalLayout
+  manquants={manquants}
   title="Mentions légales"
   description="Éditeur, hébergeur et propriété intellectuelle du site Dernières Séances, Halloween 2026 au Château de Sucy."
 >

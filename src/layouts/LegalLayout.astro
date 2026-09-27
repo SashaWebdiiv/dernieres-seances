@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import ImmersiveLayout from "./ImmersiveLayout.astro";
 import { accueilHref } from "../data/navigation";
-import { manquants, miseAJour } from "../data/legal";
+import { miseAJour } from "../data/legal";
 import { evenement } from "../data/seo";
 import logoCompagnie from "../assets/logos/acompagnie-improvisee.png";
 import logoSucy from "../assets/logos/ville-sucy.png";
@@ -14,9 +14,11 @@ import logoSucy from "../assets/logos/ville-sucy.png";
 interface Props {
   title: string;
   description: string;
+  /** Informations encore à fournir pour cette page (voir `data/legal.ts`). */
+  manquants: string[];
 }
 
-const { title, description } = Astro.props;
+const { title, description, manquants } = Astro.props;
 
 if (manquants.length > 0) {
   console.warn(`[pages légales] ${Astro.url.pathname} — informations manquantes : ${manquants.join(", ")}.`);
@@ -25,6 +27,7 @@ if (manquants.length > 0) {
 const pages = [
   { href: "/mentions-legales/", label: "Mentions légales" },
   { href: "/confidentialite/", label: "Politique de confidentialité" },
+  { href: "/cgv/", label: "Conditions générales de vente" },
 ];
 const lien = "underline-offset-4 hover:text-creme hover:underline";
 ---

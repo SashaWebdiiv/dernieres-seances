@@ -34,6 +34,7 @@ export const footerColumns: FooterColumn[] = [
       { label: emailContact, href: `mailto:${emailContact}` },
       { label: "Mentions légales", href: "/mentions-legales/" },
       { label: "Politique de confidentialité", href: "/confidentialite/" },
+      { label: "Conditions générales de vente", href: "/cgv/" },
     ],
   },
 ];
