@@ -96,6 +96,13 @@ import logoSucy from "../../assets/logos/ville-sucy.png";
     transform: translateY(6px);
   }
 
+  /* Focus clavier discret : la bordure passe en ambre, sans le cadre global décalé. */
+  .burger:focus-visible {
+    outline: none;
+    border-color: var(--color-ambre);
+    box-shadow: 0 0 0 1px var(--color-ambre);
+  }
+
   .burger[aria-expanded="true"] .burger__lignes > span {
     opacity: 0;
   }
