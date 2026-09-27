@@ -81,10 +81,13 @@ import logoSucy from "../../assets/logos/ville-sucy.png";
     background: transparent;
   }
 
+  /* Les trois traits partagent la même origine : sans `top: 0`, le trait du bas suivrait celui
+     du milieu dans le flux et la croix serait décalée de 2 px. */
   .burger__lignes::before,
   .burger__lignes::after {
     content: "";
     position: absolute;
+    top: 0;
     left: 0;
   }
 
