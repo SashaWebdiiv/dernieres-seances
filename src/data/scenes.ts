@@ -4,8 +4,8 @@
  * Pour passer une scène en vidéo, lui ajouter `video: { desktop, mobile }` à côté
  * de `image` — l'image reste l'affiche et le repli.
  *
- * Les images hors façade sont des placeholders neutres : les visuels de la maquette Figma
- * restent à importer (le téléchargement depuis Figma est bloqué dans cet environnement).
+ * Images des pièces issues de la maquette Figma (sources 1536 × 1024). Les versions mobiles
+ * sont des recadrages portrait 9:16 centrés, à affiner pièce par pièce si besoin.
  */
 import type { SceneConfig } from "../types/scene";
 
@@ -13,16 +13,16 @@ import facadeDesktop from "../assets/scenes/facade-desktop.webp";
 import facadeMobile from "../assets/scenes/facade-mobile.webp";
 import hallDesktop from "../assets/scenes/hall-desktop.webp";
 import hallMobile from "../assets/scenes/hall-mobile.webp";
-import premiereSalleDesktop from "../assets/scenes/premiere-salle-desktop.webp";
-import premiereSalleMobile from "../assets/scenes/premiere-salle-mobile.webp";
+import salonDesktop from "../assets/scenes/salon-desktop.webp";
+import salonMobile from "../assets/scenes/salon-mobile.webp";
 import escalierDesktop from "../assets/scenes/escalier-desktop.webp";
 import escalierMobile from "../assets/scenes/escalier-mobile.webp";
 import salleEtageDesktop from "../assets/scenes/salle-etage-desktop.webp";
 import salleEtageMobile from "../assets/scenes/salle-etage-mobile.webp";
 import derniereSalleDesktop from "../assets/scenes/derniere-salle-desktop.webp";
 import derniereSalleMobile from "../assets/scenes/derniere-salle-mobile.webp";
-import fenetreJardinDesktop from "../assets/scenes/fenetre-jardin-desktop.webp";
-import fenetreJardinMobile from "../assets/scenes/fenetre-jardin-mobile.webp";
+import sousSolDesktop from "../assets/scenes/sous-sol-desktop.webp";
+import sousSolMobile from "../assets/scenes/sous-sol-mobile.webp";
 
 /*
  * Voile commun à toutes les pièces (groupes « Overlay » de la maquette) : fondu noir en haut,
@@ -36,7 +36,7 @@ const voile = [
   `linear-gradient(${noir(0.6)}, ${noir(0.6)})`,
 ].join(", ");
 
-/* Ordre de la visite : façade, hall, escalier, salle à l'étage, salon, dernière salle, fenêtre. */
+/* Ordre de la visite : façade, hall, escalier, salle à l'étage, salon, dernière salle, sous-sol. */
 export const scenes = {
   hero: {
     id: "accueil",
@@ -81,7 +81,7 @@ export const scenes = {
   },
   experiences: {
     id: "programme",
-    media: { image: { desktop: premiereSalleDesktop, mobile: premiereSalleMobile, alt: "" } },
+    media: { image: { desktop: salonDesktop, mobile: salonMobile, alt: "" } },
     pinned: true,
     length: { desktop: 5, mobile: 4 },
     overlay: voile,
@@ -97,7 +97,7 @@ export const scenes = {
   },
   faq: {
     id: "faq",
-    media: { image: { desktop: fenetreJardinDesktop, mobile: fenetreJardinMobile, alt: "" } },
+    media: { image: { desktop: sousSolDesktop, mobile: sousSolMobile, alt: "" } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
     overlay: voile,

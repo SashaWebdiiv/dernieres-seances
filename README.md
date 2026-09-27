@@ -61,7 +61,7 @@ Stack : Astro, Tailwind CSS v4, GSAP + ScrollTrigger (scroll natif, pas de smoot
 
 Intégration de la maquette Figma Design « Halloween 2026 » (`landing/desktop`, 1440 px).
 Il n'existe pas de maquette mobile : l'adaptation mobile est déduite du desktop et de la page
-d'attente. Les images des pièces sont encore des placeholders (seule la façade est définitive).
+d'attente. Images des pièces issues de la maquette (1536 × 1024) ; versions mobiles recadrées en 9:16.
 
 | Chemin | Rôle |
 | --- | --- |
