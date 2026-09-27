@@ -13,7 +13,8 @@ import logoSucy from "../../assets/logos/ville-sucy.png";
   Aller au contenu
 </a>
 
-<!-- Barre supérieure (maquette 62:12) : logos, navigation centrée, billetterie. -->
+<!-- Barre supérieure (maquette 62:12) : logos, navigation centrée, billetterie.
+     Sous 1024 px : logos + burger, liens et billetterie dans un menu déroulant vertical. -->
 <header class="fixed inset-x-0 top-0 z-50 bg-linear-to-b from-noir/70 to-transparent">
   <nav
     aria-label="Navigation principale"
@@ -24,13 +25,13 @@ import logoSucy from "../../assets/logos/ville-sucy.png";
       <Image src={logoSucy} alt="Sucy-en-Brie" width={113} class="h-6 w-auto md:h-11" />
     </div>
 
-    <ul id="menu-principal" class="menu flex items-center gap-8 max-lg:order-last max-lg:w-full max-lg:flex-col max-lg:items-stretch max-lg:gap-0" data-menu>
+    <ul id="menu-principal" class="menu flex items-center gap-8" data-menu>
       {
         navLinks.map((link) => (
           <li>
             <a
               href={link.href}
-              class="flex min-h-11 items-center text-sm font-medium text-white underline-offset-8 hover:underline"
+              class="flex min-h-11 items-center text-sm font-medium text-white underline-offset-8 hover:underline max-lg:min-h-13 max-lg:text-base"
               data-jump
             >
               {link.label}
@@ -38,43 +39,123 @@ import logoSucy from "../../assets/logos/ville-sucy.png";
           </li>
         ))
       }
+      <li class="lg:hidden">
+        <Button href={ticketingHref} variant="header" class="h-12 w-full uppercase" data-jump>Billetterie</Button>
+      </li>
     </ul>
 
-    <div class="flex items-center justify-end gap-2 xl:w-62.5">
-      <Button href={ticketingHref} variant="header" class="h-10 uppercase max-md:px-3 max-md:text-[13px] md:h-11.5" data-jump>
-        Billetterie
-      </Button>
+    <div class="flex items-center justify-end xl:w-62.5">
+      <Button href={ticketingHref} variant="header" class="h-11.5 uppercase max-lg:hidden" data-jump>Billetterie</Button>
       <button
         type="button"
-        class="hidden h-10 rounded-lg border border-sable/40 px-3 text-sm font-medium text-white max-lg:[.js_&]:inline-flex max-lg:[.js_&]:items-center md:h-11.5 md:px-4"
+        class="burger hidden size-11 items-center justify-center rounded-lg border border-sable/40 text-white max-lg:[.js_&]:inline-flex"
         aria-expanded="false"
         aria-controls="menu-principal"
+        aria-label="Menu"
         data-menu-toggle
       >
-        Menu
+        <span class="burger__lignes" aria-hidden="true"><span></span></span>
       </button>
     </div>
   </nav>
 </header>
 
 <style>
-  /* Sous 1024 px avec JS : menu replié en panneau sous la barre. Sans JS, il reste affiché. */
+  /* Burger : trois traits qui deviennent une croix à l'ouverture. */
+  .burger__lignes,
+  .burger__lignes::before,
+  .burger__lignes::after,
+  .burger__lignes > span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    transition:
+      transform 0.25s ease,
+      opacity 0.2s ease;
+  }
+
+  .burger__lignes {
+    position: relative;
+    background: transparent;
+  }
+
+  .burger__lignes::before,
+  .burger__lignes::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+
+  .burger__lignes::before {
+    transform: translateY(-6px);
+  }
+
+  .burger__lignes::after {
+    transform: translateY(6px);
+  }
+
+  .burger[aria-expanded="true"] .burger__lignes > span {
+    opacity: 0;
+  }
+
+  .burger[aria-expanded="true"] .burger__lignes::before {
+    transform: rotate(45deg);
+  }
+
+  .burger[aria-expanded="true"] .burger__lignes::after {
+    transform: rotate(-45deg);
+  }
+
   @media (max-width: 1023px) {
+    /* Sans JS : liens et billetterie restent affichés en colonne sous la barre. */
+    .menu {
+      order: 1;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      width: 100%;
+    }
+
+    .menu li + li {
+      border-top: 1px solid rgb(200 183 153 / 0.15);
+    }
+
+    .menu li:last-child {
+      padding-block: 16px 4px;
+    }
+
+    /* Avec JS : menu déroulant vertical sous la barre, masqué tant qu'il n'est pas ouvert. */
     :global(.js) .menu {
       position: absolute;
       top: 100%;
       inset-inline: 22px;
-      padding: 8px 20px;
-      background: rgb(9 9 9 / 0.92);
+      width: auto;
+      padding: 4px 20px 16px;
+      background: rgb(9 9 9 / 0.95);
       border: 1px solid rgb(200 183 153 / 0.15);
+      border-radius: 8px;
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s;
     }
 
     :global(.js) .menu:not([data-open]) {
-      display: none;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
     }
+  }
 
-    :global(.js) .menu li + li {
-      border-top: 1px solid rgb(200 183 153 / 0.15);
+  @media (prefers-reduced-motion: reduce) {
+    .menu,
+    .burger__lignes,
+    .burger__lignes::before,
+    .burger__lignes::after,
+    .burger__lignes > span {
+      transition: none;
     }
   }
 </style>
