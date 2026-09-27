@@ -28,7 +28,7 @@ export const editeur = {
   directeurPublication: "Sasha Cohen" as string | null,
 };
 
-/** Hébergeur du site en ligne. Vercel : à confirmer si le site est servi ailleurs. */
+/** Hébergeur du site en ligne (confirmé : Vercel). */
 export const hebergeur = {
   nom: "Vercel Inc.",
   adresse: "440 N Barranca Ave #4133, Covina, CA 91723, États-Unis",
@@ -57,12 +57,17 @@ export const prestataires = {
   },
 };
 
-/** Durées de conservation : propositions, à valider par le bureau de l'association. */
+/**
+ * Durées de conservation : les plus courtes possibles. Le RGPD impose une durée maximale
+ * (le temps nécessaire à l'objet du traitement) ; seules les pièces comptables ont une
+ * durée légale de conservation obligatoire.
+ */
 export const conservation = {
-  preReservations: "jusqu'au 31 janvier 2027 au plus tard, puis supprimées",
+  preReservations:
+    "supprimées une fois l'ouverture de la billetterie annoncée, et au plus tard à la fin de l'événement (1er novembre 2026)",
   billetterie:
-    "le temps de l'événement et du traitement des éventuelles réclamations, puis pendant la durée imposée par les obligations comptables et fiscales pour les pièces de vente",
-  contact: "le temps de traiter la demande, et au plus tard un an après l'événement",
+    "le temps de l'événement et du traitement des éventuelles réclamations ; seules les pièces comptables (factures, justificatifs de vente) sont ensuite conservées, pendant la durée légale imposée par les obligations comptables et fiscales",
+  contact: "le temps de traiter la demande, puis supprimées",
 };
 
 /**

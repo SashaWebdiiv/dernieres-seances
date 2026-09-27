@@ -9,12 +9,12 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       Pretix : widget, panier, paiement Stripe, 3-D Secure, retour sur le site, e-mail du billet.
 - [ ] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans
       `src/data/legal.ts`) : toutes les informations sont renseignées (le build signale
-      tout champ remis à `null`). Valider les durées de conservation proposées, confirmer
-      l'hébergeur (Vercel) et mettre à jour la date `miseAJour`.
+      tout champ remis à `null`). Mettre à jour la date `miseAJour` à chaque modification.
+      Supprimer le fichier des pré-réservations dans le délai annoncé (au plus tard le
+      1er novembre 2026).
 - [ ] **Conditions générales de vente** (`/cgv/`) : faire relire et valider par le bureau,
       puis renseigner l'URL `https://dernieresseances.fr/cgv/` dans Pretix comme conditions à
-      accepter au paiement. Vérifier si l'association est tenue de proposer un médiateur de
-      la consommation (art. L612-1 du Code de la consommation) : pas de médiateur à ce jour.
+      accepter au paiement.
 - [ ] **Bascule `/visite` → `/`** :
   - remplacer le contenu de `src/pages/index.astro` par celui de `src/pages/visite.astro` ;
   - retirer la prop `noindex` ;
@@ -33,7 +33,6 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       actuelles font 1536 × 1024 et sont un peu douces sur grand écran.
 - [ ] Recadrages mobiles dédiés (portrait 9:16) pièce par pièce : les versions actuelles sont
       des recadrages centrés automatiques.
-- [ ] Logo d'Eden Crêpes (partenaire affiché sans logo pour l'instant).
 - [ ] Remplacer les images dans `src/assets/scenes/` en gardant les mêmes noms : l'optimisation
       (AVIF/WebP, tailles) est faite au build.
 
