@@ -3,7 +3,7 @@ import acompagnie from "../assets/logos/acompagnie-improvisee.png";
 import villeSucy from "../assets/logos/ville-sucy.png";
 import arbreOJeux from "../assets/logos/arbre-o-jeux.png";
 import webdiiv from "../assets/logos/webdiiv.png";
-import edenCrepes from "../assets/logos/eden-crepes.png";
+import edenCrepe from "../assets/logos/eden-crepe.png";
 
 /**
  * Partenaires (maquette 68:2167) : logo au-dessus du nom.
@@ -19,5 +19,5 @@ export const partners: Partner[] = [
   { name: "L'Arbre Ô Jeux", logo: arbreOJeux },
   { name: "Ville de Sucy-en-Brie", logo: villeSucy },
   { name: "Webdiiv", logo: webdiiv },
-  { name: "Eden Crêpes", logo: edenCrepes },
+  { name: "Eden Crêpe", logo: edenCrepe },
 ];

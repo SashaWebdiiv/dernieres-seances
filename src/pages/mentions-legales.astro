@@ -2,12 +2,14 @@
 import LegalLayout from "../layouts/LegalLayout.astro";
 import AComplete from "../components/legal/AComplete.astro";
 import { conception, editeur, hebergeur, manquants } from "../data/legal";
+import { partners } from "../data/partners";
 
 /*
  * Mentions obligatoires pour un site édité par une association (loi n° 2004-575 du 21 juin 2004
  * pour la confiance dans l'économie numérique, art. 1-1 à 6). Les informations viennent de
  * `data/legal.ts`.
  */
+const logosPartenaires = partners.filter((p) => p.logo && p.name !== editeur.nom).map((p) => p.name);
 ---
 
 <LegalLayout
@@ -68,7 +70,7 @@ import { conception, editeur, hebergeur, manquants } from "../data/legal";
     reproduction ou réutilisation, totale ou partielle, sans autorisation écrite préalable est interdite.
   </p>
   <p>
-    Les logos des partenaires (Ville de Sucy-en-Brie, L'Arbre Ô Jeux, Webdiiv, Eden Crêpes) appartiennent
+    Les logos des partenaires ({logosPartenaires.join(", ")}) appartiennent
     à leurs titulaires respectifs.
   </p>
 
