@@ -7,7 +7,7 @@ import { activites } from "../data/programme";
 
 /*
  * Trame de conditions générales de vente, à relire et valider par le bureau de l'association.
- * Les choix commerciaux (échange, remboursement, TVA, médiateur) sont dans `data/legal.ts`.
+ * Les choix commerciaux (échange, remboursement, TVA, frais) sont dans `data/legal.ts`.
  * L'URL de cette page est à renseigner dans Pretix comme conditions à accepter au paiement.
  */
 const agesMinimum = activites.map((a) => `${a.titre} : ${a.public}`);
@@ -126,13 +126,9 @@ const agesMinimum = activites.map((a) => `${a.titre} : ${a.public}`);
     {" "}<a href="/confidentialite/">politique de confidentialité</a>.
   </p>
 
-  <h2>12. Réclamations et médiation</h2>
+  <h2>12. Réclamations</h2>
   <p>
     Toute réclamation peut être adressée à <a href={`mailto:${editeur.email}`}>{editeur.email}</a>.
-  </p>
-  <p>
-    En cas de litige non résolu, vous pouvez recourir gratuitement au médiateur de la consommation suivant :
-    {" "}{cgv.mediateur ?? <AComplete label="nom et site du médiateur, si l'association y est tenue" />}.
   </p>
 
   <h2>13. Droit applicable</h2>

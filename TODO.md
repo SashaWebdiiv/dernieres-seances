@@ -12,10 +12,10 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       directeur de la publication) — la page affiche « [À compléter] » et le build
       les liste tant qu'elles manquent. Valider les durées de conservation proposées, confirmer
       l'hébergeur (Vercel) et mettre à jour la date `miseAJour`.
-- [ ] **Conditions générales de vente** (`/cgv/`, trame) : faire relire et valider par le
-      bureau, compléter les choix dans `cgv` de `src/data/legal.ts` (frais, échange,
-      délai de remboursement, médiateur), puis renseigner l'URL
-      `https://dernieresseances.fr/cgv/` dans Pretix comme conditions à accepter au paiement.
+- [ ] **Conditions générales de vente** (`/cgv/`) : faire relire et valider par le bureau,
+      puis renseigner l'URL `https://dernieresseances.fr/cgv/` dans Pretix comme conditions à
+      accepter au paiement. Vérifier si l'association est tenue de proposer un médiateur de
+      la consommation (art. L612-1 du Code de la consommation) : pas de médiateur à ce jour.
 - [ ] **Bascule `/visite` → `/`** :
   - remplacer le contenu de `src/pages/index.astro` par celui de `src/pages/visite.astro` ;
   - retirer la prop `noindex` ;

@@ -65,17 +65,14 @@ export const conservation = {
  * Conditions générales de vente : choix que seul le bureau peut faire. `null` affiche
  * un repère « [À compléter] » avec une suggestion sur la page `/cgv/`.
  */
-export const cgv = {
-  /** Ex. « TVA non applicable, article 293 B du CGI » si l'association n'y est pas assujettie. */
-  mentionTva: "TVA non applicable, article 293 B du CGI." as string | null,
-  /** Ex. « Aucun frais de réservation ne s'ajoute au prix affiché. » */
-  fraisReservation: null as string | null,
+export const cgv: Record<"mentionTva" | "fraisReservation" | "echange" | "delaiRemboursement", string | null> = {
+  mentionTva: "TVA non applicable, article 293 B du CGI.",
+  fraisReservation: "Aucun frais ne s'ajoute au prix affiché.",
   /** Échange de créneau ou d'activité à la demande du client. */
-  echange: null as string | null,
-  /** Délai de remboursement si l'organisateur annule. */
-  delaiRemboursement: null as string | null,
-  /** Médiateur de la consommation (nom, site) si l'association y est tenue. */
-  mediateur: null as string | null,
+  echange:
+    "Un changement de créneau est possible jusqu'à 48 h avant, selon les disponibilités, sur demande par e-mail. Les billets ne sont pas remboursés.",
+  /** Délai de remboursement si l'organisateur annule, inséré dans la phrase de l'article 9. */
+  delaiRemboursement: "dans un délai de 30 jours",
 };
 
 /** Date affichée en tête des pages légales. À mettre à jour à chaque modification du contenu. */
@@ -99,5 +96,4 @@ export const manquantsCgv = manquantes([
   ["frais de réservation", cgv.fraisReservation],
   ["échange de billets", cgv.echange],
   ["délai de remboursement", cgv.delaiRemboursement],
-  ["médiateur de la consommation", cgv.mediateur],
 ]);
