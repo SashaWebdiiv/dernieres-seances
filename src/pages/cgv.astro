@@ -29,7 +29,7 @@ const agesMinimum = activites.map((a) => `${a.titre} : ${a.public}`);
   <h2>2. Organisateur</h2>
   <p>
     <strong>{editeur.nom}</strong>, {editeur.forme ?? <AComplete label="forme juridique" />}, dont le siège est
-    situé {editeur.siege ?? <AComplete label="adresse du siège" />}.<br />
+    situé au {editeur.siege ?? <AComplete label="adresse du siège" />}.<br />
     Contact : <a href={`mailto:${editeur.email}`}>{editeur.email}</a> —{" "}
     <a href={editeur.telephone.lien} class="whitespace-nowrap">{editeur.telephone.affiche}</a>
   </p>

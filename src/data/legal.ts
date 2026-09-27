@@ -11,9 +11,9 @@ export const editeur = {
   /** Nom de l'association tel que déclaré en préfecture. */
   nom: "L'Acompagnie Improvisée",
   /** Ex. « Association régie par la loi du 1er juillet 1901 ». */
-  forme: null as string | null,
+  forme: "association régie par la loi du 1er juillet 1901" as string | null,
   /** Adresse du siège social. */
-  siege: null as string | null,
+  siege: "21 rue du Moulin à Vent, 94370 Sucy-en-Brie" as string | null,
   /** Numéro RNA (W + 9 chiffres), au Journal officiel des associations. */
   rna: null as string | null,
   /** Facultatif : seulement si l'association en a un. */
@@ -67,7 +67,7 @@ export const conservation = {
  */
 export const cgv = {
   /** Ex. « TVA non applicable, article 293 B du CGI » si l'association n'y est pas assujettie. */
-  mentionTva: null as string | null,
+  mentionTva: "TVA non applicable, article 293 B du CGI." as string | null,
   /** Ex. « Aucun frais de réservation ne s'ajoute au prix affiché. » */
   fraisReservation: null as string | null,
   /** Échange de créneau ou d'activité à la demande du client. */
