@@ -1,0 +1,136 @@
+---
+import { Image } from "astro:assets";
+import ImmersiveLayout from "./ImmersiveLayout.astro";
+import { accueilHref } from "../data/navigation";
+import { manquants, miseAJour } from "../data/legal";
+import { evenement } from "../data/seo";
+import logoCompagnie from "../assets/logos/acompagnie-improvisee.png";
+import logoSucy from "../assets/logos/ville-sucy.png";
+
+/**
+ * Pages légales : texte long sur fond noir, sans décor ni animation (aucun script chargé).
+ * Hors index : elles n'apportent rien en recherche et restent atteignables par le pied de page.
+ */
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+if (manquants.length > 0) {
+  console.warn(`[pages légales] ${Astro.url.pathname} — informations manquantes : ${manquants.join(", ")}.`);
+}
+
+const pages = [
+  { href: "/mentions-legales/", label: "Mentions légales" },
+  { href: "/confidentialite/", label: "Politique de confidentialité" },
+];
+const lien = "underline-offset-4 hover:text-creme hover:underline";
+---
+
+<ImmersiveLayout title={`${title} — Dernières Séances`} description={description} noindex>
+  <header class="border-b border-sable/15">
+    <nav aria-label="Retour au site" class="mx-auto flex max-w-360 items-center justify-between gap-4 px-5.5 py-4 md:px-20">
+      <a
+        href={accueilHref}
+        aria-label="L'Acompagnie Improvisée et Sucy-en-Brie, retour à l'accueil"
+        class="flex items-center gap-2.5 rounded transition-opacity hover:opacity-80 md:gap-6"
+      >
+        <Image src={logoCompagnie} alt="" width={113} class="h-9 w-auto md:h-11" />
+        <Image src={logoSucy} alt="" width={113} class="h-7.5 w-auto md:h-9" />
+      </a>
+      <a href={accueilHref} class={`flex min-h-11 items-center text-sm font-medium text-creme ${lien}`}>
+        Retour au site
+      </a>
+    </nav>
+  </header>
+
+  <main id="contenu" class="legal mx-auto max-w-180 px-5.5 pt-14 pb-20 md:pt-20 md:pb-28">
+    <p class="kicker text-rouille">Informations légales</p>
+    <h1 class="title-section pt-2">{title}</h1>
+    <p class="pt-2 text-sm text-sable/80">Dernière mise à jour : {miseAJour}</p>
+    <slot />
+  </main>
+
+  <footer class="border-t border-sable/15">
+    <div class="mx-auto flex max-w-360 flex-col gap-4 px-5.5 py-8 text-sm text-sable/80 md:flex-row md:items-center md:justify-between md:px-20">
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        {
+          pages.map((page) => (
+            <li>
+              <a href={page.href} class={lien} aria-current={Astro.url.pathname === page.href ? "page" : undefined}>
+                {page.label}
+              </a>
+            </li>
+          ))
+        }
+        <li><a href={accueilHref} class={lien}>Retour au site</a></li>
+      </ul>
+      <p>© 2026 Dernières Séances — {evenement.lieu}, {evenement.ville}</p>
+    </div>
+  </footer>
+</ImmersiveLayout>
+
+<style>
+  /* Styles du texte long, appliqués au contenu des pages. */
+  .legal :global(h2) {
+    padding-top: 3rem;
+    font-family: var(--font-display);
+    font-size: 20px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-creme);
+  }
+
+  .legal :global(h3) {
+    padding-top: 1.75rem;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-creme);
+  }
+
+  .legal :global(:is(p, ul, dl)) {
+    margin-top: 1rem;
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgb(200 183 153 / 0.85);
+  }
+
+  .legal :global(ul) {
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+
+  .legal :global(li + li) {
+    margin-top: 0.4rem;
+  }
+
+  .legal :global(dt) {
+    font-weight: 600;
+    color: var(--color-creme);
+  }
+
+  .legal :global(dd + dt) {
+    margin-top: 0.75rem;
+  }
+
+  .legal :global(a) {
+    color: var(--color-ambre);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    overflow-wrap: anywhere;
+  }
+
+  .legal :global(strong) {
+    color: var(--color-creme);
+    font-weight: 600;
+  }
+
+  @media (width >= 48rem) {
+    .legal :global(h2) {
+      font-size: 24px;
+    }
+  }
+</style>

@@ -1,0 +1,132 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import AComplete from "../components/legal/AComplete.astro";
+import { conservation, editeur, hebergeur, prestataires } from "../data/legal";
+
+/*
+ * Information des personnes (RGPD, art. 13). Décrit ce que le site fait réellement :
+ * formulaire de pré-réservation (Google Sheets), billetterie Pretix + Stripe, contact,
+ * journaux de l'hébergeur. Aucune mesure d'audience ni publicité à ce jour : si un outil
+ * est ajouté, cette page doit être mise à jour avant sa mise en ligne.
+ */
+const { billetterie, paiement, formulaire } = prestataires;
+---
+
+<LegalLayout
+  title="Politique de confidentialité"
+  description="Données collectées par le site Dernières Séances, utilisation, durées de conservation et droits des personnes."
+>
+  <p>
+    Cette page explique quelles données personnelles sont collectées lors de votre visite sur le site
+    Dernières Séances ou lors de l'achat de billets, pourquoi, pendant combien de temps, et comment exercer
+    vos droits.
+  </p>
+
+  <h2>Responsable du traitement</h2>
+  <p>
+    <strong>{editeur.nom}</strong>, {editeur.siege ?? <AComplete label="adresse du siège" />}.<br />
+    Contact : <a href={`mailto:${editeur.email}`}>{editeur.email}</a>
+  </p>
+
+  <h2>Données collectées et utilisation</h2>
+
+  <h3>Achat de billets</h3>
+  <p>
+    Lors d'une commande, la billetterie collecte vos nom, adresse e-mail et les informations de la commande
+    (billets, créneaux, montant). Ces données servent à établir et envoyer vos billets, à contrôler l'accès
+    le jour de l'événement et à vous contacter en cas de changement (horaires, annulation).
+  </p>
+  <ul>
+    <li><strong>Base légale :</strong> l'exécution du contrat de vente, et nos obligations comptables.</li>
+    <li><strong>Conservation :</strong> {conservation.billetterie}.</li>
+  </ul>
+  <p>
+    Le paiement est traité directement par Stripe : <strong>vos données bancaires ne nous sont jamais
+    transmises</strong> et ne transitent pas par ce site.
+  </p>
+
+  <h3>Pré-réservations</h3>
+  <p>
+    Avant l'ouverture de la billetterie, un formulaire permettait de pré-réserver : prénom et nom, adresse
+    e-mail, expérience souhaitée et nombre de participants. Ces données ont servi uniquement à vous prévenir
+    de l'ouverture de la billetterie.
+  </p>
+  <ul>
+    <li><strong>Base légale :</strong> votre consentement, donné en cochant la case du formulaire.</li>
+    <li><strong>Conservation :</strong> {conservation.preReservations}.</li>
+  </ul>
+
+  <h3>Échanges par e-mail ou téléphone</h3>
+  <p>
+    Si vous nous écrivez ou nous appelez, nous utilisons vos coordonnées et votre message uniquement pour
+    vous répondre.
+  </p>
+  <ul>
+    <li><strong>Base légale :</strong> notre intérêt légitime à répondre aux demandes du public.</li>
+    <li><strong>Conservation :</strong> {conservation.contact}.</li>
+  </ul>
+
+  <h3>Navigation sur le site</h3>
+  <p>
+    Le site ne comporte aucun outil de mesure d'audience ni de publicité, et ne vous demande aucune
+    information pour être consulté. Comme tout hébergeur, {hebergeur.nom} enregistre des journaux techniques
+    (adresse IP, date, page demandée) nécessaires à la sécurité et au bon fonctionnement du service.
+  </p>
+
+  <h2>Qui a accès à vos données</h2>
+  <p>
+    Vos données ne sont ni vendues, ni louées, ni cédées. Elles sont accessibles aux seuls membres de
+    l'association qui en ont besoin pour organiser l'événement, et aux prestataires suivants, qui les traitent
+    pour notre compte :
+  </p>
+  <ul>
+    <li>
+      <strong>{billetterie.nom}</strong> (billetterie Pretix), {billetterie.adresse} —
+      {" "}<a href={billetterie.site} rel="noopener">{billetterie.site.replace("https://", "")}</a>
+    </li>
+    <li>
+      <strong>{paiement.nom}</strong> (paiement), {paiement.adresse} —
+      {" "}<a href={paiement.site} rel="noopener">politique de confidentialité de Stripe</a>
+    </li>
+    <li>
+      <strong>{formulaire.nom}</strong> (Google Sheets, stockage des pré-réservations), {formulaire.adresse} —
+      {" "}<a href={formulaire.site} rel="noopener">règles de confidentialité de Google</a>
+    </li>
+    <li><strong>{hebergeur.nom}</strong> (hébergement du site), {hebergeur.adresse}</li>
+  </ul>
+  <p>
+    Certains de ces prestataires peuvent transférer des données hors de l'Union européenne, notamment
+    vers les États-Unis. Ces transferts sont encadrés par les garanties prévues par le RGPD (décision
+    d'adéquation de la Commission européenne ou clauses contractuelles types).
+  </p>
+
+  <h2>Cookies</h2>
+  <p>
+    Ce site ne dépose lui-même aucun cookie. Les polices et images sont servies depuis le site, sans faire
+    appel à des services tiers.
+  </p>
+  <p>
+    Lorsque vous utilisez la billetterie, Pretix et, au moment du paiement, Stripe peuvent déposer des cookies
+    strictement nécessaires au fonctionnement du panier, à la sécurité du paiement et à la prévention de la
+    fraude. Ces cookies sont indispensables au service que vous demandez et ne nécessitent pas votre
+    consentement.
+  </p>
+
+  <h2>Vos droits</h2>
+  <p>Vous disposez à tout moment des droits suivants sur vos données :</p>
+  <ul>
+    <li>accès, rectification et effacement ;</li>
+    <li>limitation du traitement et opposition ;</li>
+    <li>portabilité ;</li>
+    <li>retrait de votre consentement, pour les pré-réservations, sans effet sur la période antérieure.</li>
+  </ul>
+  <p>
+    Pour les exercer, écrivez-nous à <a href={`mailto:${editeur.email}`}>{editeur.email}</a>. Nous répondons
+    dans un délai d'un mois.
+  </p>
+  <p>
+    Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous pouvez adresser une
+    réclamation à la CNIL (Commission nationale de l'informatique et des libertés), 3 place de Fontenoy,
+    TSA 80715, 75334 Paris Cedex 07 — <a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>.
+  </p>
+</LegalLayout>

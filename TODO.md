@@ -7,13 +7,19 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 - [ ] **Billetterie Pretix** : renseigner `pretixShopUrl` dans `src/data/billetterie.ts`
       (URL de la boutique, avec le « / » final), puis tester un achat complet en mode test
       Pretix : widget, panier, paiement Stripe, 3-D Secure, retour sur le site, e-mail du billet.
-- [ ] **Pages légales** (obligatoires : LCEN pour les mentions légales, RGPD pour la
-      confidentialité — le site collecte des données via Pretix et le formulaire) :
-      créer `/mentions-legales` et `/confidentialite`, puis renseigner leurs `href` dans
-      `src/data/footer.ts` (aujourd'hui `null`, affichés sans lien).
+- [ ] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans
+      `src/data/legal.ts`) : renseigner les 4 informations manquantes (forme juridique, siège,
+      numéro RNA, directeur de la publication) — la page affiche « [À compléter] » et le build
+      les liste tant qu'elles manquent. Valider les durées de conservation proposées, confirmer
+      l'hébergeur (Vercel) et mettre à jour la date `miseAJour`.
+- [ ] **Conditions générales de vente** : les rédiger et les activer dans Pretix (case à cocher
+      au paiement). Y indiquer l'absence de droit de rétractation pour une prestation de loisirs
+      à date déterminée (art. L221-28 12° du Code de la consommation) et la politique
+      d'annulation / remboursement.
 - [ ] **Bascule `/visite` → `/`** :
   - remplacer le contenu de `src/pages/index.astro` par celui de `src/pages/visite.astro` ;
   - retirer la prop `noindex` ;
+  - passer `accueilHref` à `"/"` dans `src/data/navigation.ts` (retour depuis les pages légales) ;
   - faire de `/visite` une redirection 301 vers `/` (ou supprimer la page) ;
   - vérifier que le sitemap (`src/pages/sitemap.xml.ts`) ne liste que `/`.
 - [ ] **Après la bascule** : déclarer le site dans Google Search Console, soumettre
