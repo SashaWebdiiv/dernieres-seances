@@ -99,7 +99,8 @@ export const scenes = {
     id: "faq",
     media: { image: { desktop: sousSolDesktop, mobile: sousSolMobile, alt: "" } },
     pinned: false,
-    length: { desktop: 2, mobile: 2 },
+    // Le pied de page prolonge la scène : la FAQ seule n'a pas besoin de deux écrans.
+    length: { desktop: 1, mobile: 1 },
     overlay: voile,
     animation: "still",
   },

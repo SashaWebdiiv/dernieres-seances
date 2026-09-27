@@ -4,7 +4,6 @@ import Button from "../ui/Button.astro";
 import FooterItem from "./FooterItem.astro";
 import { footerLinks, ticketingHref } from "../../data/navigation";
 import { footerColumns } from "../../data/footer";
-import { scenes } from "../../data/scenes";
 import logoCompagnie from "../../assets/logos/acompagnie-improvisee.png";
 import logoSucy from "../../assets/logos/ville-sucy.png";
 
@@ -12,17 +11,11 @@ const columnTitle = "font-display text-[8.8px] leading-[13.2px] tracking-[2.64px
 const link = "text-[15.2px] leading-[22.8px] text-sable/55 hover:text-sable";
 ---
 
-<!-- Pied de page (maquette 85:3739) : il prolonge la vue sur le jardin de la dernière scène. -->
-<footer class="relative isolate overflow-hidden bg-noir text-left">
-  <Image
-    src={scenes.faq.media.image.desktop}
-    alt=""
-    width={1440}
-    loading="lazy"
-    class="absolute inset-0 -z-10 size-full object-cover object-top"
-  />
-  <div class="footer-voile absolute inset-0 -z-10" aria-hidden="true"></div>
-
+<!--
+  Pied de page (maquette 85:3739). Placé dans la dernière scène (slot `after` de FaqScene) :
+  il défile sur la même photo que la FAQ au lieu d'en afficher une seconde copie.
+-->
+<footer class="relative z-10 text-left">
   <div class="mx-auto max-w-360 px-5.5 pt-16 pb-12 md:px-22.75 md:pt-22.75">
     <div class="flex flex-col gap-12 lg:flex-row lg:justify-between">
       <div class="flex flex-col items-start lg:w-62.5">
@@ -71,8 +64,3 @@ const link = "text-[15.2px] leading-[22.8px] text-sable/55 hover:text-sable";
   </div>
 </footer>
 
-<style>
-  .footer-voile {
-    background: linear-gradient(180deg, rgb(9 9 9 / 0.4) 0%, rgb(9 9 9 / 0.92) 40%, rgb(9 9 9) 100%);
-  }
-</style>

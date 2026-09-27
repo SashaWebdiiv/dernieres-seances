@@ -2,6 +2,10 @@
 import type { SceneConfig } from "../../types/scene";
 import SceneMedia from "./SceneMedia.astro";
 
+/**
+ * Slot `after` : contenu qui prolonge la scène sous le même décor (ex. le pied de page
+ * sous la dernière pièce), placé après le contenu principal.
+ */
 interface Props {
   scene: SceneConfig;
   /** Id du titre de la scène. Absent : la scène est un simple passage décoratif. */
@@ -61,6 +65,7 @@ const style = {
       )
     }
   </div>
+  <slot name="after" />
 </Tag>
 
 <style>
