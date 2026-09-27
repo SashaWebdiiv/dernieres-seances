@@ -5,7 +5,7 @@ import type { HTMLAttributes } from "astro/types";
  * Lien si `href` est fourni (navigation), vrai `<button>` sinon (action).
  * - `primary` : aplat ambre, capitales espacées (boutons de la maquette 88:110, 85:3670, 85:3748).
  * - `outline` : filet crème (« Choisir cette séance », 85:3668).
- * - `header` : bouton « Billetterie » de la barre supérieure (62:180).
+ * - `header` : aplat ambre vif de la barre supérieure (62:180) ; corps de texte donné par `class`.
  * La taille (hauteur, corps, largeur) est donnée par `class`, chaque bouton de la maquette ayant la sienne.
  */
 interface Props extends Omit<HTMLAttributes<"a">, "class" | "type"> {
@@ -20,7 +20,7 @@ const { variant = "primary", class: className, href, type = "button", disabled, 
 const variants = {
   primary: "border border-sable/40 bg-ambre uppercase text-noir hover:bg-ambre-clair",
   outline: "border border-creme/30 uppercase text-creme hover:border-creme/60 hover:bg-creme/5",
-  header: "rounded-lg bg-ambre-vif px-4.5 font-extrabold text-sm tracking-[0.05em] text-nuit hover:bg-ambre-clair",
+  header: "rounded-lg bg-ambre-vif px-4.5 font-extrabold tracking-[0.05em] text-nuit hover:bg-ambre-clair",
 };
 
 const classes = [
