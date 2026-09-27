@@ -16,8 +16,8 @@ export const footerColumns: FooterColumn[] = [
   {
     title: "Suivez-nous",
     links: [
-      { label: "Instagram", href: null },
-      { label: "Facebook", href: null },
+      { label: "Instagram", href: "https://www.instagram.com/lacompagnieimprovisee/" },
+      { label: "Facebook", href: "https://www.facebook.com/LacompagnieSucy/" },
       { label: "lacompagnie.net", href: "https://lacompagnie.net" },
     ],
   },
@@ -25,7 +25,6 @@ export const footerColumns: FooterColumn[] = [
     title: "Support",
     links: [
       { label: "+33 6 47 67 30 41", href: "tel:+33647673041" },
-      // La maquette écrit « dernieressences.fr » : corrigé vers le domaine du site, à confirmer.
       { label: "support@dernieresseances.fr", href: "mailto:support@dernieresseances.fr" },
     ],
   },

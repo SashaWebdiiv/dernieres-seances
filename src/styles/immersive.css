@@ -3,6 +3,8 @@
 /*
  * Jetons extraits de la maquette Figma Design « Halloween 2026 » (landing/desktop, 68:812).
  * Les valeurs non entières (17.145px, 8.8px…) sont reprises telles quelles de la maquette.
+ * Textes secondaires : sable à 65 % minimum (au lieu de 30 à 60 % dans la maquette), seuil
+ * du contraste AA (4,5) sur le fond #090909.
  */
 @theme {
   --color-noir: #090909;
@@ -10,7 +12,7 @@
   --color-sable: #c8b799;
   --color-rouille: #a25b32;
   --color-ambre: #f5a923;
-  --color-brun: #817561;
+  --color-brun: #837763; /* #817561 dans la maquette, éclairci au minimum pour un contraste AA (4,5). */
 
   /* Façade : reprise de la page d'attente. */
   --color-ambre-vif: #f2a313;
@@ -18,10 +20,10 @@
   --color-nuit: #071525;
   --color-ivoire: #f8f6f0;
 
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "New Rocker", "Times New Roman", serif;
   --font-serif: "EB Garamond", Georgia, serif;
-  --font-chiffres: "Bebas Neue", "Inter", sans-serif;
+  --font-chiffres: "Bebas Neue", "Inter Variable", sans-serif;
 }
 
 @layer base {

@@ -1,8 +1,6 @@
 /**
- * Programme affiché dans le hall (maquette « Calendrier », 68:2602).
- *
- * ATTENTION : certains tarifs diffèrent de ceux publiés sur la page d'attente
- * (`evenement.ts`, Jardin « accès libre, stand à partir de 3 € ») — à arbitrer.
+ * Programme affiché dans le hall (maquette « Calendrier », 68:2602). Tarifs validés par
+ * l'organisation ; la page d'attente (`evenement.ts`) affiche encore l'ancien tarif du jardin.
  */
 export interface Tarif {
   label: string;

@@ -14,19 +14,13 @@ import { partners } from "../../data/partners";
     <ul class="flex flex-wrap justify-center gap-x-1.5 gap-y-8 pt-10 md:gap-y-11.25">
       {
         partners.map((partner) => (
-          <li class="w-[calc(50%-3px)] md:w-60.5" data-reveal>
-            <a
-              href={partner.url}
-              class:list={["flex flex-col items-center gap-1.5", partner.url && "hover:opacity-80"]}
-              {...(partner.url ? { target: "_blank", rel: "noopener" } : {})}
-            >
-              <span class="flex h-12 items-center md:h-15" aria-hidden={partner.logo ? undefined : "true"}>
-                {partner.logo && <Image src={partner.logo} alt="" height={60} class="h-full w-auto" />}
-              </span>
-              <span class="text-xs leading-[1.5] font-medium tracking-[0.15em] text-white uppercase md:text-[13.6px] md:leading-[20.4px]">
-                {partner.name}
-              </span>
-            </a>
+          <li class="flex w-[calc(50%-3px)] flex-col items-center gap-1.5 md:w-60.5" data-reveal>
+            <span class="flex h-12 items-center md:h-15" aria-hidden={partner.logo ? undefined : "true"}>
+              {partner.logo && <Image src={partner.logo} alt="" height={60} class="h-full w-auto" />}
+            </span>
+            <span class="text-xs leading-[1.5] font-medium tracking-[0.15em] text-white uppercase md:text-[13.6px] md:leading-[20.4px]">
+              {partner.name}
+            </span>
           </li>
         ))
       }

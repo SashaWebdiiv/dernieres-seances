@@ -20,7 +20,7 @@ const { activite } = Astro.props;
   </header>
 
   <div class="flex w-full flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
-    <p class="text-sm leading-4 text-sable/60 lg:max-w-119.5">{activite.description}</p>
+    <p class="text-sm leading-4 text-sable/65 lg:max-w-119.5">{activite.description}</p>
     <p class="text-sm leading-4.5 text-ambre lg:max-w-119.5 lg:text-right">
       {activite.horaires.map((ligne) => <span class="block">{insecables(ligne)}</span>)}
     </p>

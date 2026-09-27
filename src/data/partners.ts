@@ -8,16 +8,16 @@ import webdiiv from "../assets/logos/webdiiv.png";
  * Partenaires (maquette 68:2167) : logo au-dessus du nom.
  * Eden Crêpes n'a pas encore de logo : la maquette réutilise provisoirement celui de Webdiiv.
  */
+/** Affichés sans lien, à la demande de l'organisation. */
 export interface Partner {
   name: string;
   logo?: ImageMetadata;
-  url?: string;
 }
 
 export const partners: Partner[] = [
   { name: "L'Acompagnie Improvisée", logo: acompagnie },
   { name: "L'Arbre Ô Jeux", logo: arbreOJeux },
   { name: "Ville de Sucy-en-Brie", logo: villeSucy },
-  { name: "Webdiiv", logo: webdiiv, url: "https://webdiiv.com" },
+  { name: "Webdiiv", logo: webdiiv },
   { name: "Eden Crêpes" },
 ];
