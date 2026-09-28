@@ -66,6 +66,7 @@ export function initSelecteur(): void {
   const total = formulaire.querySelector<HTMLElement>("[data-total]")!;
   const payer = formulaire.querySelector<HTMLButtonElement>("[data-payer]")!;
   const avisPanier = formulaire.querySelector<HTMLElement>("[data-panier]")!;
+  const reprendre = formulaire.querySelector<HTMLButtonElement>("[data-reprendre]")!;
 
   let donnees: ReponseCreneaux | null = null;
   let chargeA = 0;
@@ -74,6 +75,8 @@ export function initSelecteur(): void {
   const quantites = new Map<number, number>();
   let billetsAffiches: ExperienceId | undefined;
   let panierOuvert = false;
+  /** Créneau du dernier panier ouvert : « Reprendre mon panier » y revient. */
+  let dernierCreneau: number | undefined;
 
   const echec = (cause: string) => {
     racine.hidden = true;
@@ -344,9 +347,19 @@ export function initSelecteur(): void {
     );
     // Pretix garde ce panier : une nouvelle sélection s'y ajoutera.
     panierOuvert = true;
+    dernierCreneau = creneau.id;
     avisPanier.hidden = false;
     quantites.clear();
     actualiserBillets();
+  });
+
+  // Sans billet, `PretixWidget.open` n'ajoute rien et rouvre le panier en cours (fenêtre sur
+  // ordinateur ; page Pretix du créneau, panier compris, sur mobile).
+  reprendre.addEventListener("click", () => {
+    const creneau = dernierCreneau === undefined ? null : String(dernierCreneau);
+    if (window.PretixWidget?.open) window.PretixWidget.open(boutique, null, creneau, []);
+    else window.location.assign(new URL(creneau ? `${creneau}/` : "", boutique).href);
+    mesurer("billetterie_reprise_panier");
   });
 
   const demarrer = async () => {

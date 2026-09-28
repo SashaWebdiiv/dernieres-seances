@@ -82,10 +82,19 @@ const pas = [
 
       <div class="flex flex-col items-stretch gap-3 border-t border-sable/15 pt-6">
         <p class="text-center text-base text-sable/85" aria-live="polite" data-total>Aucun billet choisi</p>
-        <p hidden class="text-center text-sm leading-5 text-ambre" role="status" data-panier>
-          Votre panier reste ouvert sur la billetterie : les billets choisis maintenant s'y ajouteront. Vous
-          pourrez tout vérifier et retirer avant de payer.
-        </p>
+        <div hidden class="flex flex-col items-center gap-3 rounded-lg border border-ambre/40 p-4 text-center" data-panier>
+          <p class="text-sm leading-5 text-ambre" role="status">
+            Votre panier reste ouvert sur la billetterie : les billets choisis maintenant s'y ajouteront. Vous
+            pourrez tout vérifier et retirer avant de payer.
+          </p>
+          <button
+            type="button"
+            class="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-lg border border-ambre px-5 text-base font-semibold text-ambre transition-colors hover:bg-ambre hover:text-noir"
+            data-reprendre
+          >
+            Reprendre mon panier
+          </button>
+        </div>
         <button
           type="button"
           disabled
