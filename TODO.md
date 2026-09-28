@@ -10,15 +10,14 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       e-mail du billet. Côté Pretix : couleur principale lisible avec du texte blanc (rouille
       #a25b32 plutôt qu'ambre), CGV `https://dernieresseances.fr/cgv/` à accepter au paiement,
       réservation du panier 30 minutes (article 3 des conditions).
-- [ ] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans
+- [x] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans
       `src/data/legal.ts`) : toutes les informations sont renseignées (le build signale
       tout champ remis à `null`). Mettre à jour la date `miseAJour` à chaque modification.
-      Supprimer le fichier des pré-réservations dans le délai annoncé (au plus tard le
-      1er novembre 2026).
-- [ ] **Conditions générales de vente** (`/cgv/`) : faire relire et valider par le bureau,
-      puis renseigner l'URL `https://dernieresseances.fr/cgv/` dans Pretix comme conditions à
-      accepter au paiement. Mention de TVA provisoire (« TVA non applicable. ») : la faire
-      confirmer par le comptable, avec l'article du CGI qui s'applique (`cgv.mentionTva`).
+- [x] **Conditions de vente** (`/cgv/`) : validées par le bureau.
+- [ ] **Conditions de vente dans Pretix** : renseigner `https://dernieresseances.fr/cgv/` comme
+      conditions à accepter au paiement.
+- [ ] **Mention de TVA** : provisoire (« TVA non applicable. »), en attente du comptable ; mettre
+      à jour `cgv.mentionTva` avec l'article du CGI qui s'applique (non bloquant).
 - [ ] **Bascule `/visite` → `/`** :
   - remplacer le contenu de `src/pages/index.astro` par celui de `src/pages/visite.astro` ;
   - retirer la prop `noindex` ;
@@ -30,6 +29,11 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 
 ## Une fois le site en ligne sur dernieresseances.fr
 
+- [ ] **E-mail aux pré-inscrits** (prêt) : l'envoyer dès que le site et la billetterie sont en
+      ligne. **Puis supprimer le Google Sheet des pré-réservations** : la politique de
+      confidentialité annonce leur suppression « une fois l'ouverture de la billetterie
+      annoncée », et au plus tard le 1er novembre 2026. Désactiver aussi le déploiement
+      Apps Script du formulaire (il continuerait d'accepter des envois).
 - [ ] **Google Analytics — vérifier la mesure** : ouvrir le site, « Tout accepter », puis
       GA4 → Rapports → Temps réel : la visite doit apparaître en moins d'une minute.
 - [ ] **Google Analytics — événement clé** : cliquer un bouton « J'achète mon billet ! »,
@@ -57,9 +61,9 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 - [x] Propriété GA4 « Dernières Séances », flux `https://dernieresseances.fr`, identifiant
       `G-Y58ZH9T32G` branché (`src/data/analytics.ts`). Ne jamais coller la balise gtag de
       Google dans le `<head>` : elle se chargerait avant le consentement.
-- [ ] Dans le flux : Mesures améliorées → Pages vues → décocher « changements de page basés
+- [x] Dans le flux : Mesures améliorées → Pages vues → décocher « changements de page basés
       sur l'historique du navigateur » (sinon chaque clic de menu compte comme une page vue).
-- [ ] Dans GA4 : Administration → Collecte et conservation des données → conservation des
+- [x] Dans GA4 : Administration → Collecte et conservation des données → conservation des
       données sur **14 mois** (annoncé dans la politique de confidentialité) ; laisser les
       signaux Google désactivés.
 - [ ] Les achats se font dans Pretix : suivre les ventes dans les statistiques Pretix (GA ne
