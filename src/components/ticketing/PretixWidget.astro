@@ -8,6 +8,12 @@
  * ou le moyen de paiement (3-D Secure), Pretix peut ouvrir un nouvel onglet ou rediriger vers
  * une page externe : le retour vers ce site se règle dans Pretix. La section reste atteignable
  * directement par `#billetterie`.
+ *
+ * Le widget est posé sur un panneau clair : sa feuille de style par défaut est prévue pour
+ * un fond blanc (texte sombre), illisible directement sur le décor noir du site.
+ *
+ * Filets de sécurité : message de chargement, message d'erreur si le script ne se charge pas
+ * (bloqueur, réseau), et lien direct vers la boutique toujours visible sous le widget.
  */
 interface Props {
   /** Boutique Pretix de l'événement, avec le « / » final. `null` : encart d'attente. */
@@ -17,28 +23,46 @@ interface Props {
 }
 
 const { shopUrl, disableIframe = false } = Astro.props;
+const lienBoutique = "text-ambre underline underline-offset-3 hover:text-ambre-clair";
 ---
 
 <!-- Emplacement de la maquette : 664 × 450 px sous le titre (85:3641). -->
-<div class="min-h-112.5 w-full max-w-166 text-left">
+<div class="w-full max-w-166 text-left">
   {
     shopUrl ? (
-      <div
-        data-pretix
-        data-script={new URL("/widget/v1.fr.js", shopUrl).href}
-        data-stylesheet={new URL("widget/v1.css", shopUrl).href}
-      >
-        <pretix-widget event={shopUrl} disable-iframe={disableIframe ? "" : undefined} />
-        <noscript>
-          <p>
-            La billetterie nécessite JavaScript.{" "}
-            <a href={shopUrl} target="_blank" rel="noopener" class="underline">
+      <>
+        <div
+          class="pretix-hote min-h-112.5 rounded-lg bg-ivoire p-4 text-noir md:p-6"
+          data-pretix
+          data-script={new URL("/widget/v1.fr.js", shopUrl).href}
+          data-stylesheet={new URL("widget/v1.css", shopUrl).href}
+        >
+          <p class="pretix-attente py-10 text-center text-sm text-noir/70" role="status">
+            Chargement de la billetterie…
+          </p>
+          <p class="pretix-erreur hidden py-10 text-center text-sm" role="alert" data-pretix-erreur>
+            La billetterie n'a pas pu s'afficher ici.{" "}
+            <a href={shopUrl} target="_blank" rel="noopener" class="font-semibold underline">
               Ouvrir la billetterie dans un nouvel onglet
             </a>
-            .
           </p>
-        </noscript>
-      </div>
+          <pretix-widget event={shopUrl} disable-iframe={disableIframe ? "" : undefined} />
+          <noscript>
+            <p class="py-10 text-center text-sm">
+              La billetterie nécessite JavaScript.{" "}
+              <a href={shopUrl} target="_blank" rel="noopener" class="font-semibold underline">
+                Ouvrir la billetterie dans un nouvel onglet
+              </a>
+            </p>
+          </noscript>
+        </div>
+        <p class="pt-4 text-center text-sm text-sable/80">
+          Un souci d'affichage ?{" "}
+          <a href={shopUrl} target="_blank" rel="noopener" class={lienBoutique}>
+            Ouvrir la billetterie dans un nouvel onglet
+          </a>
+        </p>
+      </>
     ) : (
       <p class="rounded-lg border border-dashed border-sable/30 p-8 text-center text-sm text-sable/80">
         [Emplacement du widget Pretix — renseigner <code>pretixShopUrl</code> dans{" "}
@@ -47,6 +71,18 @@ const { shopUrl, disableIframe = false } = Astro.props;
     )
   }
 </div>
+
+<style>
+  /* Le message de chargement disparaît dès que Pretix a construit son widget. */
+  .pretix-hote:has(:global(.pretix-widget)) .pretix-attente,
+  .pretix-hote.pretix-hote--erreur .pretix-attente {
+    display: none;
+  }
+
+  .pretix-hote.pretix-hote--erreur .pretix-erreur {
+    display: block;
+  }
+</style>
 
 <script>
   import { loadPretixOnApproach } from "../../scripts/pretix";
