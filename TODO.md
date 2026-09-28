@@ -29,6 +29,11 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 
 ## Une fois le site en ligne sur dernieresseances.fr
 
+- [ ] **Délivrabilité des e-mails** (DNS OVH) : SPF et DKIM OVH en place, DMARC ajouté le
+      28/09/2026 (`p=none`, rapports sur contact@). Vérifier DKIM « Actif » dans OVH, puis
+      envoyer un test depuis support@ et contact@ vers Gmail (« Afficher l'original » :
+      SPF, DKIM et DMARC en PASS) **avant** l'e-mail aux pré-inscrits. Envoi depuis le webmail
+      OVH : destinataires en Cci, par lots d'environ 50.
 - [ ] **E-mail aux pré-inscrits** (prêt) : l'envoyer dès que le site et la billetterie sont en
       ligne. **Puis supprimer le Google Sheet des pré-réservations** : la politique de
       confidentialité annonce leur suppression « une fois l'ouverture de la billetterie
@@ -88,4 +93,6 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 - [ ] Ajouter un lint (ESLint + Prettier) et une CI (GitHub Actions : `npm run typecheck`
       et `npm run build` sur chaque PR).
 - [ ] Mettre à jour les dépendances régulièrement (`npm outdated`), surtout avant l'événement.
+- [ ] DMARC : lire les rapports reçus sur contact@ ; si tous les envois légitimes passent,
+      durcir en `p=quarantine` (après l'événement, pas avant).
 - [ ] Après l'événement : bilan, puis décider du sort du site (archive, édition 2027).
