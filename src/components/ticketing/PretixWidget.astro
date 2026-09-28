@@ -34,8 +34,8 @@ const lienBoutique = "text-ambre underline underline-offset-3 hover:text-ambre-c
         <div
           class="pretix-hote min-h-112.5 rounded-lg bg-ivoire p-4 text-noir md:p-6"
           data-pretix
-          data-script={new URL("/widget/v1.fr.js", shopUrl).href}
-          data-stylesheet={new URL("widget/v1.css", shopUrl).href}
+          data-script={new URL("/widget/v2.fr.js", shopUrl).href}
+          data-stylesheet={new URL("widget/v2.css", shopUrl).href}
         >
           <p class="pretix-attente py-10 text-center text-sm text-noir/70" role="status">
             Chargement de la billetterie…
@@ -73,13 +73,13 @@ const lienBoutique = "text-ambre underline underline-offset-3 hover:text-ambre-c
 </div>
 
 <style>
-  /* Le message de chargement disparaît dès que Pretix a construit son widget. */
-  .pretix-hote:has(:global(.pretix-widget)) .pretix-attente,
+  /* Le message de chargement disparaît dès que Pretix a construit son widget (ou a échoué). */
+  .pretix-hote.pretix-hote--pret .pretix-attente,
   .pretix-hote.pretix-hote--erreur .pretix-attente {
     display: none;
   }
 
-  .pretix-hote.pretix-hote--erreur .pretix-erreur {
+  .pretix-hote.pretix-hote--erreur:not(.pretix-hote--pret) .pretix-erreur {
     display: block;
   }
 </style>

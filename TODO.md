@@ -4,9 +4,12 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 
 ## Avant le lancement (bloquant)
 
-- [ ] **Billetterie Pretix** : renseigner `pretixShopUrl` dans `src/data/billetterie.ts`
-      (URL de la boutique, avec le « / » final), puis tester un achat complet en mode test
-      Pretix : widget, panier, paiement Stripe, 3-D Secure, retour sur le site, e-mail du billet.
+- [ ] **Billetterie Pretix** : boutique branchée (`https://pretix.eu/lacompagnie/halloween26/`,
+      widget v2). Reste à tester un achat complet en mode test Pretix, sur mobile et desktop :
+      widget, panier, paiement Stripe / Apple Pay / Google Pay, 3-D Secure, retour sur le site,
+      e-mail du billet. Côté Pretix : couleur principale lisible avec du texte blanc (rouille
+      #a25b32 plutôt qu'ambre), CGV `https://dernieresseances.fr/cgv/` à accepter au paiement,
+      réservation du panier 30 minutes (article 3 des conditions).
 - [ ] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans
       `src/data/legal.ts`) : toutes les informations sont renseignées (le build signale
       tout champ remis à `null`). Mettre à jour la date `miseAJour` à chaque modification.

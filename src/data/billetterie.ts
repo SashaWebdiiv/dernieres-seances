@@ -6,4 +6,4 @@
  * (ex. "https://pretix.eu/organisateur/evenement/"). `null` tant qu'elle n'existe pas :
  * la section affiche un encart d'attente et aucun script tiers n'est chargé.
  */
-export const pretixShopUrl: string | null = null;
+export const pretixShopUrl: string | null = "https://pretix.eu/lacompagnie/halloween26/";
