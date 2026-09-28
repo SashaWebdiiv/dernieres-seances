@@ -50,8 +50,11 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 - [ ] Dans GA4 : Administration → Collecte et conservation des données → conservation des
       données sur **14 mois** (annoncé dans la politique de confidentialité) ; laisser les
       signaux Google désactivés.
-- [ ] Déclarer en « événements clés » : `clic_billetterie` (paramètre `emplacement`),
-      `billetterie_affichee`, `billetterie_erreur`.
+- [ ] Après la mise en ligne et un premier clic (événement visible sous 24 h dans
+      Administration → Événements → Événements récents) : étoiler `clic_billetterie` pour en
+      faire le seul événement clé. `billetterie_affichee` et `billetterie_erreur` restent des
+      événements simples (indicateurs techniques). Retirer l'étoile des événements par défaut
+      de Google (`close_convert_lead`, `qualify_lead`) : le site ne les envoie jamais.
 - [ ] Les achats se font dans Pretix : suivre les ventes dans les statistiques Pretix (GA ne
       voit pas le paiement).
 
