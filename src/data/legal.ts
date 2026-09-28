@@ -71,21 +71,16 @@ export const conservation = {
 };
 
 /**
- * Conditions générales de vente : choix que seul le bureau peut faire. `null` affiche
- * un repère « [À compléter] » avec une suggestion sur la page `/cgv/`.
+ * Conditions de vente (`/cgv/`) : texte fourni par l'association. Seule la mention de TVA
+ * reste à confirmer par le comptable ; `null` affiche un repère « [À compléter] ».
  */
-export const cgv: Record<"mentionTva" | "fraisReservation" | "echange" | "delaiRemboursement", string | null> = {
-  mentionTva: "TVA non applicable, article 293 B du CGI.",
-  fraisReservation: "Aucun frais ne s'ajoute au prix affiché.",
-  /** Échange de créneau ou d'activité à la demande du client. */
-  echange:
-    "Un changement de créneau est possible jusqu'à 48 h avant, selon les disponibilités, sur demande par e-mail. Les billets ne sont pas remboursés.",
-  /** Délai de remboursement si l'organisateur annule, inséré dans la phrase de l'article 9. */
-  delaiRemboursement: "dans un délai de 30 jours",
+export const cgv = {
+  /** Ex. « TVA non applicable, article 293 B du CGI. » si l'association bénéficie de la franchise. */
+  mentionTva: null as string | null,
 };
 
 /** Date affichée en tête des pages légales. À mettre à jour à chaque modification du contenu. */
-export const miseAJour = "27 septembre 2026";
+export const miseAJour = "28 septembre 2026";
 
 const manquantes = (champs: [string, string | null][]) =>
   champs.filter(([, valeur]) => valeur === null).map(([libelle]) => libelle);
@@ -98,11 +93,4 @@ export const manquants = manquantes([
   ["directeur de la publication", editeur.directeurPublication],
 ]);
 
-export const manquantsCgv = manquantes([
-  ["forme juridique", editeur.forme],
-  ["adresse du siège", editeur.siege],
-  ["mention de TVA", cgv.mentionTva],
-  ["frais de réservation", cgv.fraisReservation],
-  ["échange de billets", cgv.echange],
-  ["délai de remboursement", cgv.delaiRemboursement],
-]);
+export const manquantsCgv = manquantes([["mention de TVA", cgv.mentionTva]]);

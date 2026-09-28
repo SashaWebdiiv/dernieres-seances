@@ -1,139 +1,155 @@
 ---
 import LegalLayout from "../layouts/LegalLayout.astro";
 import AComplete from "../components/legal/AComplete.astro";
-import { cgv, editeur, manquantsCgv, prestataires } from "../data/legal";
-import { evenement } from "../data/seo";
-import { activites } from "../data/programme";
+import { cgv, manquantsCgv } from "../data/legal";
 
 /*
- * Trame de conditions générales de vente, à relire et valider par le bureau de l'association.
- * Les choix commerciaux (échange, remboursement, TVA, frais) sont dans `data/legal.ts`.
+ * Conditions de vente fournies par l'association (texte validé, repris tel quel).
  * L'URL de cette page est à renseigner dans Pretix comme conditions à accepter au paiement.
+ * Seule la mention de TVA reste à confirmer par le comptable : `cgv.mentionTva` dans `data/legal.ts`.
  */
-const agesMinimum = activites.map((a) => `${a.titre} : ${a.public}`);
 ---
 
 <LegalLayout
   manquants={manquantsCgv}
-  title="Conditions générales de vente"
+  title="Conditions de vente"
   description="Conditions de vente des billets de Dernières Séances, Halloween 2026 au Château de Sucy."
 >
-  <h2>1. Objet</h2>
+  <h2>1. Organisateur</h2>
   <p>
-    Les présentes conditions régissent la vente des billets de l'événement <strong>{evenement.nom}</strong>,
-    organisé au {evenement.lieu}, {evenement.rue}, {evenement.codePostal} {evenement.ville}, du 28 octobre
-    au 1er novembre 2026. Elles s'appliquent aux billets achetés en ligne comme sur place. Toute commande
-    vaut acceptation sans réserve des présentes conditions.
+    Les billets de « Dernières Séances », Halloween au Château de Sucy du 28 octobre au 1er novembre 2026, sont
+    vendus par l'association L'Acompagnie Improvisée (coordonnées dans les{" "}
+    <a href="/mentions-legales/">mentions légales</a>).
   </p>
 
-  <h2>2. Organisateur</h2>
-  <p>
-    <strong>{editeur.nom}</strong>, {editeur.forme ?? <AComplete label="forme juridique" />}, dont le siège est
-    situé au {editeur.siege ?? <AComplete label="adresse du siège" />}.<br />
-    Contact : <a href={`mailto:${editeur.email}`}>{editeur.email}</a> —{" "}
-    <a href={editeur.telephone.lien} class="whitespace-nowrap">{editeur.telephone.affiche}</a>
-  </p>
-
-  <h2>3. Billets et prix</h2>
-  <p>
-    Les activités, créneaux et tarifs sont ceux présentés sur le site et sur la billetterie au moment de la
-    commande. Les prix sont indiqués en euros, par personne.
-    {" "}{cgv.mentionTva ?? <AComplete label="mention de TVA, ex. « TVA non applicable, article 293 B du CGI »" />}
-  </p>
-  <p>
-    {cgv.fraisReservation ?? <AComplete label="frais de réservation, ex. « Aucun frais ne s'ajoute au prix affiché. »" />}
-  </p>
-  <p>
-    Les tarifs dépendent de l'âge du participant. Un justificatif d'âge peut être demandé à l'entrée ; à
-    défaut, le tarif correspondant à l'âge réel pourra être appliqué.
-  </p>
-
-  <h2>4. Commande en ligne</h2>
-  <p>
-    La commande s'effectue sur la billetterie en ligne, opérée par {prestataires.billetterie.nom} (Pretix) :
-    choix de l'activité, du créneau et du nombre de billets, saisie des coordonnées, acceptation des présentes
-    conditions, puis paiement. La commande est définitive une fois le paiement accepté. Un e-mail de
-    confirmation contenant le ou les billets est alors envoyé à l'adresse indiquée.
-  </p>
-  <p>
-    Les places étant limitées par créneau, elles sont attribuées dans l'ordre des commandes, dans la limite des
-    disponibilités.
-  </p>
-
-  <h2>5. Paiement</h2>
-  <p>
-    En ligne, le paiement s'effectue par carte bancaire via {prestataires.paiement.nom}, prestataire de paiement
-    sécurisé. Les données bancaires ne sont jamais transmises à l'organisateur.
-  </p>
-  <p>Sur place, pendant l'événement et dans la limite des places disponibles, le paiement s'effectue en espèces ou par carte bancaire.</p>
-
-  <h2>6. Absence de droit de rétractation</h2>
-  <p>
-    Conformément à l'article L221-28, 12° du Code de la consommation, le droit de rétractation ne s'applique
-    pas aux prestations d'activités de loisirs fournies à une date ou à une période déterminée.{" "}
-    <strong>Une fois la commande validée, les billets ne peuvent donc pas faire l'objet d'une rétractation.</strong>
-  </p>
-
-  <h2>7. Échange et annulation à votre demande</h2>
-  <p>
-    {cgv.echange ?? <AComplete label="politique d'échange, ex. « Un changement de créneau est possible jusqu'à 48 h avant, selon les disponibilités, sur demande par e-mail. Les billets ne sont pas remboursés. »" />}
-  </p>
-
-  <h2>8. Accès et déroulement</h2>
-  <p>
-    Chaque billet donne accès à une session de l'activité et du créneau choisis. Il est présenté à l'entrée,
-    imprimé ou sur téléphone, et n'est valable qu'une fois : toute copie est inutile.
-  </p>
-  <p>
-    Merci de vous présenter au moins 10 minutes avant votre créneau. Les sessions démarrent à l'heure exacte :
-    en cas de retard, l'accès à une autre session n'est pas garanti et le billet n'est pas remboursé.
-  </p>
-  <p>Âges requis par activité :</p>
+  <h2>2. Billets et formules</h2>
+  <p><strong>Parcours immersif au château :</strong></p>
   <ul>
-    {agesMinimum.map((ligne) => <li>{ligne}</li>)}
+    <li>P'tit Vampire (8 à 13 ans) : 8 €</li>
+    <li>Adulte (14 ans et plus) : 15 €</li>
+    <li>Combiné Duo (1 adulte et 1 enfant) : 21 €</li>
+    <li>Combiné Trio (1 adulte et 2 enfants) : 27 €</li>
+  </ul>
+  <p><strong>Expérience horrifique au château :</strong></p>
+  <ul>
+    <li>Sueurs Froides (14 ans et plus) : 15 €</li>
+    <li>Sueurs Froides groupe (10 personnes) : 120 €</li>
   </ul>
   <p>
-    L'accès peut être refusé, sans remboursement, à un participant qui ne respecte pas l'âge requis pour
-    l'activité. Les mineurs restent sous la responsabilité de leurs parents ou accompagnateurs.
-    L'Expérience horrifique est déconseillée aux personnes cardiaques, aux femmes enceintes et aux personnes
-    sensibles.
-  </p>
-  <p>
-    L'organisateur peut exclure, sans remboursement, toute personne dont le comportement met en danger ou
-    gêne les autres participants, les comédiens ou le lieu.
+    Chaque billet est valable pour une personne et un créneau. Les prix sont indiqués TTC.
+    {" "}{cgv.mentionTva ?? <AComplete label="mention de TVA, selon le comptable" />}
   </p>
 
-  <h2>9. Annulation ou modification par l'organisateur</h2>
+  <h2>3. Paiement</h2>
   <p>
-    En cas d'annulation d'une session ou de l'événement du fait de l'organisateur, les billets concernés sont
-    remboursés {cgv.delaiRemboursement ?? <AComplete label="délai, ex. « dans un délai de 30 jours »" />},
-    par le moyen de paiement utilisé lors de la commande.
-  </p>
-  <p>
-    Si les horaires ou le contenu d'une activité doivent être modifiés, les acheteurs sont prévenus par e-mail.
-    Ceux qui ne peuvent pas se présenter au nouveau créneau peuvent demander le remboursement de leurs billets.
+    Le paiement se fait en ligne par carte bancaire, Apple Pay ou Google Pay. La commande est confirmée à
+    réception du paiement. Une commande non payée sous 30 minutes est annulée et les places sont remises en
+    vente.
   </p>
 
-  <h2>10. Responsabilité</h2>
+  <h2>4. Billets</h2>
   <p>
-    Les participants sont tenus de respecter les consignes de l'équipe et le règlement du lieu. L'organisateur
-    ne saurait être tenu responsable de la perte, du vol ou de la détérioration des effets personnels.
+    Les billets sont envoyés par mail après paiement et restent téléchargeables depuis le lien de la commande.
+    Présentez-les à l'entrée, sur téléphone ou imprimés. Chaque billet ne peut être scanné qu'une fois.
   </p>
 
-  <h2>11. Données personnelles</h2>
+  <h2>5. Pas de droit de rétractation, pas de remboursement</h2>
   <p>
-    Les données collectées lors de la commande sont traitées conformément à notre
-    {" "}<a href="/confidentialite/">politique de confidentialité</a>.
+    Conformément à l'article L221-28 12° du Code de la consommation, le droit de rétractation ne s'applique pas
+    aux activités de loisirs prévues à une date déterminée. Les billets ne sont ni remboursables ni revendables.
   </p>
 
-  <h2>12. Réclamations</h2>
+  <h2>6. Changement de créneau</h2>
   <p>
-    Toute réclamation peut être adressée à <a href={`mailto:${editeur.email}`}>{editeur.email}</a>.
+    Vous pouvez demander à changer de créneau jusqu'à 48 heures avant, par mail à{" "}
+    <a href="mailto:support@dernieresseances.fr">support@dernieresseances.fr</a>, avec votre numéro de commande.
+    Nous faisons notre possible selon les places disponibles, sans garantie.
   </p>
 
-  <h2>13. Droit applicable</h2>
+  <h2>7. Arrivée et retards</h2>
   <p>
-    Les présentes conditions sont soumises au droit français. À défaut d'accord amiable, le litige est porté
-    devant les juridictions compétentes selon les règles de droit commun.
+    Présentez-vous 15 minutes avant votre créneau. Les groupes partent à l'heure exacte. En cas de retard, nous
+    vous proposons le prochain créneau disponible, sans garantie de place et sans remboursement.
   </p>
+
+  <h2>8. Âges</h2>
+  <p>Le parcours immersif est interdit aux moins de 8 ans.</p>
+  <p>
+    L'expérience horrifique est strictement interdite aux moins de 14 ans. Une pièce d'identité peut être
+    demandée. Une personne qui ne peut pas justifier de son âge peut se voir refuser l'entrée, sans remboursement.
+  </p>
+
+  <h2>9. Enfants et sensibilité</h2>
+  <p>
+    Le parcours immersif est conçu pour faire peur. Les horaires et le contenu sont adaptés à l'âge des
+    participants, mais chaque enfant réagit différemment. L'association recommande qu'un adulte accompagne les
+    8-13 ans. Le choix de laisser un enfant participer seul appartient à ses parents, qui restent responsables de
+    lui avant et après le parcours. Un adulte doit être présent à la sortie pour récupérer l'enfant à la fin du
+    parcours.
+  </p>
+
+  <h2>10. Ambiance et contre-indications</h2>
+  <p>
+    Les parcours se déroulent dans une lumière faible, avec de la fumée, des effets stroboscopiques, de la musique
+    forte, des cris et des apparitions soudaines. Ils sont déconseillés aux personnes sensibles, épileptiques,
+    cardiaques, souffrant de troubles respiratoires, ainsi qu'aux femmes enceintes.
+  </p>
+
+  <h2>11. Arrêter le parcours : le mot « compote »</h2>
+  <p>
+    À tout moment, si vous voulez arrêter, levez la main et dites « compote ». Le jeu s'arrête immédiatement pour
+    vous et un membre de l'équipe vous raccompagne vers la sortie. Arrêter en cours de route ne donne pas lieu à un
+    remboursement.
+  </p>
+
+  <h2>12. Sécurité et comportement</h2>
+  <p>
+    Le parcours comprend des escaliers et des passages peu éclairés. Merci de porter des chaussures adaptées, de
+    suivre les consignes de l'équipe, de ne pas courir, et de garder les mains le long du corps. Ne touchez ni les
+    décors ni les comédiens, et ne leur retirez jamais masque ou costume.
+  </p>
+  <p>
+    Il est interdit de fumer ou de vapoter dans le château, et d'y entrer avec une flamme ou tout objet pouvant
+    provoquer un feu (briquet, bougie, allumettes).
+  </p>
+  <p>
+    L'équipe peut refuser l'entrée ou exclure, sans remboursement, toute personne en état d'ivresse, au
+    comportement dangereux ou qui ne respecte pas ces consignes. Toute dégradation ou agression envers l'équipe
+    pourra faire l'objet de poursuites.
+  </p>
+
+  <h2>13. Déguisements et masques</h2>
+  <p>
+    Déguisements et maquillage sont les bienvenus partout. Les masques sont autorisés dans le jardin et au Jardin
+    Ensorcelé, mais doivent être retirés à l'intérieur du château. Les accessoires de déguisement ressemblant à
+    des armes ne sont pas admis dans le château. Il est interdit de se faire passer pour un membre de l'équipe ou
+    d'effrayer volontairement les autres visiteurs.
+  </p>
+
+  <h2>14. Photos et vidéos</h2>
+  <p>
+    Pendant le parcours, le flash est interdit et nous vous déconseillons de filmer : vous profiterez mieux de
+    l'expérience. Avant et après, postez, taguez, partagez autant que vous voulez. Juste un truc : gardez les
+    scènes et les rebondissements pour vous.
+  </p>
+
+  <h2>15. Annulation par l'organisateur</h2>
+  <p>
+    Si un créneau est annulé par l'association, nous vous proposons un report sur un autre créneau. Si vous le
+    refusez, votre billet est remboursé.
+  </p>
+
+  <h2>16. Données personnelles</h2>
+  <p>
+    Les données saisies lors de la commande (adresse mail, informations de commande) servent uniquement à la
+    gestion de votre réservation et à vous envoyer les informations pratiques sur l'événement. Elles ne sont ni
+    vendues ni cédées. Vous pouvez demander leur consultation, modification ou suppression à{" "}
+    <a href="mailto:contact@dernieresseances.fr">contact@dernieresseances.fr</a>.
+  </p>
+
+  <h2>17. Acceptation</h2>
+  <p>Toute commande implique l'acceptation des présentes conditions de vente.</p>
+
+  <h2>18. Droit applicable</h2>
+  <p>Les présentes conditions sont soumises au droit français.</p>
 </LegalLayout>
