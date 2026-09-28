@@ -4,7 +4,8 @@ import AComplete from "../components/legal/AComplete.astro";
 import { cgv, manquantsCgv } from "../data/legal";
 
 /*
- * Conditions de vente fournies par l'association (texte validé, repris tel quel).
+ * Conditions de vente fournies par l'association. Alignées sur la FAQ (arrivée 10 minutes avant,
+ * vente sur place) ; la FAQ reprend à l'inverse les articles 9 à 11 (peur, contre-indications, « compote »).
  * L'URL de cette page est à renseigner dans Pretix comme conditions à accepter au paiement.
  * Seule la mention de TVA reste à confirmer par le comptable : `cgv.mentionTva` dans `data/legal.ts`.
  */
@@ -36,7 +37,7 @@ import { cgv, manquantsCgv } from "../data/legal";
     <li>Sueurs Froides groupe (10 personnes) : 120 €</li>
   </ul>
   <p>
-    Chaque billet est valable pour une personne et un créneau. Les prix sont indiqués TTC.
+    Chaque billet est valable pour une personne et un créneau.
     {" "}{cgv.mentionTva ?? <AComplete label="mention de TVA, selon le comptable" />}
   </p>
 
@@ -45,6 +46,10 @@ import { cgv, manquantsCgv } from "../data/legal";
     Le paiement se fait en ligne par carte bancaire, Apple Pay ou Google Pay. La commande est confirmée à
     réception du paiement. Une commande non payée sous 30 minutes est annulée et les places sont remises en
     vente.
+  </p>
+  <p>
+    Pendant l'événement, les billets peuvent aussi être achetés sur place, dans la limite des places
+    disponibles, et réglés en espèces ou par carte bancaire.
   </p>
 
   <h2>4. Billets</h2>
@@ -68,7 +73,7 @@ import { cgv, manquantsCgv } from "../data/legal";
 
   <h2>7. Arrivée et retards</h2>
   <p>
-    Présentez-vous 15 minutes avant votre créneau. Les groupes partent à l'heure exacte. En cas de retard, nous
+    Présentez-vous 10 minutes avant votre créneau. Les groupes partent à l'heure exacte. En cas de retard, nous
     vous proposons le prochain créneau disponible, sans garantie de place et sans remboursement.
   </p>
 
@@ -150,6 +155,12 @@ import { cgv, manquantsCgv } from "../data/legal";
   <h2>17. Acceptation</h2>
   <p>Toute commande implique l'acceptation des présentes conditions de vente.</p>
 
-  <h2>18. Droit applicable</h2>
+  <h2>18. Réclamations</h2>
+  <p>
+    Toute réclamation peut être adressée à{" "}
+    <a href="mailto:support@dernieresseances.fr">support@dernieresseances.fr</a>.
+  </p>
+
+  <h2>19. Droit applicable</h2>
   <p>Les présentes conditions sont soumises au droit français.</p>
 </LegalLayout>

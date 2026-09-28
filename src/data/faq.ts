@@ -37,8 +37,10 @@ export const faqItems: FaqItem[] = [
   {
     question: "Le parcours fait-il peur ?",
     answer: [
-      "Le Parcours immersif au château est pensé comme une activité familiale : les enfants y deviennent acteurs de leur propre histoire, sans frissons.",
-      "L'Expérience horrifique, en revanche, est déconseillée aux personnes cardiaques : frissons garantis !",
+      "Oui, c'est fait pour ! Le Parcours immersif au château est conçu pour faire peur, avec des horaires et un contenu adaptés dès 8 ans. Chaque enfant réagit différemment : nous recommandons qu'un adulte accompagne les 8-13 ans.",
+      "L'Expérience horrifique, réservée aux 14 ans et plus, est plus intense encore : frissons garantis !",
+      "Lumière faible, fumée, effets stroboscopiques, musique forte et apparitions soudaines : les deux parcours sont déconseillés aux personnes sensibles, épileptiques, cardiaques ou souffrant de troubles respiratoires, ainsi qu'aux femmes enceintes.",
+      "À tout moment, levez la main et dites « compote » : le jeu s'arrête et un membre de l'équipe vous raccompagne vers la sortie.",
     ],
   },
   {

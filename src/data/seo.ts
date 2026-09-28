@@ -10,7 +10,7 @@ import { ouvertureBilletterie } from "./evenement";
 export const evenement = {
   nom: "Dernières Séances — Halloween 2026",
   description:
-    "Du 28 octobre au 1er novembre 2026, le Château de Sucy ouvre ses portes pour Halloween : parcours immersif en famille, expérience horrifique, jardin ensorcelé et parade.",
+    "Du 28 octobre au 1er novembre 2026, le Château de Sucy ouvre ses portes pour Halloween : parcours immersif dès 8 ans, expérience horrifique, jardin ensorcelé et parade.",
   debut: "2026-10-28",
   fin: "2026-11-01",
   lieu: "Château de Sucy",
