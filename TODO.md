@@ -10,6 +10,18 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       e-mail du billet. Côté Pretix : couleur principale lisible avec du texte blanc (rouille
       #a25b32 plutôt qu'ambre), CGV `https://dernieresseances.fr/cgv/` à accepter au paiement,
       réservation du panier 30 minutes (article 3 des conditions).
+- [ ] **Sélecteur de créneaux** (jour → expérience → créneau avec places restantes, puis page
+      Pretix du créneau ; code : `api/creneaux.ts`, `SelecteurCreneaux.astro`, `scripts/selecteur.ts`).
+      Tant que ce n'est pas fait, le widget Pretix s'affiche à sa place automatiquement.
+  - Pretix → Organisateur → Équipes : créer une équipe « Site web » limitée à l'événement
+    halloween26, avec uniquement la lecture (voir l'événement et ses réglages, sans aucun droit
+    de modification ni accès aux commandes), puis créer un jeton API dans l'onglet de l'équipe ;
+  - Vercel → projet dernieres-seances → Settings → Environment Variables : `PRETIX_TOKEN` =
+    ce jeton, pour Production et Preview (ne jamais le mettre dans le code ni l'envoyer par mail) ;
+  - redéployer, puis ouvrir `/api/creneaux` sur l'aperçu : doit renvoyer la liste des créneaux ;
+  - tester : choix du jour, de l'expérience, du créneau, arrivée sur la bonne page Pretix ;
+  - confirmer que les trous sont voulus : aucun créneau parcours à 16h50 (15h50 le 31) ni
+    horrifique à 21h40, tous les jours.
 - [x] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans
       `src/data/legal.ts`) : toutes les informations sont renseignées (le build signale
       tout champ remis à `null`). Mettre à jour la date `miseAJour` à chaque modification.
@@ -41,10 +53,12 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       Apps Script du formulaire (il continuerait d'accepter des envois).
 - [ ] **Google Analytics — vérifier la mesure** : ouvrir le site, « Tout accepter », puis
       GA4 → Rapports → Temps réel : la visite doit apparaître en moins d'une minute.
-- [ ] **Google Analytics — événement clé** : cliquer un bouton « J'achète mon billet ! »,
-      attendre que `clic_billetterie` apparaisse (jusqu'à 24 h) dans Administration →
-      Événements → Événements récents, puis l'étoiler : c'est le seul événement clé.
-      `billetterie_affichee` et `billetterie_erreur` restent des événements simples.
+- [ ] **Google Analytics — événement clé** : avec le sélecteur de créneaux, l'événement clé est
+      `billetterie_redirection` (départ vers Pretix avec un créneau choisi, le plus proche d'un
+      achat). Faire un parcours complet jusqu'à « Choisir mes billets », attendre qu'il apparaisse
+      (jusqu'à 24 h) dans Administration → Événements → Événements récents, puis l'étoiler.
+      Sans sélecteur (widget seul), étoiler `clic_billetterie` à la place. Les autres
+      (`clic_billetterie`, `billetterie_affichee`, `billetterie_erreur`) restent des événements simples.
       Retirer l'étoile de `close_convert_lead` et `qualify_lead` (défauts Google, jamais envoyés).
 - [ ] **Google Search Console** : déclarer le site, soumettre
       `https://dernieresseances.fr/sitemap.xml`, tester la page dans le

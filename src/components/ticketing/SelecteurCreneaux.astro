@@ -1,0 +1,126 @@
+---
+import { activites } from "../../data/programme";
+import { selecteurCreneaux } from "../../data/billetterie";
+
+/**
+ * Sélecteur de créneau : jour → expérience → créneau (places restantes), puis lien vers la page
+ * Pretix du créneau, où se font le choix des billets et le paiement. Les cinq jours sont visibles
+ * d'un coup, sans calendrier mensuel (le 1er novembre n'est plus caché sur le mois suivant).
+ *
+ * Choix = boutons radio natifs (clavier et lecteurs d'écran), habillés via `has-[:checked]`.
+ * Les options sont construites par `scripts/selecteur.ts` à partir des modèles `<template>`.
+ * En cas d'échec des données, le script masque le sélecteur et affiche le widget Pretix
+ * (`[data-billetterie-secours]`, voir `TicketScene.astro`).
+ */
+interface Props {
+  /** Boutique Pretix de l'événement, avec le « / » final. */
+  shopUrl: string;
+}
+
+const { shopUrl } = Astro.props;
+
+const experiences = selecteurCreneaux.experiences.map(({ id, activite }) => {
+  const source = activites.find((a) => a.id === activite);
+  if (!source) throw new Error(`[billetterie] activité « ${activite} » absente de data/programme.ts`);
+  return { id, titre: source.titre, public: source.public };
+});
+
+const etape = "block pb-4 text-left text-xs leading-4.5 font-semibold tracking-[2.64px] text-ambre uppercase";
+const option = [
+  "relative flex cursor-pointer flex-col rounded-lg border border-sable/25 bg-noir/60 text-creme transition-colors",
+  "hover:border-sable/60",
+  "has-[:checked]:border-ambre has-[:checked]:bg-ambre has-[:checked]:text-noir",
+  "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-ambre",
+  "has-[:disabled]:cursor-not-allowed has-[:disabled]:border-sable/10 has-[:disabled]:bg-noir/40 has-[:disabled]:text-sable/50",
+].join(" ");
+---
+
+<div
+  class="selecteur w-full max-w-166 rounded-lg border border-sable/15 bg-noir/75 p-4 text-left backdrop-blur-sm md:p-8"
+  data-selecteur
+  data-endpoint={selecteurCreneaux.endpoint}
+  data-boutique={shopUrl}
+  data-peu-de-places={selecteurCreneaux.peuDePlaces}
+  data-experiences={JSON.stringify(experiences)}
+>
+  <p class="py-10 text-center text-base text-sable/80" role="status" data-selecteur-statut>
+    Chargement des créneaux…
+  </p>
+
+  <form class="flex flex-col gap-10" hidden data-selecteur-formulaire>
+    <fieldset data-etape="jour">
+      <legend class={etape}>1. Choisissez votre jour</legend>
+      <div class="grid grid-cols-3 gap-2 sm:grid-cols-5" data-options></div>
+    </fieldset>
+
+    <fieldset hidden data-etape="experience">
+      <legend class={etape}>2. Choisissez votre expérience</legend>
+      <div class="grid gap-3 sm:grid-cols-2" data-options></div>
+    </fieldset>
+
+    <fieldset hidden data-etape="creneau">
+      <legend class={etape}>3. Choisissez votre créneau</legend>
+      <div class="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5" data-options></div>
+      <p class="pt-3 text-xs leading-4.5 text-sable/80">
+        Places restantes à titre indicatif, confirmées au moment de la commande.
+      </p>
+    </fieldset>
+
+    <div hidden class="flex flex-col items-stretch gap-3 border-t border-sable/15 pt-8" data-etape="validation">
+      <p class="text-center text-base text-creme" aria-live="polite" data-recapitulatif></p>
+      <a
+        href={shopUrl}
+        class="inline-flex h-14 items-center justify-center rounded-lg bg-ambre-vif px-6 text-center text-lg font-extrabold tracking-[0.05em] text-nuit transition-colors hover:bg-ambre-clair"
+        data-selecteur-lien
+      >
+        Choisir mes billets
+      </a>
+      <p class="text-center text-xs leading-4.5 text-sable/80">
+        Vous continuez sur notre billetterie Pretix pour choisir vos billets et payer.
+      </p>
+    </div>
+  </form>
+
+  <template data-modele="jour">
+    <label class={`${option} items-center gap-0.5 px-2 py-3 text-center`}>
+      <input type="radio" name="jour" class="sr-only" />
+      <span class="text-xs leading-4.5 font-semibold uppercase" data-texte="semaine"></span>
+      <span class="font-chiffres text-2xl leading-7" data-texte="date"></span>
+      <span class="text-xs leading-4.5" data-texte="etat"></span>
+    </label>
+  </template>
+
+  <template data-modele="experience">
+    <label class={`${option} gap-1 p-4`}>
+      <input type="radio" name="experience" class="sr-only" />
+      <span class="flex items-start justify-between gap-3">
+        <span class="text-lg leading-5.5 font-semibold" data-texte="titre"></span>
+        <span class="shrink-0 rounded border border-current px-2 py-1 text-xs leading-4 font-bold uppercase" data-texte="public"></span>
+      </span>
+      <span class="text-base leading-6" data-texte="horaires"></span>
+      <span class="text-xs leading-4.5" data-texte="etat"></span>
+    </label>
+  </template>
+
+  <template data-modele="creneau">
+    <label class={`${option} items-center px-2 py-2.5 text-center`}>
+      <input type="radio" name="creneau" class="sr-only" />
+      <span class="font-chiffres text-2xl leading-7" data-texte="heure"></span>
+      <span class="text-xs leading-4.5" data-texte="places"></span>
+    </label>
+  </template>
+</div>
+
+<noscript>
+  <style>
+    .selecteur {
+      display: none;
+    }
+  </style>
+</noscript>
+
+<script>
+  import { initSelecteur } from "../../scripts/selecteur";
+
+  initSelecteur();
+</script>
