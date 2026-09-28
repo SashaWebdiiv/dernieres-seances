@@ -5,6 +5,51 @@ const DELAI_ECHEC = 15_000;
 /** Au-delà, on cesse de guetter un widget arrivé en retard (il resterait masqué derrière l'erreur sinon). */
 const DELAI_ABANDON = 120_000;
 
+declare global {
+  interface Window {
+    /** API du widget Pretix v2 : https://docs.pretix.eu/guides/widget/ (« Loading widgets dynamically »). */
+    PretixWidget?: {
+      build_widgets: boolean;
+      buildWidgets: () => void;
+      open: (
+        boutique: string,
+        bon?: string | null,
+        creneau?: string | null,
+        billets?: { item: string; count: string }[],
+      ) => void;
+    };
+    pretixWidgetCallback?: () => void;
+  }
+}
+
+let chargement: Promise<void> | null = null;
+
+/**
+ * Charge une seule fois le script et la feuille de style du widget Pretix. Avec
+ * `construire: false`, Pretix ne construit pas les `<pretix-widget>` de la page (le sélecteur de
+ * créneaux n'a besoin que de `PretixWidget.open`, et le widget de secours reste caché).
+ */
+export function chargerScriptPretix(script: string, stylesheet: string, construire = true): Promise<void> {
+  if (chargement) return chargement;
+  if (!construire) {
+    window.pretixWidgetCallback = () => {
+      if (window.PretixWidget) window.PretixWidget.build_widgets = false;
+    };
+  }
+  chargement = new Promise((resolve, reject) => {
+    const link = Object.assign(document.createElement("link"), {
+      rel: "stylesheet",
+      href: stylesheet,
+      crossOrigin: "anonymous",
+    });
+    const tag = Object.assign(document.createElement("script"), { src: script, async: true, crossOrigin: "anonymous" });
+    tag.addEventListener("load", () => resolve());
+    tag.addEventListener("error", () => reject(new Error("script Pretix")));
+    document.head.append(link, tag);
+  });
+  return chargement;
+}
+
 /**
  * Vrai dès que Pretix a construit son widget dans l'hôte. Ne dépend pas de la structure
  * interne du widget (changée entre v1 et v2) : l'élément `<pretix-widget>` d'origine a été
@@ -52,18 +97,16 @@ export function loadPretixOnApproach(): () => void {
   };
 
   const load = ({ script, stylesheet }: DOMStringMap) => {
-    if (!script || !stylesheet || document.querySelector(`script[src="${script}"]`)) return;
-    const link = Object.assign(document.createElement("link"), {
-      rel: "stylesheet",
-      href: stylesheet,
-      crossOrigin: "anonymous",
-    });
-    const tag = Object.assign(document.createElement("script"), { src: script, async: true, crossOrigin: "anonymous" });
-    tag.addEventListener("error", () => {
-      hosts.forEach((host) => host.classList.add("pretix-hote--erreur"));
-      mesurer("billetterie_erreur", { cause: "script" });
-    });
-    document.head.append(link, tag);
+    if (!script || !stylesheet) return;
+    chargerScriptPretix(script, stylesheet)
+      .then(() => {
+        // Script déjà chargé par le sélecteur sans construction des widgets : on les construit maintenant.
+        if (window.PretixWidget && !window.PretixWidget.build_widgets) window.PretixWidget.buildWidgets();
+      })
+      .catch(() => {
+        hosts.forEach((host) => host.classList.add("pretix-hote--erreur"));
+        mesurer("billetterie_erreur", { cause: "script" });
+      });
   };
 
   const observer = new IntersectionObserver(

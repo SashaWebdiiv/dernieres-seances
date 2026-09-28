@@ -3,9 +3,11 @@ import { activites } from "../../data/programme";
 import { selecteurCreneaux } from "../../data/billetterie";
 
 /**
- * Sélecteur de créneau : jour → expérience → créneau (places restantes), puis lien vers la page
- * Pretix du créneau, où se font le choix des billets et le paiement. Les cinq jours sont visibles
+ * Sélecteur de créneau : jour → expérience → créneau (places restantes) → billets, puis paiement
+ * Pretix avec le panier déjà rempli (`PretixWidget.open` : fenêtre par-dessus le site sur grand
+ * écran, nouvel onglet sur mobile, comportement par défaut de Pretix). Les cinq jours sont visibles
  * d'un coup, sans calendrier mensuel (le 1er novembre n'est plus caché sur le mois suivant).
+ * Si le script Pretix n'est pas disponible au clic, le bouton mène à la page Pretix du créneau.
  *
  * Choix = boutons radio natifs (clavier et lecteurs d'écran), habillés via `has-[:checked]`.
  * Les options sont construites par `scripts/selecteur.ts` à partir des modèles `<template>`.
@@ -25,13 +27,18 @@ const experiences = selecteurCreneaux.experiences.map(({ id, activite }) => {
   return { id, titre: source.titre, public: source.public };
 });
 
-const etape = "block pb-4 text-left text-xs leading-4.5 font-semibold tracking-[2.64px] text-ambre uppercase";
+const titreEtape = "block text-left text-xs leading-4.5 font-semibold tracking-[2.64px] text-ambre uppercase";
+const etape = `${titreEtape} pb-4`;
 const option = [
   "relative flex cursor-pointer flex-col rounded-lg border border-sable/25 bg-noir/60 text-creme transition-colors",
   "hover:border-sable/60",
   "has-[:checked]:border-ambre has-[:checked]:bg-ambre has-[:checked]:text-noir",
   "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-ambre",
   "has-[:disabled]:cursor-not-allowed has-[:disabled]:border-sable/10 has-[:disabled]:bg-noir/40 has-[:disabled]:text-sable/50",
+].join(" ");
+const pas = [
+  "flex size-11 cursor-pointer items-center justify-center rounded-full border border-sable/40 text-xl text-creme transition-colors",
+  "hover:border-ambre hover:text-ambre disabled:cursor-not-allowed disabled:border-sable/15 disabled:text-sable/40",
 ].join(" ");
 ---
 
@@ -40,6 +47,8 @@ const option = [
   data-selecteur
   data-endpoint={selecteurCreneaux.endpoint}
   data-boutique={shopUrl}
+  data-script={new URL("/widget/v2.fr.js", shopUrl).href}
+  data-stylesheet={new URL("widget/v2.css", shopUrl).href}
   data-peu-de-places={selecteurCreneaux.peuDePlaces}
   data-experiences={JSON.stringify(experiences)}
 >
@@ -66,18 +75,29 @@ const option = [
       </p>
     </fieldset>
 
-    <div hidden class="flex flex-col items-stretch gap-3 border-t border-sable/15 pt-8" data-etape="validation">
-      <p class="text-center text-base text-creme" aria-live="polite" data-recapitulatif></p>
-      <a
-        href={shopUrl}
-        class="inline-flex h-14 items-center justify-center rounded-lg bg-ambre-vif px-6 text-center text-lg font-extrabold tracking-[0.05em] text-nuit transition-colors hover:bg-ambre-clair"
-        data-selecteur-lien
-      >
-        Choisir mes billets
-      </a>
-      <p class="text-center text-xs leading-4.5 text-sable/80">
-        Vous continuez sur notre billetterie Pretix pour choisir vos billets et payer.
-      </p>
+    <div hidden class="flex flex-col gap-4" data-etape="billets" role="group" aria-labelledby="titre-billets">
+      <p id="titre-billets" class={titreEtape}>4. Choisissez vos billets</p>
+      <p class="text-base text-creme" data-recapitulatif></p>
+      <ul class="flex flex-col" data-options></ul>
+
+      <div class="flex flex-col items-stretch gap-3 border-t border-sable/15 pt-6">
+        <p class="text-center text-base text-sable/85" aria-live="polite" data-total>Aucun billet choisi</p>
+        <p hidden class="text-center text-sm leading-5 text-ambre" role="status" data-panier>
+          Votre panier reste ouvert sur la billetterie : les billets choisis maintenant s'y ajouteront. Vous
+          pourrez tout vérifier et retirer avant de payer.
+        </p>
+        <button
+          type="button"
+          disabled
+          class="inline-flex h-14 cursor-pointer items-center justify-center rounded-lg bg-ambre-vif px-6 text-center text-lg font-extrabold tracking-[0.05em] text-nuit transition-colors hover:bg-ambre-clair disabled:cursor-not-allowed disabled:bg-sable/20 disabled:text-sable/70"
+          data-payer
+        >
+          Choisir au moins un billet
+        </button>
+        <p class="text-center text-xs leading-4.5 text-sable/80">
+          Paiement sécurisé sur notre billetterie Pretix : vos billets y sont déjà dans le panier.
+        </p>
+      </div>
     </div>
   </form>
 
@@ -100,6 +120,20 @@ const option = [
       <span class="text-base leading-6" data-texte="horaires"></span>
       <span class="text-xs leading-4.5" data-texte="etat"></span>
     </label>
+  </template>
+
+  <template data-modele="billet">
+    <li class="flex items-center justify-between gap-4 border-b border-sable/10 py-3 last:border-b-0">
+      <span class="flex min-w-0 flex-col">
+        <span class="text-base leading-6 font-semibold text-creme" data-texte="nom"></span>
+        <span class="text-sm leading-5 text-sable/85" data-texte="detail"></span>
+      </span>
+      <span class="flex shrink-0 items-center gap-2" role="group" data-groupe>
+        <button type="button" class={pas} data-moins>−</button>
+        <span class="w-8 text-center font-chiffres text-2xl leading-7 text-creme" data-quantite>0</span>
+        <button type="button" class={pas} data-plus>+</button>
+      </span>
+    </li>
   </template>
 
   <template data-modele="creneau">

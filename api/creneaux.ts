@@ -1,6 +1,6 @@
 /**
- * GET /api/creneaux — créneaux de la billetterie et places restantes, pour le sélecteur du site
- * (`src/components/ticketing/SelecteurCreneaux.astro`).
+ * GET /api/creneaux — créneaux de la billetterie, places restantes et billets en vente, pour le
+ * sélecteur du site (`src/components/ticketing/SelecteurCreneaux.astro`).
  *
  * Fonction Vercel (dossier `api/`) : le site Astro reste entièrement statique à côté.
  * Elle lit l'API REST de Pretix avec un jeton d'équipe en lecture seule, stocké dans la variable
@@ -10,8 +10,11 @@
  * par minute, quel que soit le nombre de visiteurs. Le nombre de places affiché peut donc avoir
  * 30 s de retard ; Pretix revérifie de toute façon les places au moment du panier.
  *
+ * Noms et prix des billets viennent aussi de Pretix : un changement de prix y suffit.
+ *
  * Doc : https://docs.pretix.eu/dev/api/resources/subevents.html
  *       https://docs.pretix.eu/dev/api/resources/quotas.html
+ *       https://docs.pretix.eu/dev/api/resources/items.html
  */
 
 /** Même organisateur et même événement que `pretixShopUrl` (`src/data/billetterie.ts`). */
@@ -26,6 +29,15 @@ const PRODUITS_PLACE = {
   parcours: 1162101, // Adulte (14 ans et plus)
   horrifique: 1162102, // Sueurs Froides (14 ans et plus)
 } as const;
+
+/**
+ * Billets proposés par le sélecteur pour chaque expérience, dans l'ordre d'affichage.
+ * Un nouveau produit Pretix n'apparaît sur le site qu'une fois ajouté ici.
+ */
+const BILLETS: Record<keyof typeof PRODUITS_PLACE, number[]> = {
+  parcours: [1162100, 1162101, 1162103, 1162104], // P'tit Vampire, Adulte, Duo, Trio
+  horrifique: [1162102, 1162105], // Sueurs Froides, Sueurs Froides groupe
+};
 
 const DELAI_REQUETE = 8_000;
 
@@ -46,10 +58,26 @@ export interface Creneau {
   places: number | null;
 }
 
+export interface Billet {
+  id: number;
+  experience: ExperienceId;
+  nom: string;
+  /** Prix TTC en euros. */
+  prix: number;
+  /**
+   * Places consommées par un billet : 1 pour un billet d'entrée, plus les places d'entrée
+   * incluses (produits groupés). Un Duo « sans admission » avec 2 entrées en consomme 2.
+   */
+  places: number;
+  /** Nombre maximum par commande fixé sur le produit ; `null` : pas de limite propre. */
+  max: number | null;
+}
+
 export interface ReponseCreneaux {
   /** Date de lecture dans Pretix (ISO 8601). */
   maj: string;
   creneaux: Creneau[];
+  billets: Billet[];
 }
 
 interface PageApi<T> {
@@ -64,6 +92,18 @@ interface SubEventApi {
   active: boolean;
   is_public?: boolean;
   presale_end: string | null;
+}
+
+interface ItemApi {
+  id: number;
+  name: string | Record<string, string>;
+  active: boolean;
+  admission: boolean;
+  default_price: string;
+  max_per_order: number | null;
+  require_voucher?: boolean;
+  hide_without_voucher?: boolean;
+  bundles?: { bundled_item: number; count: number }[];
 }
 
 interface QuotaApi {
@@ -113,6 +153,32 @@ const aParis = (iso: string) => {
   return { jour: `${parties.year}-${parties.month}-${parties.day}`, heure: `${parties.hour}:${parties.minute}` };
 };
 
+const nomFrancais = (nom: ItemApi["name"]) => (typeof nom === "string" ? nom : (nom.fr ?? Object.values(nom)[0] ?? ""));
+
+/** Billets en vente sur le site, avec les places que chacun consomme (entrées incluses comprises). */
+const lireBillets = (items: ItemApi[]): Billet[] => {
+  const parId = new Map(items.map((item) => [item.id, item]));
+  return (Object.keys(BILLETS) as ExperienceId[]).flatMap((experience) =>
+    BILLETS[experience].flatMap((id): Billet[] => {
+      const item = parId.get(id);
+      if (!item || !item.active || item.require_voucher || item.hide_without_voucher) return [];
+      const incluses = (item.bundles ?? [])
+        .filter((bundle) => parId.get(bundle.bundled_item)?.admission !== false)
+        .reduce((total, bundle) => total + bundle.count, 0);
+      return [
+        {
+          id,
+          experience,
+          nom: nomFrancais(item.name),
+          prix: Number(item.default_price),
+          places: (item.admission ? 1 : 0) + incluses,
+          max: item.max_per_order ?? null,
+        },
+      ];
+    }),
+  );
+};
+
 const json = (corps: unknown, statut: number, cache: string) =>
   new Response(JSON.stringify(corps), {
     status: statut,
@@ -124,9 +190,10 @@ export async function GET(): Promise<Response> {
   if (!jeton) return json({ erreur: "PRETIX_TOKEN absent" }, 503, "no-store");
 
   try {
-    const [creneauxApi, quotas] = await Promise.all([
+    const [creneauxApi, quotas, items] = await Promise.all([
       lireTout<SubEventApi>("subevents/", jeton),
       lireTout<QuotaApi>("quotas/?with_availability=true", jeton),
+      lireTout<ItemApi>("items/", jeton),
     ]);
 
     // Pour chaque créneau : son expérience et le plus petit nombre de places parmi ses quotas.
@@ -158,7 +225,7 @@ export async function GET(): Promise<Response> {
       })
       .sort((a, b) => (a.jour + a.heure).localeCompare(b.jour + b.heure));
 
-    const corps: ReponseCreneaux = { maj: new Date(maintenant).toISOString(), creneaux };
+    const corps: ReponseCreneaux = { maj: new Date(maintenant).toISOString(), creneaux, billets: lireBillets(items) };
     return json(corps, 200, "public, max-age=0, s-maxage=30, stale-while-revalidate=30");
   } catch (erreur) {
     console.error("[creneaux]", erreur);

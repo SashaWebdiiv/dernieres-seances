@@ -10,8 +10,8 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       e-mail du billet. Côté Pretix : couleur principale lisible avec du texte blanc (rouille
       #a25b32 plutôt qu'ambre), CGV `https://dernieresseances.fr/cgv/` à accepter au paiement,
       réservation du panier 30 minutes (article 3 des conditions).
-- [ ] **Sélecteur de créneaux** (jour → expérience → créneau avec places restantes, puis page
-      Pretix du créneau ; code : `api/creneaux.ts`, `SelecteurCreneaux.astro`, `scripts/selecteur.ts`).
+- [ ] **Sélecteur de créneaux** (jour → expérience → créneau avec places restantes → billets, puis
+      paiement Pretix avec le panier rempli ; code : `api/creneaux.ts`, `SelecteurCreneaux.astro`, `scripts/selecteur.ts`).
       Tant que ce n'est pas fait, le widget Pretix s'affiche à sa place automatiquement.
   - Pretix → Organisateur → Équipes : créer une équipe « Site web » limitée à l'événement
     halloween26, avec uniquement la lecture (voir l'événement et ses réglages, sans aucun droit
@@ -19,7 +19,9 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
   - Vercel → projet dernieres-seances → Settings → Environment Variables : `PRETIX_TOKEN` =
     ce jeton, pour Production et Preview (ne jamais le mettre dans le code ni l'envoyer par mail) ;
   - redéployer, puis ouvrir `/api/creneaux` sur l'aperçu : doit renvoyer la liste des créneaux ;
-  - tester : choix du jour, de l'expérience, du créneau, arrivée sur la bonne page Pretix ;
+  - tester : jour, expérience, créneau, billets (+ / −), puis « Payer » : le panier Pretix doit
+    contenir exactement ces billets, sur le bon créneau (fenêtre sur ordinateur, nouvel onglet sur
+    mobile). Vérifier qu'un Duo compte bien 2 places et un Trio 3 dans le compteur ;
   - confirmer que les trous sont voulus : aucun créneau parcours à 16h50 (15h50 le 31) ni
     horrifique à 21h40, tous les jours.
 - [x] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans
