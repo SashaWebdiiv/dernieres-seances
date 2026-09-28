@@ -25,11 +25,23 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
   - passer `accueilHref` à `"/"` dans `src/data/navigation.ts` (retour depuis les pages légales) ;
   - faire de `/visite` une redirection 301 vers `/` (ou supprimer la page) ;
   - vérifier que le sitemap (`src/pages/sitemap.xml.ts`) ne liste que `/`.
-- [ ] **Après la bascule** : déclarer le site dans Google Search Console, soumettre
-      `https://dernieresseances.fr/sitemap.xml`, tester la page dans le
-      [test des résultats enrichis](https://search.google.com/test/rich-results) (événement).
 - [ ] **Tests sur vrais appareils** : iPhone (Safari), Android (Chrome), tablette ; scroll,
       menu burger, bouton de réservation fixe, widget Pretix, mode « mouvement réduit ».
+
+## Une fois le site en ligne sur dernieresseances.fr
+
+- [ ] **Google Analytics — vérifier la mesure** : ouvrir le site, « Tout accepter », puis
+      GA4 → Rapports → Temps réel : la visite doit apparaître en moins d'une minute.
+- [ ] **Google Analytics — événement clé** : cliquer un bouton « J'achète mon billet ! »,
+      attendre que `clic_billetterie` apparaisse (jusqu'à 24 h) dans Administration →
+      Événements → Événements récents, puis l'étoiler : c'est le seul événement clé.
+      `billetterie_affichee` et `billetterie_erreur` restent des événements simples.
+      Retirer l'étoile de `close_convert_lead` et `qualify_lead` (défauts Google, jamais envoyés).
+- [ ] **Google Search Console** : déclarer le site, soumettre
+      `https://dernieresseances.fr/sitemap.xml`, tester la page dans le
+      [test des résultats enrichis](https://search.google.com/test/rich-results) (événement).
+- [ ] **Achat réel de contrôle** sur le site en ligne (widget Pretix, paiement, e-mail du billet),
+      puis remboursement depuis Pretix.
 
 ## Images
 
@@ -50,11 +62,6 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 - [ ] Dans GA4 : Administration → Collecte et conservation des données → conservation des
       données sur **14 mois** (annoncé dans la politique de confidentialité) ; laisser les
       signaux Google désactivés.
-- [ ] Après la mise en ligne et un premier clic (événement visible sous 24 h dans
-      Administration → Événements → Événements récents) : étoiler `clic_billetterie` pour en
-      faire le seul événement clé. `billetterie_affichee` et `billetterie_erreur` restent des
-      événements simples (indicateurs techniques). Retirer l'étoile des événements par défaut
-      de Google (`close_convert_lead`, `qualify_lead`) : le site ne les envoie jamais.
 - [ ] Les achats se font dans Pretix : suivre les ventes dans les statistiques Pretix (GA ne
       voit pas le paiement).
 
