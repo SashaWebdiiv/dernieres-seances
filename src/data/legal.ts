@@ -75,8 +75,8 @@ export const conservation = {
  * reste à confirmer par le comptable ; `null` affiche un repère « [À compléter] ».
  */
 export const cgv = {
-  /** Ex. « TVA non applicable, article 293 B du CGI. » si l'association bénéficie de la franchise. */
-  mentionTva: null as string | null,
+  /** Provisoire, en attendant le comptable (ex. « TVA non applicable, article 293 B du CGI. »). */
+  mentionTva: "TVA non applicable." as string | null,
 };
 
 /** Date affichée en tête des pages légales. À mettre à jour à chaque modification du contenu. */

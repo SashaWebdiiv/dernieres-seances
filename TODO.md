@@ -14,7 +14,8 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       1er novembre 2026).
 - [ ] **Conditions générales de vente** (`/cgv/`) : faire relire et valider par le bureau,
       puis renseigner l'URL `https://dernieresseances.fr/cgv/` dans Pretix comme conditions à
-      accepter au paiement.
+      accepter au paiement. Mention de TVA provisoire (« TVA non applicable. ») : la faire
+      confirmer par le comptable, avec l'article du CGI qui s'applique (`cgv.mentionTva`).
 - [ ] **Bascule `/visite` → `/`** :
   - remplacer le contenu de `src/pages/index.astro` par celui de `src/pages/visite.astro` ;
   - retirer la prop `noindex` ;
