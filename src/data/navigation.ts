@@ -4,11 +4,11 @@ export interface NavLink {
   label: string;
 }
 
-/** Barre supérieure (maquette 63:5). */
+/** Barre supérieure (maquette 63:5), dans l'ordre des sections de la page. */
 export const navLinks: NavLink[] = [
+  { href: "#calendrier", label: "Calendrier" },
   { href: "#experience", label: "L'expérience" },
   { href: "#programme", label: "Programme" },
-  { href: "#calendrier", label: "Calendrier" },
   { href: "#faq", label: "FAQ" },
 ];
 
