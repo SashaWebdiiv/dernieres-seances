@@ -42,10 +42,11 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 
 ## Mesure d'audience (Google Analytics 4 + bandeau de consentement)
 
-- [ ] Créer la propriété GA4 et son flux Web `https://dernieresseances.fr`, puis renseigner
-      l'identifiant de mesure (« G-… ») dans `gaMeasurementId` (`src/data/analytics.ts`) :
-      le bandeau, le lien « Gestion des cookies » et les paragraphes de la politique de
-      confidentialité s'activent automatiquement.
+- [x] Propriété GA4 « Dernières Séances », flux `https://dernieresseances.fr`, identifiant
+      `G-Y58ZH9T32G` branché (`src/data/analytics.ts`). Ne jamais coller la balise gtag de
+      Google dans le `<head>` : elle se chargerait avant le consentement.
+- [ ] Dans le flux : Mesures améliorées → Pages vues → décocher « changements de page basés
+      sur l'historique du navigateur » (sinon chaque clic de menu compte comme une page vue).
 - [ ] Dans GA4 : Administration → Collecte et conservation des données → conservation des
       données sur **14 mois** (annoncé dans la politique de confidentialité) ; laisser les
       signaux Google désactivés.

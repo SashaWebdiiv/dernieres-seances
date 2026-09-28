@@ -4,7 +4,7 @@
  * `gaMeasurementId` : identifiant de mesure du flux Web GA4 (« G-XXXXXXXXXX »).
  * `null` : aucune mesure et aucun bandeau (le bandeau n'existe que s'il y a un traceur).
  */
-export const gaMeasurementId: string | null = null;
+export const gaMeasurementId: string | null = "G-Y58ZH9T32G";
 
 /** Domaines mesurés : ni le développement local ni les aperçus Vercel ne remontent de données. */
 export const domainesMesures = ["dernieresseances.fr", "www.dernieresseances.fr"];
