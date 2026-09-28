@@ -2,14 +2,17 @@
 import LegalLayout from "../layouts/LegalLayout.astro";
 import AComplete from "../components/legal/AComplete.astro";
 import { conservation, editeur, hebergeur, manquants, prestataires } from "../data/legal";
+import { gaMeasurementId } from "../data/analytics";
 
 /*
  * Information des personnes (RGPD, art. 13). Décrit ce que le site fait réellement :
  * formulaire de pré-réservation (Google Sheets), billetterie Pretix + Stripe, contact,
- * journaux de l'hébergeur. Aucune mesure d'audience ni publicité à ce jour : si un outil
- * est ajouté, cette page doit être mise à jour avant sa mise en ligne.
+ * journaux de l'hébergeur, et Google Analytics avec consentement quand `gaMeasurementId` est
+ * renseigné (`data/analytics.ts`) : les paragraphes correspondants suivent automatiquement.
+ * Aucune publicité. Tout nouvel outil doit être décrit ici avant sa mise en ligne.
  */
 const { billetterie, paiement, formulaire } = prestataires;
+const mesure = gaMeasurementId !== null;
 ---
 
 <LegalLayout
@@ -69,10 +72,30 @@ const { billetterie, paiement, formulaire } = prestataires;
 
   <h3>Navigation sur le site</h3>
   <p>
-    Le site ne comporte aucun outil de mesure d'audience ni de publicité, et ne vous demande aucune
-    information pour être consulté. Comme tout hébergeur, {hebergeur.nom} enregistre des journaux techniques
-    (adresse IP, date, page demandée) nécessaires à la sécurité et au bon fonctionnement du service.
+    Le site ne comporte aucune publicité et ne vous demande aucune information pour être consulté. Comme tout
+    hébergeur, {hebergeur.nom} enregistre des journaux techniques (adresse IP, date, page demandée) nécessaires
+    à la sécurité et au bon fonctionnement du service.
   </p>
+  {
+    mesure ? (
+      <>
+        <h3>Mesure d'audience</h3>
+        <p>
+          <strong>Uniquement si vous l'acceptez</strong>, nous utilisons Google Analytics pour mesurer la
+          fréquentation du site : pages consultées, durée de visite, provenance (moteur de recherche, réseau
+          social…), type d'appareil et de navigateur, ville ou région approximative, et clics vers la billetterie.
+          Ces statistiques servent uniquement à améliorer le site et la communication de l'événement. Les signaux
+          publicitaires de Google sont désactivés.
+        </p>
+        <ul>
+          <li><strong>Base légale :</strong> votre consentement, que vous pouvez retirer à tout moment.</li>
+          <li><strong>Conservation :</strong> 14 mois au plus dans Google Analytics.</li>
+        </ul>
+      </>
+    ) : (
+      <p>Le site ne comporte aucun outil de mesure d'audience.</p>
+    )
+  }
 
   <h2>Qui a accès à vos données</h2>
   <p>
@@ -90,7 +113,8 @@ const { billetterie, paiement, formulaire } = prestataires;
       {" "}<a href={paiement.site} rel="noopener">politique de confidentialité de Stripe</a>
     </li>
     <li>
-      <strong>{formulaire.nom}</strong> (Google Sheets, stockage des pré-réservations), {formulaire.adresse} —
+      <strong>{formulaire.nom}</strong> (Google Sheets, stockage des pré-réservations
+      {mesure && " ; Google Analytics, mesure d'audience"}), {formulaire.adresse} —
       {" "}<a href={formulaire.site} rel="noopener">règles de confidentialité de Google</a>
     </li>
     <li><strong>{hebergeur.nom}</strong> (hébergement du site), {hebergeur.adresse}</li>
@@ -101,11 +125,35 @@ const { billetterie, paiement, formulaire } = prestataires;
     d'adéquation de la Commission européenne ou clauses contractuelles types).
   </p>
 
-  <h2>Cookies</h2>
-  <p>
-    Ce site ne dépose lui-même aucun cookie. Les polices et images sont servies depuis le site, sans faire
-    appel à des services tiers.
-  </p>
+  <h2 id="cookies">Cookies</h2>
+  {
+    mesure ? (
+      <>
+        <p>
+          Ce site ne dépose aucun cookie sans votre accord. Les polices et images sont servies depuis le site,
+          sans faire appel à des services tiers.
+        </p>
+        <p>
+          <strong>Si vous acceptez la mesure d'audience</strong>, Google Analytics dépose les cookies
+          {" "}<code>_ga</code> et <code>_ga_…</code>, qui distinguent les visites. Leur durée de vie est limitée à
+          13 mois. Si vous refusez ou ne répondez pas, aucun cookie n'est déposé et rien n'est envoyé à Google.
+        </p>
+        <p>
+          Votre choix est conservé 6 mois dans votre navigateur, sans cookie, puis vous est demandé à nouveau.
+          Vous pouvez le modifier à tout moment :{" "}
+          <button type="button" class="cursor-pointer text-ambre underline underline-offset-3" data-cookies-ouvrir>
+            gérer mes cookies
+          </button>
+          . Un retrait du consentement arrête immédiatement la mesure et efface ces cookies.
+        </p>
+      </>
+    ) : (
+      <p>
+        Ce site ne dépose lui-même aucun cookie. Les polices et images sont servies depuis le site, sans faire
+        appel à des services tiers.
+      </p>
+    )
+  }
   <p>
     Lorsque vous utilisez la billetterie, Pretix et, au moment du paiement, Stripe peuvent déposer des cookies
     strictement nécessaires au fonctionnement du panier, à la sécurité du paiement et à la prévention de la

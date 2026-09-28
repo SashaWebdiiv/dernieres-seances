@@ -3,12 +3,14 @@ import { Image } from "astro:assets";
 import ImmersiveLayout from "./ImmersiveLayout.astro";
 import { accueilHref } from "../data/navigation";
 import { miseAJour } from "../data/legal";
+import { gaMeasurementId } from "../data/analytics";
 import { evenement } from "../data/seo";
 import logoCompagnie from "../assets/logos/acompagnie-improvisee.png";
 import logoSucy from "../assets/logos/ville-sucy.png";
 
 /**
- * Pages légales : texte long sur fond noir, sans décor ni animation (aucun script chargé).
+ * Pages légales : texte long sur fond noir, sans décor ni animation (seul le script du
+ * consentement aux cookies est chargé, s'il y a une mesure d'audience).
  * Hors index : elles n'apportent rien en recherche et restent atteignables par le pied de page.
  */
 interface Props {
@@ -67,6 +69,15 @@ const lien = "underline-offset-4 hover:text-creme hover:underline";
               </a>
             </li>
           ))
+        }
+        {
+          gaMeasurementId && (
+            <li>
+              <button type="button" class:list={[lien, "cursor-pointer"]} data-cookies-ouvrir>
+                Gestion des cookies
+              </button>
+            </li>
+          )
         }
         <li><a href={accueilHref} class={lien}>Retour au site</a></li>
       </ul>

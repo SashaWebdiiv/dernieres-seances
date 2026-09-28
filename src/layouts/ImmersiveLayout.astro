@@ -6,6 +6,7 @@ import interItalique from "@fontsource/inter/files/inter-latin-400-italic.woff2?
 import "@fontsource/new-rocker/400.css";
 import "@fontsource/bebas-neue/400.css";
 import "../styles/immersive.css";
+import CookieBanner from "../components/consent/CookieBanner.astro";
 import ogImage from "../assets/scenes/facade-desktop.webp";
 import { getImage } from "astro:assets";
 
@@ -75,5 +76,6 @@ const ogAlt = "La façade du Château de Sucy illuminée, sous une pleine lune."
 
   <body class="antialiased">
     <slot />
+    <CookieBanner />
   </body>
 </html>

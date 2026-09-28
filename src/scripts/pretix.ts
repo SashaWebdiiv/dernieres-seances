@@ -1,3 +1,5 @@
+import { mesurer } from "./consent";
+
 /** Délai au-delà duquel un widget toujours absent est considéré en échec (réseau lent, bloqueur). */
 const DELAI_ECHEC = 15_000;
 /** Au-delà, on cesse de guetter un widget arrivé en retard (il resterait masqué derrière l'erreur sinon). */
@@ -36,10 +38,14 @@ export function loadPretixOnApproach(): () => void {
     const verifier = () => {
       if (widgetConstruit(host)) {
         host.classList.add("pretix-hote--pret");
+        mesurer("billetterie_affichee");
         return window.clearInterval(minuteur);
       }
       const ecoule = Date.now() - debut;
-      if (ecoule > DELAI_ECHEC) host.classList.add("pretix-hote--erreur");
+      if (ecoule > DELAI_ECHEC && !host.classList.contains("pretix-hote--erreur")) {
+        host.classList.add("pretix-hote--erreur");
+        mesurer("billetterie_erreur", { cause: "delai" });
+      }
       if (ecoule > DELAI_ABANDON) window.clearInterval(minuteur);
     };
     const minuteur = window.setInterval(verifier, 300);
@@ -53,7 +59,10 @@ export function loadPretixOnApproach(): () => void {
       crossOrigin: "anonymous",
     });
     const tag = Object.assign(document.createElement("script"), { src: script, async: true, crossOrigin: "anonymous" });
-    tag.addEventListener("error", () => hosts.forEach((host) => host.classList.add("pretix-hote--erreur")));
+    tag.addEventListener("error", () => {
+      hosts.forEach((host) => host.classList.add("pretix-hote--erreur"));
+      mesurer("billetterie_erreur", { cause: "script" });
+    });
     document.head.append(link, tag);
   };
 

@@ -40,14 +40,19 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
 - [ ] Remplacer les images dans `src/assets/scenes/` en gardant les mêmes noms : l'optimisation
       (AVIF/WebP, tailles) est faite au build.
 
-## Mesure d'audience
+## Mesure d'audience (Google Analytics 4 + bandeau de consentement)
 
-- [ ] Choisir l'outil. Privilégier une solution pouvant être exemptée de consentement selon
-      les critères de la CNIL (liste des solutions sur cnil.fr ; ex. Matomo configuré en mode
-      exempté) pour éviter un bandeau cookies.
-- [ ] Suivre au minimum : visites, clics sur « J'achète mon billet ! », ouverture du widget,
-      achats (conversion Pretix).
-- [ ] Mettre à jour la politique de confidentialité en conséquence.
+- [ ] Créer la propriété GA4 et son flux Web `https://dernieresseances.fr`, puis renseigner
+      l'identifiant de mesure (« G-… ») dans `gaMeasurementId` (`src/data/analytics.ts`) :
+      le bandeau, le lien « Gestion des cookies » et les paragraphes de la politique de
+      confidentialité s'activent automatiquement.
+- [ ] Dans GA4 : Administration → Collecte et conservation des données → conservation des
+      données sur **14 mois** (annoncé dans la politique de confidentialité) ; laisser les
+      signaux Google désactivés.
+- [ ] Déclarer en « événements clés » : `clic_billetterie` (paramètre `emplacement`),
+      `billetterie_affichee`, `billetterie_erreur`.
+- [ ] Les achats se font dans Pretix : suivre les ventes dans les statistiques Pretix (GA ne
+      voit pas le paiement).
 
 ## Vidéos IA (après le lancement)
 

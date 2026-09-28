@@ -1,9 +1,12 @@
 import { emailContact } from "./evenement";
+import { gaMeasurementId } from "./analytics";
 
 export interface FooterLink {
   label: string;
   /** `null` : destination encore inconnue, affichée sans lien. */
   href: string | null;
+  /** Bouton d'action au lieu d'un lien : `cookies` rouvre le bandeau de consentement. */
+  action?: "cookies";
 }
 
 export interface FooterColumn {
@@ -35,6 +38,8 @@ export const footerColumns: FooterColumn[] = [
       { label: "Mentions légales", href: "/mentions-legales/" },
       { label: "Politique de confidentialité", href: "/confidentialite/" },
       { label: "Conditions de vente", href: "/cgv/" },
+      // Seulement s'il y a une mesure d'audience, donc un consentement à gérer.
+      ...(gaMeasurementId ? [{ label: "Gestion des cookies", href: null, action: "cookies" as const }] : []),
     ],
   },
 ];
