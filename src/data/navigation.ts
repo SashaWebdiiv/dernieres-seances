@@ -14,6 +14,7 @@ export const navLinks: NavLink[] = [
 
 /** Colonne « Navigation » du pied de page (maquette 85:3750). */
 export const footerLinks: NavLink[] = [
+  { href: "#calendrier", label: "Calendrier" },
   { href: "#experience", label: "L'expérience" },
   { href: "#programme", label: "Programme" },
   { href: "#billetterie", label: "Billetterie" },
