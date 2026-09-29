@@ -14,20 +14,9 @@ export interface SceneImage {
   focus?: SceneFocus;
 }
 
-/** URLs des vidéos (H.264/MP4 au minimum). Chargées uniquement à l'approche de la scène. */
-export interface SceneVideo {
-  desktop: string;
-  mobile: string;
-}
-
-/**
- * Média d'une scène. L'image est toujours requise : elle est l'affiche et le repli de la
- * vidéo (chargement, réseau lent, Save-Data, mouvement réduit). Passer une scène en vidéo
- * revient donc à ajouter `video`, sans toucher aux composants.
- */
+/** Média d'une scène : une image (versions desktop et mobile). */
 export interface SceneMedia {
   image: SceneImage;
-  video?: SceneVideo;
 }
 
 /** Nom de la timeline GSAP associée, résolu dans `scripts/gsap/sceneAnimations.ts`. */

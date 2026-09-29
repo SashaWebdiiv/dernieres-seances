@@ -52,11 +52,9 @@ page d'attente. Images des pièces issues de la maquette (1536 × 1024) ; versio
 | `src/scripts/gsap/navigation.ts` | Navigation directe : fondu au noir → saut → synchronisation |
 | `src/data/billetterie.ts` | URL de la boutique Pretix (`null` : encart d'attente) |
 
-- **Passer une scène en vidéo** : ajouter `video: { desktop, mobile }` à côté de `image`
-  dans `scenes.ts`. L'image reste l'affiche et le repli (mouvement réduit, économie de données).
 - **Mouvement réduit, ou JavaScript absent** : aucune animation, scènes statiques,
   tout le contenu reste lisible et navigable.
 - **Liens internes** : `data-jump` sur un lien `#ancre` déclenche la navigation directe.
 - **SEO** : données structurées de l'événement dans `src/data/seo.ts` (JSON-LD), `public/robots.txt`,
   plan du site dans `src/pages/sitemap.xml.ts` (pages indexables uniquement).
-- **Reste à faire** (lancement, images, mesure d'audience, vidéos, maintenance) : voir `TODO.md`.
+- **Reste à faire** : voir `TODO.md`. Chaque PR est vérifiée par GitHub Actions (types et build).
