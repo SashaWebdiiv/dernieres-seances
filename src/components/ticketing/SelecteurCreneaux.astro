@@ -4,8 +4,8 @@ import { selecteurCreneaux } from "../../data/billetterie";
 
 /**
  * Sélecteur de créneau : jour → expérience → créneau (places restantes) → billets, puis paiement
- * Pretix avec le panier déjà rempli (`PretixWidget.open` : fenêtre par-dessus le site sur grand
- * écran, nouvel onglet sur mobile, comportement par défaut de Pretix). Les cinq jours sont visibles
+ * Pretix avec le panier déjà rempli (`PretixWidget.open` : fenêtre par-dessus le site sur ordinateur,
+ * nouvel onglet sur mobile et dans Safari, qui bloque les cookies tiers). Les cinq jours sont visibles
  * d'un coup, sans calendrier mensuel (le 1er novembre n'est plus caché sur le mois suivant).
  * Si le script Pretix n'est pas disponible au clic, le bouton mène à la page Pretix du créneau.
  *

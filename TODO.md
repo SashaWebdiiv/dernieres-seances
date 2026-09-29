@@ -20,8 +20,8 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
     ce jeton, pour Production et Preview (ne jamais le mettre dans le code ni l'envoyer par mail) ;
   - redéployer, puis ouvrir `/api/creneaux` sur l'aperçu : doit renvoyer la liste des créneaux ;
   - tester : jour, expérience, créneau, billets (+ / −), puis « Payer » : le panier Pretix doit
-    contenir exactement ces billets, sur le bon créneau (fenêtre sur ordinateur, nouvel onglet sur
-    mobile). Vérifier qu'un Duo compte bien 2 places et un Trio 3 dans le compteur ;
+    contenir exactement ces billets, sur le bon créneau (fenêtre dans Chrome, Edge, Firefox sur
+    ordinateur ; nouvel onglet sur mobile et dans Safari). Vérifier qu'un Duo compte bien 2 places et un Trio 3 dans le compteur ;
   - confirmer que les trous sont voulus : aucun créneau parcours à 16h50 (15h50 le 31) ni
     horrifique à 21h40, tous les jours.
 - [x] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans

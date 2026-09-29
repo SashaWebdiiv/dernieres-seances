@@ -16,6 +16,9 @@ declare global {
         bon?: string | null,
         creneau?: string | null,
         billets?: { item: string; count: string }[],
+        donnees?: Record<string, string>,
+        sansVerifSsl?: boolean,
+        sansFenetre?: boolean,
       ) => void;
     };
     pretixWidgetCallback?: () => void;
@@ -23,6 +26,16 @@ declare global {
 }
 
 let chargement: Promise<void> | null = null;
+
+/**
+ * Vrai quand le paiement Pretix doit s'ouvrir dans un nouvel onglet plutôt que dans sa fenêtre
+ * par-dessus le site : sur mobile et tablette, et dans Safari. Safari (et tout navigateur iOS, qui
+ * utilise son moteur) bloque les cookies tiers : dans la fenêtre, Pretix ne peut qu'afficher
+ * « Veuillez continuer dans un nouvel onglet », un clic de plus pour rien.
+ */
+export const paiementDansNouvelOnglet = (): boolean =>
+  window.matchMedia("(max-width: 1023.98px), (pointer: coarse)").matches ||
+  /^((?!chrome|chromium|crios|fxios|edg|android).)*safari/i.test(navigator.userAgent);
 
 /**
  * Charge une seule fois le script et la feuille de style du widget Pretix. Avec
@@ -98,6 +111,10 @@ export function loadPretixOnApproach(): () => void {
 
   const load = ({ script, stylesheet }: DOMStringMap) => {
     if (!script || !stylesheet) return;
+    // Lu par Pretix à la construction du widget (même règle que le sélecteur de créneaux).
+    if (paiementDansNouvelOnglet()) {
+      hosts.forEach((host) => host.querySelector("pretix-widget")?.setAttribute("disable-iframe", ""));
+    }
     chargerScriptPretix(script, stylesheet)
       .then(() => {
         // Script déjà chargé par le sélecteur sans construction des widgets : on les construit maintenant.

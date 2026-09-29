@@ -1,6 +1,6 @@
 import type { Billet, Creneau, ExperienceId, ReponseCreneaux } from "../../api/creneaux";
 import { mesurer } from "./consent";
-import { chargerScriptPretix } from "./pretix";
+import { chargerScriptPretix, paiementDansNouvelOnglet } from "./pretix";
 
 /**
  * Sélecteur de créneau (`components/ticketing/SelecteurCreneaux.astro`).
@@ -11,7 +11,8 @@ import { chargerScriptPretix } from "./pretix";
  * est rendu à l'option équivalente si la liste courante doit être rafraîchie).
  *
  * Étape 4 : billets du créneau (+ / −), limités aux places restantes (un Duo en compte 2, voir
- * `Billet.places`). « Payer » ouvre le paiement Pretix avec le panier rempli (`PretixWidget.open`) ;
+ * `Billet.places`). « Payer » ouvre le paiement Pretix avec le panier rempli (`PretixWidget.open`),
+ * dans un nouvel onglet sur mobile et dans Safari (`paiementDansNouvelOnglet`) ;
  * sans script Pretix, on envoie vers la page Pretix du créneau.
  * Pretix garde le panier (cookie) : des billets ajoutés après une première ouverture s'y ajoutent,
  * d'où l'avertissement affiché ensuite. Il reste modifiable au moment du paiement.
@@ -344,6 +345,9 @@ export function initSelecteur(): void {
       null,
       String(creneau.id),
       billets.map(([id, quantite]) => ({ item: `item_${id}`, count: String(quantite) })),
+      undefined,
+      false,
+      paiementDansNouvelOnglet(),
     );
     // Pretix garde ce panier : une nouvelle sélection s'y ajoutera.
     panierOuvert = true;
@@ -354,10 +358,12 @@ export function initSelecteur(): void {
   });
 
   // Sans billet, `PretixWidget.open` n'ajoute rien et rouvre le panier en cours (fenêtre sur
-  // ordinateur ; page Pretix du créneau, panier compris, sur mobile).
+  // ordinateur ; page Pretix du créneau, panier compris, dans un nouvel onglet sinon).
   reprendre.addEventListener("click", () => {
     const creneau = dernierCreneau === undefined ? null : String(dernierCreneau);
-    if (window.PretixWidget?.open) window.PretixWidget.open(boutique, null, creneau, []);
+    if (window.PretixWidget?.open) {
+      window.PretixWidget.open(boutique, null, creneau, [], undefined, false, paiementDansNouvelOnglet());
+    }
     else window.location.assign(new URL(creneau ? `${creneau}/` : "", boutique).href);
     mesurer("billetterie_reprise_panier");
   });
