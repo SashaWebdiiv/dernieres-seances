@@ -61,6 +61,12 @@ export const eventJsonLd = (pageUrl: URL, images: URL[]) => ({
     url: evenement.siteOrganisateur,
     sameAs: profils,
   },
+  // Les comédiens de la troupe jouent les parcours (champ facultatif signalé par le test Google).
+  performer: {
+    "@type": "PerformingGroup",
+    name: evenement.organisateur,
+    url: evenement.siteOrganisateur,
+  },
   offers: {
     "@type": "AggregateOffer",
     url: new URL("#billetterie", pageUrl).href,

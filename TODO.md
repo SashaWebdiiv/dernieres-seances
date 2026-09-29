@@ -48,7 +48,7 @@ Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026
       [l'outil de débogage de Facebook](https://developers.facebook.com/tools/debug/)
       (`https://dernieresseances.fr`, « Scrape Again »). WhatsApp : coller l'adresse en `https://`
       et attendre la vignette avant d'envoyer.
-- [ ] **Google Analytics — vérifier la mesure** : ouvrir le site, « Tout accepter », puis
+- [x] **Google Analytics — vérifier la mesure** (ordinateur OK ; téléphone de test : refus mémorisé ou bloqueur) : ouvrir le site, « Tout accepter », puis
       GA4 → Rapports → Temps réel : la visite doit apparaître en moins d'une minute.
 - [ ] **Google Analytics — événement clé** : `billetterie_redirection` (clic sur « Payer », le plus
       proche d'un achat). Faire un parcours complet, attendre qu'il apparaisse (jusqu'à 24 h) dans
@@ -56,9 +56,10 @@ Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026
       (`selection_ajout`, `clic_billetterie`, `billetterie_affichee`, `billetterie_erreur`,
       `billetterie_reprise_panier`) restent des événements simples. Retirer l'étoile de
       `close_convert_lead` et `qualify_lead` (défauts Google, jamais envoyés).
-- [ ] **Google Search Console** : déclarer le site, soumettre
-      `https://dernieresseances.fr/sitemap.xml`, tester la page dans le
-      [test des résultats enrichis](https://search.google.com/test/rich-results) (événement).
+- [x] **Google Search Console** : propriété « Domaine » validée par TXT chez OVH, sitemap soumis,
+      page testée dans le [test des résultats enrichis](https://search.google.com/test/rich-results)
+      (événement valide ; `performer` ajouté). Revenir dans quelques jours voir l'indexation.
+- [x] **Redirections** `www`, `.com` et `vercel.app` vers `dernieresseances.fr` en 308 (permanentes).
 - [ ] Les achats se font dans Pretix : suivre les ventes dans les statistiques Pretix (GA ne
       voit pas le paiement).
 
