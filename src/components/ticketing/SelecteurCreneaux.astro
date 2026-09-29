@@ -37,8 +37,14 @@ const option = [
   "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-ambre",
   "has-[:disabled]:cursor-not-allowed has-[:disabled]:border-sable/10 has-[:disabled]:bg-noir/40 has-[:disabled]:text-sable/50",
 ].join(" ");
+/*
+ * Boutons + / − : 48 px visibles, zone de tap étendue à 64 px par un pseudo-élément (un tap juste à
+ * côté compte). Avec `touch-manipulation` sur le sélecteur, un double tap n'y zoome plus la page
+ * (le zoom à deux doigts reste possible).
+ */
 const pas = [
-  "flex size-11 cursor-pointer items-center justify-center rounded-full border border-sable/40 text-xl text-creme transition-colors",
+  "relative flex size-12 cursor-pointer items-center justify-center rounded-full border border-sable/40 text-xl text-creme transition-colors",
+  "after:absolute after:-inset-2 after:rounded-full after:content-['']",
   "hover:border-ambre hover:text-ambre disabled:cursor-not-allowed disabled:border-sable/15 disabled:text-sable/40",
 ].join(" ");
 const boutonPrincipal = [
@@ -48,7 +54,7 @@ const boutonPrincipal = [
 ---
 
 <div
-  class="selecteur w-full max-w-166 rounded-lg border border-sable/15 bg-noir/75 p-4 text-left backdrop-blur-sm md:p-8"
+  class="selecteur w-full max-w-166 touch-manipulation rounded-lg border border-sable/15 bg-noir/75 p-4 text-left backdrop-blur-sm md:p-8"
   data-selecteur
   data-endpoint={selecteurCreneaux.endpoint}
   data-boutique={shopUrl}
@@ -93,7 +99,7 @@ const boutonPrincipal = [
         <button
           type="button"
           disabled
-          class={`${boutonPrincipal} h-14 text-lg`}
+          class={`${boutonPrincipal} min-h-14 py-3 text-base sm:text-lg`}
           data-ajouter
         >
           Choisir au moins un billet
@@ -113,7 +119,7 @@ const boutonPrincipal = [
       <p id="titre-selection" class={titreEtape}>Votre sélection</p>
       <ul class="flex flex-col gap-4" data-selection-lignes></ul>
       <p class="border-t border-sable/15 pt-4 text-center text-base text-creme" data-selection-total></p>
-      <button type="button" class={`${boutonPrincipal} h-14 text-lg`} data-payer>Payer</button>
+      <button type="button" class={`${boutonPrincipal} min-h-14 py-3 text-base sm:text-lg`} data-payer>Payer</button>
       <p class="text-center text-xs leading-4.5 text-sable/80">
         Paiement sécurisé sur notre billetterie Pretix : toute votre sélection y sera dans le panier. Les places
         sont confirmées à ce moment-là.
@@ -162,7 +168,7 @@ const boutonPrincipal = [
         <span class="text-base leading-6 font-semibold text-creme" data-texte="nom"></span>
         <span class="text-sm leading-5 text-sable/85" data-texte="detail"></span>
       </span>
-      <span class="flex shrink-0 items-center gap-2" role="group" data-groupe>
+      <span class="flex shrink-0 items-center gap-3" role="group" data-groupe>
         <button type="button" class={pas} data-moins>−</button>
         <span class="w-8 text-center font-chiffres text-2xl leading-7 text-creme" data-quantite>0</span>
         <button type="button" class={pas} data-plus>+</button>
@@ -207,7 +213,7 @@ const boutonPrincipal = [
   repère aux éléments `fixed` qu'il contient. Remplace le bouton « J'achète mon billet ! » tant
   qu'une sélection existe (`.avec-selection`, voir `StickyCta.astro`).
 -->
-<div hidden class="barre-selection fixed inset-x-0 bottom-0 z-40 border-t border-sable/20 bg-noir/95 px-4 pt-3 backdrop-blur-sm lg:hidden" data-barre-selection>
+<div hidden class="barre-selection fixed inset-x-0 bottom-0 z-40 touch-manipulation border-t border-sable/20 bg-noir/95 px-4 pt-3 backdrop-blur-sm lg:hidden" data-barre-selection>
   <div class="mx-auto flex max-w-166 items-center gap-3">
     <a href="#ma-selection" class="min-w-0 flex-1 text-left" data-voir-selection>
       <span class="block text-xs leading-4.5 font-semibold tracking-[2.64px] text-ambre uppercase">Votre sélection</span>

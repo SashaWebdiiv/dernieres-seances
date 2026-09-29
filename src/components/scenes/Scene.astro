@@ -37,7 +37,7 @@ const style = {
   data-pinned={scene.pinned ? "" : undefined}
   data-decorative={decorative ? "" : undefined}
 >
-  <div class="scene-backdrop sticky top-0 h-lvh overflow-hidden">
+  <div class="scene-backdrop sticky top-0 h-(--ecran,100lvh) overflow-hidden">
     <div class="scene-media absolute inset-0" data-scene-media>
       <SceneMedia media={scene.media} priority={scene.priority} />
     </div>
@@ -70,6 +70,10 @@ const style = {
 
 <style>
   /*
+   * Hauteurs en --ecran (hauteur d'écran figée, voir ImmersiveLayout.astro) plutôt qu'en 100lvh,
+   * qui change quand Edge ou Chrome sur iPhone replient leur barre d'outils ; 100lvh reste le
+   * repli si le script n'a pas tourné.
+   *
    * Par défaut (sans JS, ou mouvement réduit) : mise en page statique, chaque scène fait au
    * moins un écran et son contenu défile normalement sur le décor sticky.
    * Avec JS et mouvement autorisé : longueurs de scroll, scènes épinglées, portes de noir.
@@ -98,9 +102,9 @@ const style = {
     flex-direction: column;
     justify-content: center;
     margin-top: -100vh;
-    margin-top: -100lvh;
+    margin-top: calc(-1 * var(--ecran, 100lvh));
     min-height: 100vh;
-    min-height: 100svh;
+    min-height: var(--ecran, 100svh);
   }
 
   .scene-stage {
@@ -139,12 +143,12 @@ const style = {
     /* Longueur minimale : laisse au décor le temps d'apparaître entre les fondus. */
     :global(.js) .scene:not([data-pinned]) > .scene-content {
       min-height: calc(var(--len) * 100vh);
-      min-height: calc(var(--len) * 100lvh);
+      min-height: calc(var(--len) * var(--ecran, 100lvh));
     }
 
     :global(.js) .scene[data-pinned] {
       height: calc(var(--len) * 100vh);
-      height: calc(var(--len) * 100lvh);
+      height: calc(var(--len) * var(--ecran, 100lvh));
     }
 
     /* La couche couvre toute la section pour que la scène reste collée d'un bout à l'autre. */
@@ -162,8 +166,8 @@ const style = {
       top: 0;
       overflow: hidden;
       height: 100vh;
-      height: 100lvh;
-      padding-block: 0 calc(100lvh - 100svh);
+      height: var(--ecran, 100lvh);
+      padding-block: 0 max(0px, calc(var(--ecran, 100lvh) - 100svh));
     }
   }
 </style>

@@ -73,6 +73,38 @@ const ogAlt = "Dernières Séances — Oserez-vous entrer ? Le titre sur la faç
 
     <!-- Active les états « amélioration progressive » (contenus empilés, menu replié) avant le rendu. -->
     <script is:inline>document.documentElement.classList.add("js");</script>
+
+    <!--
+      Hauteur d'écran figée (--ecran), utilisée par les scènes à la place de 100lvh.
+      Dans Edge et Chrome sur iPhone (et les navigateurs intégrés aux applis), replier la barre
+      d'outils redimensionne la page : 100lvh change, et toutes les scènes (plusieurs écrans de
+      haut chacune) avec. 80 px de barre déplaçaient la billetterie de 840 px.
+      Écran tactile : hauteur de l'écran physique (les décors couvrent toujours tout), recalculée
+      seulement si la largeur change (rotation). Souris : hauteur de la fenêtre, à chaque
+      redimensionnement.
+    -->
+    <script is:inline>
+      (function () {
+        var racine = document.documentElement;
+        var tactile = window.matchMedia("(pointer: coarse)");
+        var largeur = window.innerWidth;
+        function mesurer() {
+          var hauteur = window.innerHeight;
+          if (tactile.matches) {
+            var paysage = window.innerWidth > window.innerHeight;
+            var cote = paysage ? Math.min(screen.width, screen.height) : Math.max(screen.width, screen.height);
+            hauteur = Math.max(hauteur, cote);
+          }
+          racine.style.setProperty("--ecran", hauteur + "px");
+        }
+        mesurer();
+        window.addEventListener("resize", function () {
+          if (tactile.matches && window.innerWidth === largeur) return;
+          largeur = window.innerWidth;
+          mesurer();
+        });
+      })();
+    </script>
   </head>
 
   <body class="antialiased">

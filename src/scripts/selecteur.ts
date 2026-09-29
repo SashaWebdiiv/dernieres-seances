@@ -303,7 +303,8 @@ export function initSelecteur(): void {
         ? "Aucun billet choisi"
         : `${pluriel(personnes, "personne")} · ${euros(montant)}${complet ? " · créneau complet avec votre sélection" : ""}`);
     ajouter.disabled = nombre === 0;
-    ajouter.textContent = nombre === 0 ? "Choisir au moins un billet" : `Ajouter à ma sélection · ${euros(montant)}`;
+    // Sans le prix : il est dans le total juste au-dessus, et le libellé tient sur une ligne en 360 px.
+    ajouter.textContent = nombre === 0 ? "Choisir au moins un billet" : "Ajouter à ma sélection";
   };
 
   const construireBillets = (experience: ExperienceId) => {
