@@ -1,0 +1,7 @@
+# Tout est ouvert aux robots. Les pages légales sont exclues de l'index par leur balise
+# <meta name="robots" content="noindex"> : ne pas les interdire ici, sinon les robots ne liraient
+# plus cette balise.
+User-agent: *
+Allow: /
+
+Sitemap: https://dernieresseances.fr/sitemap.xml

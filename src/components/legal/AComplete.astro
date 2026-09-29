@@ -1,0 +1,10 @@
+---
+/** Repère visible d'une information légale manquante (voir `data/legal.ts`). */
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<mark class="rounded bg-ambre/15 px-1 text-ambre">[À compléter : {label}]</mark>

@@ -1,0 +1,166 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import AComplete from "../components/legal/AComplete.astro";
+import { cgv, manquantsCgv } from "../data/legal";
+
+/*
+ * Conditions de vente fournies par l'association. Alignées sur la FAQ (arrivée 10 minutes avant,
+ * vente sur place) ; la FAQ reprend à l'inverse les articles 9 à 11 (peur, contre-indications, « compote »).
+ * L'URL de cette page est à renseigner dans Pretix comme conditions à accepter au paiement.
+ * Seule la mention de TVA reste à confirmer par le comptable : `cgv.mentionTva` dans `data/legal.ts`.
+ */
+---
+
+<LegalLayout
+  manquants={manquantsCgv}
+  title="Conditions de vente"
+  description="Conditions de vente des billets de Dernières Séances, Halloween 2026 au Château de Sucy."
+>
+  <h2>1. Organisateur</h2>
+  <p>
+    Les billets de « Dernières Séances », Halloween au Château de Sucy du 28 octobre au 1er novembre 2026, sont
+    vendus par l'association L'Acompagnie Improvisée (coordonnées dans les{" "}
+    <a href="/mentions-legales/">mentions légales</a>).
+  </p>
+
+  <h2>2. Billets et formules</h2>
+  <p><strong>Parcours immersif au château :</strong></p>
+  <ul>
+    <li>P'tit Vampire (8 à 13 ans) : 8 €</li>
+    <li>Adulte (14 ans et plus) : 15 €</li>
+    <li>Combiné Duo (1 adulte et 1 enfant) : 21 €</li>
+    <li>Combiné Trio (1 adulte et 2 enfants) : 27 €</li>
+  </ul>
+  <p><strong>Expérience horrifique au château :</strong></p>
+  <ul>
+    <li>Sueurs Froides (14 ans et plus) : 15 €</li>
+    <li>Sueurs Froides groupe (10 personnes) : 120 €</li>
+  </ul>
+  <p>
+    Chaque billet est valable pour une personne et un créneau.
+    {" "}{cgv.mentionTva ?? <AComplete label="mention de TVA, selon le comptable" />}
+  </p>
+
+  <h2>3. Paiement</h2>
+  <p>
+    Le paiement se fait en ligne par carte bancaire, Apple Pay ou Google Pay. La commande est confirmée à
+    réception du paiement. Une commande non payée sous 30 minutes est annulée et les places sont remises en
+    vente.
+  </p>
+  <p>
+    Pendant l'événement, les billets peuvent aussi être achetés sur place, dans la limite des places
+    disponibles, et réglés en espèces ou par carte bancaire.
+  </p>
+
+  <h2>4. Billets</h2>
+  <p>
+    Les billets sont envoyés par mail après paiement et restent téléchargeables depuis le lien de la commande.
+    Présentez-les à l'entrée, sur téléphone ou imprimés. Chaque billet ne peut être scanné qu'une fois.
+  </p>
+
+  <h2>5. Pas de droit de rétractation, pas de remboursement</h2>
+  <p>
+    Conformément à l'article L221-28 12° du Code de la consommation, le droit de rétractation ne s'applique pas
+    aux activités de loisirs prévues à une date déterminée. Les billets ne sont ni remboursables ni revendables.
+  </p>
+
+  <h2>6. Changement de créneau</h2>
+  <p>
+    Vous pouvez demander à changer de créneau jusqu'à 48 heures avant, par mail à{" "}
+    <a href="mailto:support@dernieresseances.fr">support@dernieresseances.fr</a>, avec votre numéro de commande.
+    Nous faisons notre possible selon les places disponibles, sans garantie.
+  </p>
+
+  <h2>7. Arrivée et retards</h2>
+  <p>
+    Présentez-vous 10 minutes avant votre créneau. Les groupes partent à l'heure exacte. En cas de retard, nous
+    vous proposons le prochain créneau disponible, sans garantie de place et sans remboursement.
+  </p>
+
+  <h2>8. Âges</h2>
+  <p>Le parcours immersif est interdit aux moins de 8 ans.</p>
+  <p>
+    L'expérience horrifique est strictement interdite aux moins de 14 ans. Une pièce d'identité peut être
+    demandée. Une personne qui ne peut pas justifier de son âge peut se voir refuser l'entrée, sans remboursement.
+  </p>
+
+  <h2>9. Enfants et sensibilité</h2>
+  <p>
+    Le parcours immersif est conçu pour faire peur. Les horaires et le contenu sont adaptés à l'âge des
+    participants, mais chaque enfant réagit différemment. L'association recommande qu'un adulte accompagne les
+    8-13 ans. Le choix de laisser un enfant participer seul appartient à ses parents, qui restent responsables de
+    lui avant et après le parcours. Un adulte doit être présent à la sortie pour récupérer l'enfant à la fin du
+    parcours.
+  </p>
+
+  <h2>10. Ambiance et contre-indications</h2>
+  <p>
+    Les parcours se déroulent dans une lumière faible, avec de la fumée, des effets stroboscopiques, de la musique
+    forte, des cris et des apparitions soudaines. Ils sont déconseillés aux personnes sensibles, épileptiques,
+    cardiaques, souffrant de troubles respiratoires, ainsi qu'aux femmes enceintes.
+  </p>
+
+  <h2>11. Arrêter le parcours : le mot « compote »</h2>
+  <p>
+    À tout moment, si vous voulez arrêter, levez la main et dites « compote ». Le jeu s'arrête immédiatement pour
+    vous et un membre de l'équipe vous raccompagne vers la sortie. Arrêter en cours de route ne donne pas lieu à un
+    remboursement.
+  </p>
+
+  <h2>12. Sécurité et comportement</h2>
+  <p>
+    Le parcours comprend des escaliers et des passages peu éclairés. Merci de porter des chaussures adaptées, de
+    suivre les consignes de l'équipe, de ne pas courir, et de garder les mains le long du corps. Ne touchez ni les
+    décors ni les comédiens, et ne leur retirez jamais masque ou costume.
+  </p>
+  <p>
+    Il est interdit de fumer ou de vapoter dans le château, et d'y entrer avec une flamme ou tout objet pouvant
+    provoquer un feu (briquet, bougie, allumettes).
+  </p>
+  <p>
+    L'équipe peut refuser l'entrée ou exclure, sans remboursement, toute personne en état d'ivresse, au
+    comportement dangereux ou qui ne respecte pas ces consignes. Toute dégradation ou agression envers l'équipe
+    pourra faire l'objet de poursuites.
+  </p>
+
+  <h2>13. Déguisements et masques</h2>
+  <p>
+    Déguisements et maquillage sont les bienvenus partout. Les masques sont autorisés dans le jardin et au Jardin
+    Ensorcelé, mais doivent être retirés à l'intérieur du château. Les accessoires de déguisement ressemblant à
+    des armes ne sont pas admis dans le château. Il est interdit de se faire passer pour un membre de l'équipe ou
+    d'effrayer volontairement les autres visiteurs.
+  </p>
+
+  <h2>14. Photos et vidéos</h2>
+  <p>
+    Pendant le parcours, le flash est interdit et nous vous déconseillons de filmer : vous profiterez mieux de
+    l'expérience. Avant et après, postez, taguez, partagez autant que vous voulez. Juste un truc : gardez les
+    scènes et les rebondissements pour vous.
+  </p>
+
+  <h2>15. Annulation par l'organisateur</h2>
+  <p>
+    Si un créneau est annulé par l'association, nous vous proposons un report sur un autre créneau. Si vous le
+    refusez, votre billet est remboursé.
+  </p>
+
+  <h2>16. Données personnelles</h2>
+  <p>
+    Les données saisies lors de la commande (adresse mail, informations de commande) servent uniquement à la
+    gestion de votre réservation et à vous envoyer les informations pratiques sur l'événement. Elles ne sont ni
+    vendues ni cédées. Vous pouvez demander leur consultation, modification ou suppression à{" "}
+    <a href="mailto:contact@dernieresseances.fr">contact@dernieresseances.fr</a>.
+  </p>
+
+  <h2>17. Acceptation</h2>
+  <p>Toute commande implique l'acceptation des présentes conditions de vente.</p>
+
+  <h2>18. Réclamations</h2>
+  <p>
+    Toute réclamation peut être adressée à{" "}
+    <a href="mailto:support@dernieresseances.fr">support@dernieresseances.fr</a>.
+  </p>
+
+  <h2>19. Droit applicable</h2>
+  <p>Les présentes conditions sont soumises au droit français.</p>
+</LegalLayout>

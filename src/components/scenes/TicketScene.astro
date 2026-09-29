@@ -1,0 +1,41 @@
+---
+import Scene from "./Scene.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import PretixWidget from "../ticketing/PretixWidget.astro";
+import SelecteurCreneaux from "../ticketing/SelecteurCreneaux.astro";
+import { scenes } from "../../data/scenes";
+import { pretixShopUrl, selecteurCreneaux } from "../../data/billetterie";
+
+/*
+ * Sélecteur de créneau maison ; le widget Pretix reste en place comme secours, masqué tant que le
+ * sélecteur fonctionne (et affiché d'office sans JavaScript, pour son lien direct vers la boutique).
+ */
+---
+
+<!-- Dernière salle (maquette 85:3631). -->
+<Scene scene={scenes.tickets} labelledBy="titre-billetterie">
+  <div class="mx-auto flex w-full max-w-360 flex-col items-center px-5.5 py-16 text-center md:px-16">
+    <SectionTitle id="titre-billetterie" class="pb-3">Votre parcours vous attend</SectionTitle>
+    <p class="pb-12 text-base leading-normal text-sable/80 italic md:text-[17px] md:leading-[25.2px]">
+      Choisissez votre séance et réservez votre place
+    </p>
+    {
+      pretixShopUrl && selecteurCreneaux.actif ? (
+        <>
+          <SelecteurCreneaux shopUrl={pretixShopUrl} />
+          <div class="billetterie-secours flex w-full flex-col items-center" data-billetterie-secours>
+            <PretixWidget shopUrl={pretixShopUrl} />
+          </div>
+        </>
+      ) : (
+        <PretixWidget shopUrl={pretixShopUrl} />
+      )
+    }
+  </div>
+</Scene>
+
+<style>
+  :global(.js) .billetterie-secours:not(.billetterie-secours--active) {
+    display: none;
+  }
+</style>

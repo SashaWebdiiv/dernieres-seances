@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+/*
+ * Jetons extraits de la maquette Figma Design « Halloween 2026 » (landing/desktop, 68:812).
+ * Les valeurs non entières (17.145px, 8.8px…) sont reprises telles quelles de la maquette.
+ * Aucun texte sous 12 px (petits libellés de 8,8 à 11 px dans la maquette), pour la lisibilité.
+ * Textes secondaires : sable à 80 % (85 % pour les descriptions), lisibles sur les photos.
+ */
+@theme {
+  --color-noir: #090909;
+  --color-creme: #f3efe7;
+  --color-sable: #c8b799;
+  --color-rouille: #a25b32;
+  --color-ambre: #f5a923;
+
+  /* Façade : reprise de la page d'attente. */
+  --color-ambre-vif: #f2a313;
+  --color-ambre-clair: #ffc34a;
+  --color-nuit: #071525;
+  --color-ivoire: #f8f6f0;
+
+  --font-sans: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "New Rocker", "Times New Roman", serif;
+  --font-chiffres: "Bebas Neue", "Inter Variable", sans-serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-noir);
+    color: var(--color-sable);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ambre);
+    outline-offset: 3px;
+  }
+
+  /* Cibles de navigation focalisées par script : pas de contour sur un titre. */
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
+}
+
+/* Titre de section : New Rocker 40/60, capitales (28 px en mobile, faute de maquette mobile). */
+@utility title-section {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-creme);
+
+  @media (width >= 48rem) {
+    font-size: 40px;
+  }
+}
+
+/* Surtitre : capitales espacées. 12 px minimum pour la lisibilité (8,8 px dans la maquette). */
+@utility kicker {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 2.64px;
+  text-transform: uppercase;
+}
+
+/* Filet séparateur court sous les titres. */
+@utility filet {
+  display: block;
+  width: 24px;
+  height: 1px;
+}

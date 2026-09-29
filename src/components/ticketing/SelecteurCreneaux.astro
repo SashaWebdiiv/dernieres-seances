@@ -1,0 +1,240 @@
+---
+import { activites } from "../../data/programme";
+import { selecteurCreneaux } from "../../data/billetterie";
+
+/**
+ * Sélecteur de créneau : jour → expérience → créneau (places restantes) → billets, ajoutés à une
+ * « sélection » qui peut réunir plusieurs créneaux et plusieurs jours. « Payer » ouvre un seul panier
+ * Pretix avec toute la sélection (`PretixWidget.open` : fenêtre par-dessus le site sur ordinateur,
+ * nouvel onglet sur mobile et dans Safari, qui bloque les cookies tiers). Les cinq jours sont visibles
+ * d'un coup, sans calendrier mensuel (le 1er novembre n'est plus caché sur le mois suivant).
+ * Sur mobile, une barre fixe rappelle la sélection et permet de payer depuis n'importe où.
+ *
+ * Choix = boutons radio natifs (clavier et lecteurs d'écran), habillés via `has-[:checked]`.
+ * Les options sont construites par `scripts/selecteur.ts` à partir des modèles `<template>`.
+ * En cas d'échec des données, le script masque le sélecteur et affiche le widget Pretix
+ * (`[data-billetterie-secours]`, voir `TicketScene.astro`).
+ */
+interface Props {
+  /** Boutique Pretix de l'événement, avec le « / » final. */
+  shopUrl: string;
+}
+
+const { shopUrl } = Astro.props;
+
+const experiences = selecteurCreneaux.experiences.map(({ id, activite }) => {
+  const source = activites.find((a) => a.id === activite);
+  if (!source) throw new Error(`[billetterie] activité « ${activite} » absente de data/programme.ts`);
+  return { id, titre: source.titre, public: source.public };
+});
+
+const titreEtape = "block text-left text-xs leading-4.5 font-semibold tracking-[2.64px] text-ambre uppercase";
+const etape = `${titreEtape} pb-4`;
+const option = [
+  "relative flex cursor-pointer flex-col rounded-lg border border-sable/25 bg-noir/60 text-creme transition-colors",
+  "hover:border-sable/60",
+  "has-[:checked]:border-ambre has-[:checked]:bg-ambre has-[:checked]:text-noir",
+  "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-3 has-[:focus-visible]:outline-ambre",
+  "has-[:disabled]:cursor-not-allowed has-[:disabled]:border-sable/10 has-[:disabled]:bg-noir/40 has-[:disabled]:text-sable/50",
+].join(" ");
+const pas = [
+  "flex size-11 cursor-pointer items-center justify-center rounded-full border border-sable/40 text-xl text-creme transition-colors",
+  "hover:border-ambre hover:text-ambre disabled:cursor-not-allowed disabled:border-sable/15 disabled:text-sable/40",
+].join(" ");
+const boutonPrincipal = [
+  "inline-flex cursor-pointer items-center justify-center rounded-lg bg-ambre-vif px-6 text-center font-extrabold tracking-[0.05em] text-nuit transition-colors",
+  "hover:bg-ambre-clair disabled:cursor-not-allowed disabled:bg-sable/20 disabled:text-sable/70",
+].join(" ");
+---
+
+<div
+  class="selecteur w-full max-w-166 rounded-lg border border-sable/15 bg-noir/75 p-4 text-left backdrop-blur-sm md:p-8"
+  data-selecteur
+  data-endpoint={selecteurCreneaux.endpoint}
+  data-boutique={shopUrl}
+  data-script={new URL("/widget/v2.fr.js", shopUrl).href}
+  data-stylesheet={new URL("widget/v2.css", shopUrl).href}
+  data-peu-de-places={selecteurCreneaux.peuDePlaces}
+  data-experiences={JSON.stringify(experiences)}
+>
+  <p class="py-10 text-center text-base text-sable/80" role="status" data-selecteur-statut>
+    Chargement des créneaux…
+  </p>
+
+  <form class="flex flex-col gap-10" hidden data-selecteur-formulaire>
+    <fieldset data-etape="jour">
+      <legend class={etape}>1. Choisissez votre jour</legend>
+      <div class="grid grid-cols-3 gap-2 sm:grid-cols-5" data-options></div>
+    </fieldset>
+
+    <fieldset hidden data-etape="experience">
+      <legend class={etape}>2. Choisissez votre expérience</legend>
+      <div class="grid gap-3 sm:grid-cols-2" data-options></div>
+    </fieldset>
+
+    <fieldset hidden data-etape="creneau">
+      <legend class={etape}>3. Choisissez votre créneau</legend>
+      <div class="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5" data-options></div>
+      <p class="pt-3 text-xs leading-4.5 text-sable/80">
+        Places restantes à titre indicatif, confirmées au moment de la commande.
+      </p>
+    </fieldset>
+
+    <div hidden class="flex flex-col gap-4" data-etape="billets" role="group" aria-labelledby="titre-billets">
+      <p id="titre-billets" class={titreEtape}>4. Choisissez vos billets</p>
+      <p class="text-base text-creme" data-recapitulatif></p>
+      <ul class="flex flex-col" data-options></ul>
+
+      <div class="flex flex-col items-stretch gap-3 border-t border-sable/15 pt-6">
+        <p class="text-center text-base text-sable/85" aria-live="polite" data-total>Aucun billet choisi</p>
+        <button
+          type="button"
+          disabled
+          class={`${boutonPrincipal} h-14 text-lg`}
+          data-ajouter
+        >
+          Choisir au moins un billet
+        </button>
+      </div>
+    </div>
+
+    <div
+      hidden
+      id="ma-selection"
+      tabindex="-1"
+      class="flex scroll-mt-24 flex-col gap-4 rounded-lg border border-ambre/50 bg-noir/60 p-4 md:p-6"
+      role="region"
+      aria-labelledby="titre-selection"
+      data-selection
+    >
+      <p id="titre-selection" class={titreEtape}>Votre sélection</p>
+      <ul class="flex flex-col gap-4" data-selection-lignes></ul>
+      <p class="border-t border-sable/15 pt-4 text-center text-base text-creme" data-selection-total></p>
+      <button type="button" class={`${boutonPrincipal} h-14 text-lg`} data-payer>Payer</button>
+      <p class="text-center text-xs leading-4.5 text-sable/80">
+        Paiement sécurisé sur notre billetterie Pretix : toute votre sélection y sera dans le panier. Les places
+        sont confirmées à ce moment-là.
+      </p>
+    </div>
+
+    <div hidden class="flex flex-col items-center gap-3 rounded-lg border border-ambre/40 p-4 text-center" data-panier>
+      <p class="text-sm leading-5 text-ambre" role="status">
+        Votre panier reste ouvert sur la billetterie : les billets payés ensuite s'y ajouteront. Vous pourrez tout
+        vérifier et retirer avant de payer.
+      </p>
+      <button
+        type="button"
+        class="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-lg border border-ambre px-5 text-base font-semibold text-ambre transition-colors hover:bg-ambre hover:text-noir"
+        data-reprendre
+      >
+        Reprendre mon panier
+      </button>
+    </div>
+  </form>
+
+  <template data-modele="jour">
+    <label class={`${option} items-center gap-0.5 px-2 py-3 text-center`}>
+      <input type="radio" name="jour" class="sr-only" />
+      <span class="text-xs leading-4.5 font-semibold uppercase" data-texte="semaine"></span>
+      <span class="font-chiffres text-2xl leading-7" data-texte="date"></span>
+      <span class="text-xs leading-4.5" data-texte="etat"></span>
+    </label>
+  </template>
+
+  <template data-modele="experience">
+    <label class={`${option} gap-1 p-4`}>
+      <input type="radio" name="experience" class="sr-only" />
+      <span class="flex items-start justify-between gap-3">
+        <span class="text-lg leading-5.5 font-semibold" data-texte="titre"></span>
+        <span class="shrink-0 rounded border border-current px-2 py-1 text-xs leading-4 font-bold uppercase" data-texte="public"></span>
+      </span>
+      <span class="text-base leading-6" data-texte="horaires"></span>
+      <span class="text-xs leading-4.5" data-texte="etat"></span>
+    </label>
+  </template>
+
+  <template data-modele="billet">
+    <li class="flex items-center justify-between gap-4 border-b border-sable/10 py-3 last:border-b-0">
+      <span class="flex min-w-0 flex-col">
+        <span class="text-base leading-6 font-semibold text-creme" data-texte="nom"></span>
+        <span class="text-sm leading-5 text-sable/85" data-texte="detail"></span>
+      </span>
+      <span class="flex shrink-0 items-center gap-2" role="group" data-groupe>
+        <button type="button" class={pas} data-moins>−</button>
+        <span class="w-8 text-center font-chiffres text-2xl leading-7 text-creme" data-quantite>0</span>
+        <button type="button" class={pas} data-plus>+</button>
+      </span>
+    </li>
+  </template>
+
+  <template data-modele="creneau-selection">
+    <li class="flex flex-col gap-2 border-b border-sable/10 pb-4 last:border-b-0 last:pb-0">
+      <p class="text-base leading-6 font-semibold text-creme" data-texte="creneau"></p>
+      <ul class="flex flex-col" data-billets-selection></ul>
+    </li>
+  </template>
+
+  <template data-modele="billet-selection">
+    <li class="flex items-center justify-between gap-3">
+      <span class="min-w-0 text-sm leading-5 text-sable/85" data-texte="libelle"></span>
+      <span class="flex shrink-0 items-center gap-1">
+        <span class="text-sm leading-5 text-creme" data-texte="prix"></span>
+        <button
+          type="button"
+          class="flex size-11 cursor-pointer items-center justify-center rounded-full text-xl text-sable/80 transition-colors hover:text-ambre"
+          data-retirer
+        >
+          ×
+        </button>
+      </span>
+    </li>
+  </template>
+
+  <template data-modele="creneau">
+    <label class={`${option} items-center px-2 py-2.5 text-center`}>
+      <input type="radio" name="creneau" class="sr-only" />
+      <span class="font-chiffres text-2xl leading-7" data-texte="heure"></span>
+      <span class="text-xs leading-4.5" data-texte="places"></span>
+    </label>
+  </template>
+</div>
+
+<!--
+  Barre fixe de la sélection, sous 1024 px. Hors du sélecteur : son `backdrop-blur` servirait de
+  repère aux éléments `fixed` qu'il contient. Remplace le bouton « J'achète mon billet ! » tant
+  qu'une sélection existe (`.avec-selection`, voir `StickyCta.astro`).
+-->
+<div hidden class="barre-selection fixed inset-x-0 bottom-0 z-40 border-t border-sable/20 bg-noir/95 px-4 pt-3 backdrop-blur-sm lg:hidden" data-barre-selection>
+  <div class="mx-auto flex max-w-166 items-center gap-3">
+    <a href="#ma-selection" class="min-w-0 flex-1 text-left" data-voir-selection>
+      <span class="block text-xs leading-4.5 font-semibold tracking-[2.64px] text-ambre uppercase">Votre sélection</span>
+      <span class="block truncate text-base leading-6 text-creme" data-barre-resume></span>
+    </a>
+    <button type="button" class={`${boutonPrincipal} h-12 shrink-0 px-5 text-base`} data-payer>Payer</button>
+  </div>
+</div>
+
+<noscript>
+  <style>
+    .selecteur {
+      display: none;
+    }
+  </style>
+</noscript>
+
+<style>
+  .barre-selection {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  /* Le bandeau cookies passe devant tout le reste en bas d'écran. */
+  :global(.cookies-ouvert) .barre-selection {
+    display: none;
+  }
+</style>
+
+<script>
+  import { initSelecteur } from "../../scripts/selecteur";
+
+  initSelecteur();
+</script>

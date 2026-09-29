@@ -1,0 +1,13 @@
+---
+interface Props {
+  id: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+<!-- tabindex="-1" : cible du focus après une navigation directe. -->
+<h2 id={id} tabindex="-1" class:list={["title-section text-balance", className]}>
+  <slot />
+</h2>

@@ -1,0 +1,21 @@
+---
+import type { Tarif } from "../../data/programme";
+
+/** Étiquettes de prix (maquette « Prix-tag », 158:5995). */
+interface Props {
+  tarifs: Tarif[];
+}
+
+const { tarifs } = Astro.props;
+---
+
+<ul class="flex flex-wrap gap-2">
+  {
+    tarifs.map((tarif) => (
+      <li class="flex items-center gap-1.5 rounded border border-sable/15 bg-sable/8 px-2.5 py-1">
+        <span class="text-xs tracking-[1px] text-sable/80 uppercase">{tarif.label}</span>
+        <span class="text-xs font-semibold text-creme">{tarif.prix}</span>
+      </li>
+    ))
+  }
+</ul>

@@ -1,0 +1,177 @@
+---
+import { Image } from "astro:assets";
+import Button from "../ui/Button.astro";
+import { navLinks, ticketingHref } from "../../data/navigation";
+import logoCompagnie from "../../assets/logos/acompagnie-improvisee.png";
+import logoSucy from "../../assets/logos/ville-sucy.png";
+---
+
+<a
+  href="#contenu"
+  class="sr-only z-110 rounded bg-creme px-4 py-2 text-noir focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+>
+  Aller au contenu
+</a>
+
+<!-- Barre supérieure (maquette 62:12) : logos, navigation centrée, billetterie.
+     Sous 1024 px : logos + burger, liens et billetterie dans un menu déroulant vertical. -->
+<header class="fixed inset-x-0 top-0 z-50 bg-linear-to-b from-noir/70 to-transparent">
+  <nav
+    aria-label="Navigation principale"
+    class="relative mx-auto flex max-w-360 flex-wrap items-center justify-between gap-4 px-5.5 py-4 md:px-20 md:pt-8 md:pb-4"
+  >
+    <!-- Les logos ramènent à l'accueil (hero). -->
+    <a
+      href="#accueil"
+      aria-label="L'Acompagnie Improvisée et Sucy-en-Brie, retour à l'accueil"
+      class="flex items-center gap-2.5 rounded transition-opacity hover:opacity-80 md:gap-6 xl:w-62.5"
+      data-jump
+    >
+      <Image src={logoCompagnie} alt="" width={113} class="h-9 w-auto md:h-13.5" />
+      <Image src={logoSucy} alt="" width={113} class="h-7.5 w-auto md:h-11" />
+    </a>
+
+    <ul id="menu-principal" class="menu flex items-center gap-8" data-menu>
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="flex min-h-11 items-center text-sm font-medium text-white underline-offset-8 hover:underline max-lg:min-h-13 max-lg:text-base"
+              data-jump
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="lg:hidden">
+        <Button href={ticketingHref} variant="header" class="h-12 w-full text-sm uppercase" data-jump>Billetterie</Button>
+      </li>
+    </ul>
+
+    <div class="flex items-center justify-end xl:w-62.5">
+      <Button href={ticketingHref} variant="header" class="h-11.5 text-sm uppercase max-lg:hidden" data-jump>Billetterie</Button>
+      <button
+        type="button"
+        class="burger hidden size-11 items-center justify-center rounded-lg border border-sable/40 text-white max-lg:[.js_&]:inline-flex"
+        aria-expanded="false"
+        aria-controls="menu-principal"
+        aria-label="Menu"
+        data-menu-toggle
+      >
+        <span class="burger__lignes" aria-hidden="true"><span></span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  /* Burger : trois traits qui deviennent une croix à l'ouverture. */
+  .burger__lignes,
+  .burger__lignes::before,
+  .burger__lignes::after,
+  .burger__lignes > span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    transition:
+      transform 0.25s ease,
+      opacity 0.2s ease;
+  }
+
+  .burger__lignes {
+    position: relative;
+    background: transparent;
+  }
+
+  /* Les trois traits partagent la même origine : sans `top: 0`, le trait du bas suivrait celui
+     du milieu dans le flux et la croix serait décalée de 2 px. */
+  .burger__lignes::before,
+  .burger__lignes::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .burger__lignes::before {
+    transform: translateY(-6px);
+  }
+
+  .burger__lignes::after {
+    transform: translateY(6px);
+  }
+
+  /* Focus clavier discret : la bordure passe en ambre, sans le cadre global décalé. */
+  .burger:focus-visible {
+    outline: none;
+    border-color: var(--color-ambre);
+    box-shadow: 0 0 0 1px var(--color-ambre);
+  }
+
+  .burger[aria-expanded="true"] .burger__lignes > span {
+    opacity: 0;
+  }
+
+  .burger[aria-expanded="true"] .burger__lignes::before {
+    transform: rotate(45deg);
+  }
+
+  .burger[aria-expanded="true"] .burger__lignes::after {
+    transform: rotate(-45deg);
+  }
+
+  @media (max-width: 1023px) {
+    /* Sans JS : liens et billetterie restent affichés en colonne sous la barre. */
+    .menu {
+      order: 1;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      width: 100%;
+    }
+
+    .menu li + li {
+      border-top: 1px solid rgb(200 183 153 / 0.15);
+    }
+
+    .menu li:last-child {
+      padding-block: 16px 4px;
+    }
+
+    /* Avec JS : menu déroulant vertical sous la barre, masqué tant qu'il n'est pas ouvert. */
+    :global(.js) .menu {
+      position: absolute;
+      top: 100%;
+      inset-inline: 22px;
+      width: auto;
+      padding: 4px 20px 16px;
+      background: rgb(9 9 9 / 0.95);
+      border: 1px solid rgb(200 183 153 / 0.15);
+      border-radius: 8px;
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s;
+    }
+
+    :global(.js) .menu:not([data-open]) {
+      visibility: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu,
+    .burger__lignes,
+    .burger__lignes::before,
+    .burger__lignes::after,
+    .burger__lignes > span {
+      transition: none;
+    }
+  }
+</style>

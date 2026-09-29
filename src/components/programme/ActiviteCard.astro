@@ -1,0 +1,32 @@
+---
+import Tarifs from "./Tarifs.astro";
+import type { Activite } from "../../data/programme";
+import { insecables } from "../../utils/typographie";
+
+/** Carte d'activité (maquette 158:5986) : à partir de 1024 px, description à gauche et horaires calés à droite, centrés verticalement sur toute la largeur. */
+interface Props {
+  activite: Activite;
+}
+
+const { activite } = Astro.props;
+---
+
+<article class="flex flex-col gap-4 rounded-lg border border-sable/15 bg-noir/40 p-4 sm:p-5">
+  <header class="flex flex-col-reverse items-start gap-3 sm:flex-row sm:justify-between">
+    <h3 class="text-lg leading-5.5 font-semibold text-creme">{activite.titre}</h3>
+    <p class="shrink-0 rounded bg-ambre px-3 py-2 text-sm leading-[14.4px] font-bold tracking-[0.2px] text-noir uppercase">
+      {activite.public}
+    </p>
+  </header>
+
+  <div class="flex w-full flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+    <p class="text-base leading-6 text-sable/85 lg:max-w-119.5">{activite.description}</p>
+    <p class="text-base leading-6 text-ambre lg:max-w-119.5 lg:text-right">
+      {activite.horaires.map((ligne) => <span class="block">{insecables(ligne)}</span>)}
+    </p>
+  </div>
+
+  <Tarifs tarifs={activite.tarifs} />
+
+  {activite.note && <p class="text-xs leading-4.5 text-sable/80 italic">{activite.note}</p>}
+</article>

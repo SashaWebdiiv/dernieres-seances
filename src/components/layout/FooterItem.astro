@@ -1,0 +1,26 @@
+---
+import type { FooterLink } from "../../data/footer";
+
+/** Lien du pied de page ; bouton pour une action (cookies) ; simple texte si destination inconnue. */
+interface Props {
+  item: FooterLink;
+  class: string;
+}
+
+const { item, class: className } = Astro.props;
+const external = item.href?.startsWith("http");
+---
+
+{
+  item.action === "cookies" ? (
+    <button type="button" class:list={[className, "cursor-pointer text-left"]} data-cookies-ouvrir>
+      {item.label}
+    </button>
+  ) : item.href ? (
+    <a href={item.href} class={className} {...(external && { target: "_blank", rel: "noopener" })}>
+      {item.label}
+    </a>
+  ) : (
+    <span class={className}>{item.label}</span>
+  )
+}

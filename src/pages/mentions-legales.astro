@@ -1,0 +1,82 @@
+---
+import LegalLayout from "../layouts/LegalLayout.astro";
+import AComplete from "../components/legal/AComplete.astro";
+import { conception, editeur, hebergeur, manquants } from "../data/legal";
+import { partners } from "../data/partners";
+
+/*
+ * Mentions obligatoires pour un site édité par une association (loi n° 2004-575 du 21 juin 2004
+ * pour la confiance dans l'économie numérique, art. 1-1 à 6). Les informations viennent de
+ * `data/legal.ts`.
+ */
+const logosPartenaires = partners.filter((p) => p.logo && p.name !== editeur.nom).map((p) => p.name);
+---
+
+<LegalLayout
+  manquants={manquants}
+  title="Mentions légales"
+  description="Éditeur, hébergeur et propriété intellectuelle du site Dernières Séances, Halloween 2026 au Château de Sucy."
+>
+  <h2>Éditeur du site</h2>
+  <p>
+    Le site Dernières Séances est édité par <strong>{editeur.nom}</strong>,
+    {" "}{editeur.forme ?? <AComplete label="forme juridique (ex. association loi 1901)" />}.
+  </p>
+  <dl>
+    <dt>Siège social</dt>
+    <dd>{editeur.siege ?? <AComplete label="adresse du siège" />}</dd>
+    <dt>Numéro RNA</dt>
+    <dd>{editeur.rna ?? <AComplete label="numéro RNA (W…)" />}</dd>
+    {
+      editeur.siret && (
+        <>
+          <dt>SIRET</dt>
+          <dd>{editeur.siret}</dd>
+        </>
+      )
+    }
+    <dt>Contact</dt>
+    <dd>
+      <a href={`mailto:${editeur.email}`}>{editeur.email}</a> —{" "}
+      <a href={editeur.telephone.lien} class="whitespace-nowrap">{editeur.telephone.affiche}</a>
+    </dd>
+    <dt>Directeur de la publication</dt>
+    <dd>{editeur.directeurPublication ?? <AComplete label="prénom et nom" />}</dd>
+  </dl>
+
+  <h2>Hébergement</h2>
+  <p>
+    <strong>{hebergeur.nom}</strong><br />
+    {hebergeur.adresse}<br />
+    Téléphone : {hebergeur.telephone} — <a href={hebergeur.site} rel="noopener">{hebergeur.site.replace("https://", "")}</a>
+  </p>
+
+  <h2>Conception et réalisation</h2>
+  <p>
+    {conception.site ? <a href={conception.site} rel="noopener">{conception.nom}</a> : conception.nom}.
+  </p>
+
+  <h2>Billetterie</h2>
+  <p>
+    La vente des billets est assurée par le service Pretix, et le paiement par Stripe. Les conditions de
+    vente sont présentées au moment de la commande. Le traitement des données liées aux achats est
+    détaillé dans la <a href="/confidentialite/">politique de confidentialité</a>.
+  </p>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>
+    Les textes, visuels, illustrations et éléments graphiques de ce site sont la propriété de
+    {" "}{editeur.nom} ou de leurs auteurs respectifs, et sont utilisés avec leur autorisation. Toute
+    reproduction ou réutilisation, totale ou partielle, sans autorisation écrite préalable est interdite.
+  </p>
+  <p>
+    Les logos des partenaires ({logosPartenaires.join(", ")}) appartiennent
+    à leurs titulaires respectifs.
+  </p>
+
+  <h2>Données personnelles</h2>
+  <p>
+    Les informations sur les données collectées, leur utilisation et vos droits figurent dans la
+    {" "}<a href="/confidentialite/">politique de confidentialité</a>.
+  </p>
+</LegalLayout>

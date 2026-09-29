@@ -1,0 +1,62 @@
+---
+import Scene from "./Scene.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import { scenes } from "../../data/scenes";
+import { experienceSteps } from "../../data/experiences";
+---
+
+<!--
+  Salon (maquette « Description », 67:788). Animé : les étapes se relaient au même niveau,
+  en alternant gauche et droite. Statique : elles se suivent en zigzag, comme dans la maquette.
+-->
+<Scene scene={scenes.experiences} labelledBy="titre-programme">
+  <div class="mx-auto flex h-full max-w-360 flex-col justify-center gap-10 px-5.5 py-24 md:gap-25 md:px-22.75">
+    <SectionTitle id="titre-programme" class="mx-auto max-w-165.75 text-center md:leading-[69.9px] md:tracking-[0.0915em]">
+      Visitez un château<br class="max-md:hidden" /> un peu trop vivant
+    </SectionTitle>
+
+    <ol class="steps">
+      {
+        experienceSteps.map((step, index) => (
+          <li
+            class:list={["col-start-1 flex max-w-162.5 flex-col", index % 2 === 1 && "md:col-start-2"]}
+            style={{ "--row": index + 1 }}
+            data-step
+          >
+            <p class="kicker text-rouille">{step.kicker}</p>
+            <h3 class="pt-2 font-display text-[24px] leading-normal tracking-[0.06em] text-creme uppercase md:text-[32px]">
+              {step.title}
+            </h3>
+            <span class="filet mt-3 bg-sable/40" aria-hidden="true" />
+            <p class="pt-3 text-base leading-[1.68] text-sable/85 italic md:text-[17px]">{step.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</Scene>
+
+<style>
+  /* Zigzag de la maquette : une étape par ligne, colonne droite à 674 px sur 1440. */
+  .steps {
+    display: grid;
+    row-gap: 4rem;
+  }
+
+  .steps > li {
+    grid-row: var(--row);
+  }
+
+  @media (min-width: 768px) {
+    .steps {
+      grid-template-columns: minmax(0, 583fr) minmax(0, 675fr);
+    }
+  }
+
+  /* Animé : toutes les étapes sur la même ligne, chacune dans sa colonne. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .steps > li {
+      grid-row: 1;
+    }
+  }
+</style>

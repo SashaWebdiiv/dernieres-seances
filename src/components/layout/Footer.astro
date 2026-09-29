@@ -1,0 +1,75 @@
+---
+import { Image } from "astro:assets";
+import Button from "../ui/Button.astro";
+import FooterItem from "./FooterItem.astro";
+import { footerLinks, ticketingHref } from "../../data/navigation";
+import { footerColumns } from "../../data/footer";
+import { evenement } from "../../data/seo";
+import logoCompagnie from "../../assets/logos/acompagnie-improvisee.png";
+import logoSucy from "../../assets/logos/ville-sucy.png";
+
+/** Logos du bas : ils ramènent à l'accueil, comme ceux de la barre. */
+const logoLink = "block rounded transition-opacity hover:opacity-80";
+const columnTitle = "font-display text-xs leading-4.5 tracking-[2.64px] text-creme uppercase";
+const link = "text-[15.2px] leading-[22.8px] text-sable/80 hover:text-sable";
+---
+
+<!--
+  Pied de page (maquette 85:3739). Marque et colonnes côte à côte dès 1280 px (trop étroit à 1024). Placé dans la dernière scène (slot `after` de FaqScene) :
+  il défile sur la même photo que la FAQ au lieu d'en afficher une seconde copie.
+-->
+<footer class="relative z-10 text-left">
+  <div class="mx-auto max-w-360 px-5.5 pt-16 pb-12 md:px-22.75 md:pt-22.75">
+    <div class="flex flex-col gap-12 xl:flex-row xl:justify-between">
+      <div class="flex flex-col items-start xl:w-62.5">
+        <p class="font-display text-[19.2px] leading-[28.8px] tracking-[2.88px] text-creme">Dernières Séances</p>
+        <p class="pt-2 pb-6 text-[14.4px] leading-[24.48px] whitespace-nowrap text-sable/80 italic">
+          Halloween au Château de Sucy<br />28 octobre — 1er novembre 2026
+        </p>
+        <Button href={ticketingHref} variant="header" class="h-11.5 w-62.5 max-w-full text-sm" data-jump>J'achète mon billet !</Button>
+      </div>
+
+      <div class="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:flex lg:max-w-234.75 lg:justify-between xl:w-full lg:gap-12">
+        <nav aria-labelledby="pied-navigation">
+          <p id="pied-navigation" class={columnTitle}>Navigation</p>
+          <ul class="flex flex-col gap-2.5 pt-5">
+            {footerLinks.map((item) => <li><a href={item.href} class={link} data-jump>{item.label}</a></li>)}
+          </ul>
+        </nav>
+
+        {
+          footerColumns.map((column) => (
+            <div>
+              <p class={columnTitle}>{column.title}</p>
+              <ul class="flex flex-col gap-2.5 pt-5">
+                {column.links.map((item) => (
+                  <li class="break-words">
+                    <FooterItem item={item} class={link} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mt-16 h-px bg-linear-to-r from-transparent via-sable/40 to-transparent" aria-hidden="true"></div>
+
+    <!-- Mobile : les deux logos sur une ligne, le copyright dessous. Desktop : une seule ligne (maquette). -->
+    <div class="grid grid-cols-2 items-center gap-y-6 pt-6 md:flex md:justify-between md:gap-4 md:py-3.5">
+      <a href="#accueil" aria-label="L'Acompagnie Improvisée, retour à l'accueil" class:list={[logoLink, "justify-self-start"]} data-jump>
+        <Image src={logoCompagnie} alt="" width={113} class="h-13.5 w-auto" />
+      </a>
+      <p class="col-span-2 row-start-2 text-center text-[12.8px] leading-[19.2px] tracking-[0.64px] text-sable/80">
+        <!-- Coupures entre les morceaux de l'adresse, jamais au milieu. -->
+        © 2026 Dernières Séances —{" "}<span class="whitespace-nowrap">{evenement.rue},</span>{" "}
+        <span class="whitespace-nowrap">{evenement.codePostal} {evenement.ville}</span>
+      </p>
+      <a href="#accueil" aria-label="Sucy-en-Brie, retour à l'accueil" class:list={[logoLink, "justify-self-end"]} data-jump>
+        <Image src={logoSucy} alt="" width={113} class="h-11 w-auto" />
+      </a>
+    </div>
+  </div>
+</footer>
+

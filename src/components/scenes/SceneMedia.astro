@@ -1,0 +1,62 @@
+---
+import { getImage } from "astro:assets";
+import type { SceneMedia } from "../../types/scene";
+
+interface Props {
+  media: SceneMedia;
+  priority?: boolean;
+}
+
+const { media, priority = false } = Astro.props;
+const { image, video } = media;
+
+/** Doit rester aligné sur l'écran `md` de Tailwind et `MOBILE_QUERY` (`scripts/mediaQueries.ts`). */
+const mobileQuery = "(max-width: 767px)";
+/** Paliers de largeur, plafonnés à la source et complétés par sa largeur réelle. */
+const widthsFor = (steps: number[], max: number) => [...new Set([...steps.filter((w) => w < max), max])];
+const desktopWidths = widthsFor([1280, 1920, 2560], image.desktop.width);
+const mobileWidths = widthsFor([480, 780, 1080], image.mobile.width);
+
+const buildSources = async (src: typeof image.desktop, widths: number[]) =>
+  Promise.all(
+    (["avif", "webp"] as const).map(async (format) => {
+      const result = await getImage({ src, widths, format, sizes: "100vw" });
+      return { type: `image/${format}`, srcset: result.srcSet.attribute };
+    }),
+  );
+
+const mobileSources = await buildSources(image.mobile, mobileWidths);
+const desktopSources = await buildSources(image.desktop, desktopWidths);
+const fallback = await getImage({ src: image.desktop, width: Math.min(1920, image.desktop.width), format: "webp" });
+---
+
+<picture>
+  {mobileSources.map((s) => <source media={mobileQuery} type={s.type} srcset={s.srcset} sizes="100vw" />)}
+  {desktopSources.map((s) => <source type={s.type} srcset={s.srcset} sizes="100vw" />)}
+  <img
+    src={fallback.src}
+    width={fallback.attributes.width}
+    height={fallback.attributes.height}
+    alt={image.alt}
+    loading={priority ? "eager" : "lazy"}
+    fetchpriority={priority ? "high" : "auto"}
+    decoding={priority ? "sync" : "async"}
+    class="absolute inset-0 size-full object-cover"
+    data-scene-image
+  />
+</picture>
+
+{
+  video && (
+    <video
+      class="absolute inset-0 size-full object-cover opacity-0 transition-opacity duration-300"
+      data-scene-video
+      data-src-desktop={video.desktop}
+      data-src-mobile={video.mobile}
+      muted
+      playsinline
+      preload="none"
+      aria-hidden="true"
+    />
+  )
+}

@@ -1,0 +1,64 @@
+---
+import Button from "./Button.astro";
+import { ticketingHref } from "../../data/navigation";
+
+/**
+ * Bouton de réservation fixé en bas de l'écran, sous 1024 px (menu replié). Il n'apparaît
+ * qu'avec JS, et seulement quand ni l'accueil (son propre bouton), ni la billetterie, ni le
+ * pied de page ne sont à l'écran : voir `scripts/stickyCta.ts`.
+ */
+---
+
+<div class="sticky-cta fixed inset-x-0 bottom-0 z-40 px-5.5" data-sticky-cta>
+  <Button href={ticketingHref} variant="header" class="h-12 w-full text-lg shadow-[0_8px_30px_rgb(0_0_0/0.6)]" data-jump>
+    J'achète mon billet !
+  </Button>
+</div>
+
+<style>
+  .sticky-cta {
+    display: none;
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  /* Sous l'écran `lg` de Tailwind (1024 px), là où le menu est replié. */
+  @media (max-width: 1023.98px) {
+    :global(.js) .sticky-cta {
+      display: block;
+    }
+  }
+
+  :global(.js) .sticky-cta {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(100%);
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease,
+      visibility 0s linear 0.25s;
+  }
+
+  :global(.js) .sticky-cta.is-visible {
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  /*
+   * Le bandeau cookies occupe le bas de l'écran : le bouton fixe s'efface le temps du choix.
+   * Il laisse aussi la place à la barre « Votre sélection » de la billetterie (`SelecteurCreneaux`).
+   */
+  :global(.cookies-ouvert) .sticky-cta.is-visible,
+  :global(.avec-selection) .sticky-cta.is-visible {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .sticky-cta {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

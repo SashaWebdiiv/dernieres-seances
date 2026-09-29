@@ -9,15 +9,24 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "typecheck": "astro check",
     "astro": "astro"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
     "@fontsource/bebas-neue": "^5.3.0",
     "@fontsource/inter": "^5.3.0",
     "@fontsource/new-rocker": "^5.3.0",
-    "astro": "^7.3.3"
+    "astro": "^7.3.5",
+    "gsap": "^3.15.0"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
   }
 }
