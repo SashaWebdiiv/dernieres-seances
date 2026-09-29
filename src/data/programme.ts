@@ -27,6 +27,8 @@ export interface RendezVous {
   /** Lignes mises en avant (ambre). */
   lignes: string[];
   tarifs?: Tarif[];
+  /** Voir `Activite.venteSurPlace`. */
+  venteSurPlace?: boolean;
   mention?: string;
 }
 
@@ -76,6 +78,7 @@ export const rendezVous: RendezVous[] = [
       { label: "Maquillage seul :", prix: "5 €" },
       { label: "Avec jardin ensorcelé :", prix: "8 €" },
     ],
+    venteSurPlace: true,
     mention: "Petits et grands",
   },
   {
