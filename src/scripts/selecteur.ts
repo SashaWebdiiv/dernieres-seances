@@ -1,6 +1,6 @@
 import type { Billet, Creneau, ExperienceId, ReponseCreneaux } from "../../api/creneaux";
 import { mesurer } from "./consent";
-import { chargerScriptPretix, paiementDansNouvelOnglet } from "./pretix";
+import { arreterSurLePanier, chargerScriptPretix, paiementDansNouvelOnglet } from "./pretix";
 
 /**
  * Sélecteur de créneau (`components/ticketing/SelecteurCreneaux.astro`).
@@ -18,7 +18,9 @@ import { chargerScriptPretix, paiementDansNouvelOnglet } from "./pretix";
  * « Payer » ouvre un seul panier Pretix avec toute la sélection : `PretixWidget.open` sans créneau,
  * chaque billet nommé `subevent_<créneau>_item_<billet>` (format lu par le panier Pretix pour une
  * série d'événements, voir `_item_from_post_value` dans pretix/presale/views/cart.py). Nouvel onglet
- * sur mobile et dans Safari (`paiementDansNouvelOnglet`). Sans script Pretix : page du premier créneau.
+ * sur mobile et dans Safari (`paiementDansNouvelOnglet`). Le visiteur arrive sur la page du panier
+ * Pretix, encore modifiable, avant ses coordonnées (`arreterSurLePanier`).
+ * Sans script Pretix : page du premier créneau.
  * Pretix garde le panier (cookie) : ce qui est payé ensuite s'y ajoute, d'où l'avertissement et le
  * bouton « Reprendre mon panier ».
  *
@@ -524,6 +526,7 @@ export function initSelecteur(): void {
       false,
       paiementDansNouvelOnglet(),
     );
+    arreterSurLePanier();
     // La sélection est maintenant dans le panier Pretix, qui la garde : ce qui est payé ensuite s'y ajoute.
     panierOuvert = true;
     avisPanier.hidden = false;

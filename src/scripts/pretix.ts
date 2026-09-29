@@ -28,6 +28,34 @@ declare global {
 let chargement: Promise<void> | null = null;
 
 /**
+ * À appeler juste après `PretixWidget.open` avec des billets : le visiteur arrive sur la page du
+ * panier Pretix (billets modifiables, « Vider le panier », puis « Continuer vers le paiement »)
+ * au lieu d'être envoyé directement à la saisie de ses coordonnées (`checkout/start`).
+ *
+ * Le widget v2 construit cette adresse lui-même, sans réglage. On la corrige donc à la volée,
+ * comme Pretix le fait lui-même quand un ajout au panier échoue (`checkout/start` retiré) :
+ * - nouvel onglet : le formulaire caché que le widget envoie au tick suivant ;
+ * - fenêtre : l'`iframe` de sa fenêtre, dont l'adresse change une fois le panier créé.
+ * Dépend de la structure interne du widget : si elle change, rien n'est corrigé et le visiteur
+ * arrive à la saisie des coordonnées, comme avant (le panier reste accessible depuis Pretix).
+ */
+export function arreterSurLePanier(): void {
+  const formulaire = [...document.querySelectorAll<HTMLFormElement>("body > .pretix-widget-hidden form")].at(-1);
+  if (formulaire) formulaire.action = formulaire.action.replace(/checkout%2Fstart/g, "");
+
+  const iframe = [...document.querySelectorAll<HTMLIFrameElement>(".pretix-widget-overlay iframe")].at(-1);
+  if (!iframe) return;
+  const observateur = new MutationObserver(() => {
+    if (!iframe.src.includes("checkout/start")) return;
+    iframe.src = iframe.src.replace(/checkout\/start/g, "");
+    observateur.disconnect();
+  });
+  observateur.observe(iframe, { attributes: true, attributeFilter: ["src"] });
+  // Création du panier abandonnée ou en erreur : on cesse de guetter.
+  window.setTimeout(() => observateur.disconnect(), 120_000);
+}
+
+/**
  * Vrai quand le paiement Pretix doit s'ouvrir dans un nouvel onglet plutôt que dans sa fenêtre
  * par-dessus le site : sur mobile et tablette, et dans Safari. Safari (et tout navigateur iOS, qui
  * utilise son moteur) bloque les cookies tiers : dans la fenêtre, Pretix ne peut qu'afficher
