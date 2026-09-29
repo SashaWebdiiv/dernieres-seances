@@ -1,6 +1,6 @@
 /**
  * Programme affiché dans le hall (maquette « Calendrier », 68:2602). Tarifs validés par
- * l'organisation ; la page d'attente (`evenement.ts`) affiche encore l'ancien tarif du jardin.
+ * l'organisation.
  */
 export interface Tarif {
   label: string;
@@ -15,6 +15,8 @@ export interface Activite {
   /** Une entrée par ligne affichée. */
   horaires: string[];
   tarifs: Tarif[];
+  /** Billets vendus uniquement sur place (pas dans la billetterie en ligne) : étiquette devant les tarifs. */
+  venteSurPlace?: boolean;
   note?: string;
 }
 
@@ -60,6 +62,7 @@ export const activites: Activite[] = [
       { label: "Tarif :", prix: "5 €" },
       { label: "Avec maquillage :", prix: "8 €" },
     ],
+    venteSurPlace: true,
     note: "Accompagnement d'un adulte recommandé",
   },
 ];

@@ -1,15 +1,26 @@
 ---
 import type { Tarif } from "../../data/programme";
 
-/** Étiquettes de prix (maquette « Prix-tag », 158:5995). */
+/**
+ * Étiquettes de prix (maquette « Prix-tag », 158:5995). `venteSurPlace` : étiquette ambre en tête,
+ * pour les activités dont les billets ne sont pas vendus en ligne.
+ */
 interface Props {
   tarifs: Tarif[];
+  venteSurPlace?: boolean;
 }
 
-const { tarifs } = Astro.props;
+const { tarifs, venteSurPlace = false } = Astro.props;
 ---
 
 <ul class="flex flex-wrap gap-2">
+  {
+    venteSurPlace && (
+      <li class="flex items-center rounded border border-ambre/60 px-2.5 py-1 text-xs font-semibold tracking-[1px] text-ambre uppercase">
+        Vente sur place
+      </li>
+    )
+  }
   {
     tarifs.map((tarif) => (
       <li class="flex items-center gap-1.5 rounded border border-sable/15 bg-sable/8 px-2.5 py-1">
