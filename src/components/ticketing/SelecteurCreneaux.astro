@@ -86,7 +86,10 @@ const boutonPrincipal = [
       <ul class="flex flex-col" data-options></ul>
 
       <div class="flex flex-col items-stretch gap-3 border-t border-sable/15 pt-6">
-        <p class="text-center text-base text-sable/85" aria-live="polite" data-total>Aucun billet choisi</p>
+        <!-- Deux lignes réservées : le message de confirmation ne décale pas le bouton en s'affichant. -->
+        <p class="flex min-h-12 items-center justify-center text-center text-base text-sable/85" aria-live="polite" data-total>
+          Aucun billet choisi
+        </p>
         <button
           type="button"
           disabled
