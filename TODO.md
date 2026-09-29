@@ -10,13 +10,13 @@ Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026
       seule (`PRETIX_TOKEN`, Vercel, Production et Preview). Testé sur iPhone : paniers, plusieurs
       créneaux et jours, « Reprendre mon panier ». Si la fonction ne répond pas, le widget Pretix
       s'affiche à sa place.
-- [ ] **Achat réel de contrôle** : sur iPhone, avec deux créneaux, jusqu'à l'e-mail du billet ;
+- [x] **Achat réel de contrôle** : sur iPhone, avec deux créneaux, jusqu'à l'e-mail du billet ;
       puis remboursement depuis Pretix.
-- [ ] **Réglages Pretix à confirmer** : conditions de vente `https://dernieresseances.fr/cgv/` à
+- [x] **Réglages Pretix** : conditions de vente `https://dernieresseances.fr/cgv/` à
       accepter au paiement, réservation du panier 30 minutes (article 3 des conditions), couleur
       principale lisible avec du texte blanc (rouille #a25b32 plutôt qu'ambre).
-- [ ] **Créneaux manquants** : confirmer que les trous sont voulus (aucun parcours à 16h50, 15h50
-      le 31, ni horrifique à 21h40, tous les jours).
+- [x] **Créneaux manquants** : pauses voulues (aucun parcours à 16h50, 15h50 le 31, ni horrifique
+      à 21h40, tous les jours).
 - [ ] **Panier multi-créneaux** : refaire un achat sur deux jours une fois pendant l'événement. Le
       format `subevent_<créneau>_item_<billet>` vient du code de Pretix, pas de sa documentation,
       et pourrait changer lors d'une mise à jour (de même que l'arrivée sur la page du panier,
@@ -26,7 +26,7 @@ Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026
 
 ## Tests sur vrais appareils (après les correctifs mobiles du 29/09)
 
-- [ ] **iPhone** dans Edge, Safari et Firefox : faire défiler la billetterie par petits coups en
+- [x] **iPhone** dans Edge, Safari et Firefox : faire défiler la billetterie par petits coups en
       choisissant jour, expérience et créneau (plus aucun saut) ; double tap à côté des + / −
       (plus de zoom).
 - [ ] **Android** (Chrome, Firefox) et **tablette** : défilement, menu, bouton de réservation fixe,
@@ -35,7 +35,7 @@ Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026
 
 ## Communication et mesure
 
-- [ ] **Délivrabilité des e-mails** (DNS OVH) : SPF et DKIM OVH en place, DMARC ajouté le
+- [x] **Délivrabilité des e-mails** (DNS OVH) : SPF et DKIM OVH en place, DMARC ajouté le
       28/09/2026 (`p=none`, rapports sur contact@). Vérifier DKIM « Actif » dans OVH, puis
       envoyer un test depuis support@ et contact@ vers Gmail (« Afficher l'original » :
       SPF, DKIM et DMARC en PASS) **avant** l'e-mail aux pré-inscrits. Envoi depuis le webmail
