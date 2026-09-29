@@ -1,0 +1,22 @@
+# Vérification de chaque PR (et de main) : types TypeScript et build du site.
+# Une PR qui casse le site est signalée avant la fusion, donc avant la mise en ligne.
+name: Vérification
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build

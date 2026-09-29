@@ -63,34 +63,24 @@ Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026
 - [ ] Les achats se font dans Pretix : suivre les ventes dans les statistiques Pretix (GA ne
       voit pas le paiement).
 
-## Images
+## Visuels
 
-- [ ] Sources définitives en 2880 px de large minimum (écrans Retina desktop) ; les pièces
-      actuelles font 1536 × 1024 et sont un peu douces sur grand écran.
-- [ ] Recadrages mobiles dédiés (portrait 9:16) pièce par pièce : les versions actuelles sont
-      des recadrages centrés automatiques.
-- [ ] Remplacer les images dans `src/assets/scenes/` en gardant les mêmes noms : l'optimisation
-      (AVIF/WebP, tailles) est faite au build.
-- [ ] Visuel de partage (`src/assets/partage/og-dernieres-seances.webp`) : export d'origine en
-      meilleure qualité, idéalement avec les dates et le lieu.
-
-## Vidéos IA (après le lancement)
-
-- [ ] Produire les vidéos par pièce (desktop 16:9, mobile 9:16, muettes, en boucle, < 2–3 Mo).
-- [ ] Les brancher via `video: { desktop, mobile }` dans `src/data/scenes.ts` : l'image
-      reste l'affiche et le repli (mouvement réduit, économie de données).
+Décision du 29/09 : le site reste tel quel. Pas de vidéos IA (code vidéo retiré), pas de nouvelles
+images ; les pièces restent en 1536 × 1024 avec des recadrages mobiles centrés.
 
 ## Maintenance
 
 - [x] Page d'attente retirée (composants, layout, `global.css`) ; `/visite` redirige vers `/`.
-- [ ] `src/data/evenement.ts` : ne garder que `emailContact` et `ouvertureBilletterie` ;
-      `endpointFormulaire`, `experiences`, `exceptionProgramme` et `ouvertureBilletterieLisible`
-      ne servent plus. Archiver `docs/` (formulaire) une fois Apps Script désactivé.
+- [x] `src/data/evenement.ts` réduit à `emailContact` et `ouvertureBilletterie` ; code vidéo retiré.
+- [ ] Archiver `docs/` (formulaire de pré-réservation) une fois Apps Script désactivé.
 - [ ] `public/assets/` : gardé pour les aperçus déjà partagés de la page d'attente ; à supprimer
       après l'événement.
-- [ ] Ajouter un lint (ESLint + Prettier) et une CI (GitHub Actions : `npm run typecheck`
-      et `npm run build` sur chaque PR).
-- [ ] Mettre à jour les dépendances régulièrement (`npm outdated`), surtout avant l'événement.
+- [x] CI GitHub Actions (`.github/workflows/verification.yml`) : `npm ci`, `npm run typecheck` et
+      `npm run build` sur chaque PR et sur `main`. Ne fusionner une PR que si la vérification est verte.
+- [ ] Lint (ESLint + Prettier) : pas avant l'événement (il reformaterait tout le code pour un gain
+      faible sur un site figé).
+- [ ] Dépendances : à jour au 29/09, sauf TypeScript 7 (version majeure) volontairement laissé en 6
+      jusqu'après l'événement. Relancer `npm outdated` début octobre.
 - [ ] DMARC : lire les rapports reçus sur contact@ ; si tous les envois légitimes passent,
       durcir en `p=quarantine` (après l'événement, pas avant).
 - [ ] Après l'événement : bilan, puis décider du sort du site (archive, édition 2027).

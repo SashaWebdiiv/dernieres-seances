@@ -1,9 +1,6 @@
 /**
  * Parcours du château : une entrée par scène, dans l'ordre de la visite.
  *
- * Pour passer une scène en vidéo, lui ajouter `video: { desktop, mobile }` à côté
- * de `image` — l'image reste l'affiche et le repli.
- *
  * Images des pièces issues de la maquette Figma (sources 1536 × 1024). Les versions mobiles
  * sont des recadrages portrait 9:16 centrés, à affiner pièce par pièce si besoin.
  */
