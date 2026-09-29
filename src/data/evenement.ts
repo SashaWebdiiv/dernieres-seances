@@ -14,9 +14,9 @@ export const endpointFormulaire: string | null =
   "https://script.google.com/macros/s/AKfycbxEP90e1wWzTChMkM1182GMStf9Uies0lOg8X8lA5qfMoCpy7sGKu9-M1E1wWb60eE/exec";
 
 /** Ouverture de la billetterie — heure de Paris (CEST en septembre). */
-export const ouvertureBilletterie = "2026-09-28T00:00:00+02:00";
+export const ouvertureBilletterie = "2026-09-29T00:00:00+02:00";
 
-export const ouvertureBilletterieLisible = "Le 28 septembre 2026 à 00h00";
+export const ouvertureBilletterieLisible = "Le 29 septembre 2026 à 00h00";
 
 export interface Experience {
   age: string;
