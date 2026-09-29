@@ -1,73 +1,66 @@
 # À faire — Dernières Séances
 
-Suivi des chantiers restants du site (`/`). Cocher au fil de l'eau.
+Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026. Cocher au fil de l'eau.
 
-## Avant le lancement (bloquant)
+## Billetterie (en vente depuis le 29/09)
 
-- [ ] **Billetterie Pretix** : boutique branchée (`https://pretix.eu/lacompagnie/halloween26/`,
-      widget v2). Reste à tester un achat complet en mode test Pretix, sur mobile et desktop :
-      widget, panier, paiement Stripe / Apple Pay / Google Pay, 3-D Secure, retour sur le site,
-      e-mail du billet. Côté Pretix : couleur principale lisible avec du texte blanc (rouille
-      #a25b32 plutôt qu'ambre), CGV `https://dernieresseances.fr/cgv/` à accepter au paiement,
-      réservation du panier 30 minutes (article 3 des conditions).
-- [ ] **Sélecteur de créneaux** (jour → expérience → créneau avec places restantes → billets, ajoutés
-      à une sélection multi-créneaux, puis paiement Pretix avec le panier rempli ; code : `api/creneaux.ts`, `SelecteurCreneaux.astro`, `scripts/selecteur.ts`).
-      Tant que ce n'est pas fait, le widget Pretix s'affiche à sa place automatiquement.
-  - Pretix → Organisateur → Équipes : créer une équipe « Site web » limitée à l'événement
-    halloween26, avec uniquement la lecture (voir l'événement et ses réglages, sans aucun droit
-    de modification ni accès aux commandes), puis créer un jeton API dans l'onglet de l'équipe ;
-  - Vercel → projet dernieres-seances → Settings → Environment Variables : `PRETIX_TOKEN` =
-    ce jeton, pour Production et Preview (ne jamais le mettre dans le code ni l'envoyer par mail) ;
-  - redéployer, puis ouvrir `/api/creneaux` sur l'aperçu : doit renvoyer la liste des créneaux ;
-  - tester : jour, expérience, créneau, billets (+ / −), puis « Payer » : le panier Pretix doit
-    contenir exactement ces billets, sur le bon créneau (fenêtre dans Chrome, Edge, Firefox sur
-    ordinateur ; nouvel onglet sur mobile et dans Safari). Vérifier qu'un Duo compte bien 2 places et un Trio 3 dans le compteur ;
-  - tester une sélection sur **plusieurs créneaux et plusieurs jours** : un seul panier Pretix doit
-    contenir tous les billets, chacun sur son créneau. Refaire ce test juste avant l'ouverture au
-    public et une fois pendant l'événement : le format `subevent_<créneau>_item_<billet>` vient du code
-    de Pretix, pas de sa documentation, et pourrait changer lors d'une mise à jour ;
-  - confirmer que les trous sont voulus : aucun créneau parcours à 16h50 (15h50 le 31) ni
-    horrifique à 21h40, tous les jours.
-- [x] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans
-      `src/data/legal.ts`) : toutes les informations sont renseignées (le build signale
-      tout champ remis à `null`). Mettre à jour la date `miseAJour` à chaque modification.
-- [x] **Conditions de vente** (`/cgv/`) : validées par le bureau.
-- [ ] **Conditions de vente dans Pretix** : renseigner `https://dernieresseances.fr/cgv/` comme
-      conditions à accepter au paiement.
+- [x] **Sélecteur de créneaux** en production (jour → expérience → créneau avec places restantes →
+      billets, sélection multi-créneaux, paiement Pretix avec le panier rempli ; code :
+      `api/creneaux.ts`, `SelecteurCreneaux.astro`, `scripts/selecteur.ts`). Jeton Pretix en lecture
+      seule (`PRETIX_TOKEN`, Vercel, Production et Preview). Testé sur iPhone : paniers, plusieurs
+      créneaux et jours, « Reprendre mon panier ». Si la fonction ne répond pas, le widget Pretix
+      s'affiche à sa place.
+- [ ] **Achat réel de contrôle** : sur iPhone, avec deux créneaux, jusqu'à l'e-mail du billet ;
+      puis remboursement depuis Pretix.
+- [ ] **Réglages Pretix à confirmer** : conditions de vente `https://dernieresseances.fr/cgv/` à
+      accepter au paiement, réservation du panier 30 minutes (article 3 des conditions), couleur
+      principale lisible avec du texte blanc (rouille #a25b32 plutôt qu'ambre).
+- [ ] **Créneaux manquants** : confirmer que les trous sont voulus (aucun parcours à 16h50, 15h50
+      le 31, ni horrifique à 21h40, tous les jours).
+- [ ] **Panier multi-créneaux** : refaire un achat sur deux jours une fois pendant l'événement. Le
+      format `subevent_<créneau>_item_<billet>` vient du code de Pretix, pas de sa documentation,
+      et pourrait changer lors d'une mise à jour (de même que l'arrivée sur la page du panier,
+      `arreterSurLePanier` dans `scripts/pretix.ts`).
 - [ ] **Mention de TVA** : provisoire (« TVA non applicable. »), en attente du comptable ; mettre
-      à jour `cgv.mentionTva` avec l'article du CGI qui s'applique (non bloquant).
-- [x] **Bascule `/visite` → `/`** : site immersif en page d'accueil, indexable ; `/visite` redirige
-      vers `/` (`vercel.json`) ; retour des pages légales vers `/` ; page d'attente retirée.
-      En ligne une fois la branche fusionnée dans `main`.
-- [ ] **Tests sur vrais appareils** : iPhone (Safari), Android (Chrome), tablette ; scroll,
-      menu burger, bouton de réservation fixe, widget Pretix, mode « mouvement réduit ».
+      à jour `cgv.mentionTva` dans `src/data/legal.ts` (non bloquant).
 
-## Une fois le site en ligne sur dernieresseances.fr
+## Tests sur vrais appareils (après les correctifs mobiles du 29/09)
+
+- [ ] **iPhone** dans Edge, Safari et Firefox : faire défiler la billetterie par petits coups en
+      choisissant jour, expérience et créneau (plus aucun saut) ; double tap à côté des + / −
+      (plus de zoom).
+- [ ] **Android** (Chrome, Firefox) et **tablette** : défilement, menu, bouton de réservation fixe,
+      barre « Votre sélection », paiement.
+- [ ] Mode « mouvement réduit » (réglage d'accessibilité du téléphone) : scènes statiques, lisibles.
+
+## Communication et mesure
 
 - [ ] **Délivrabilité des e-mails** (DNS OVH) : SPF et DKIM OVH en place, DMARC ajouté le
       28/09/2026 (`p=none`, rapports sur contact@). Vérifier DKIM « Actif » dans OVH, puis
       envoyer un test depuis support@ et contact@ vers Gmail (« Afficher l'original » :
       SPF, DKIM et DMARC en PASS) **avant** l'e-mail aux pré-inscrits. Envoi depuis le webmail
       OVH : destinataires en Cci, par lots d'environ 50.
-- [ ] **E-mail aux pré-inscrits** (prêt) : l'envoyer dès que le site et la billetterie sont en
-      ligne. **Puis supprimer le Google Sheet des pré-réservations** : la politique de
-      confidentialité annonce leur suppression « une fois l'ouverture de la billetterie
-      annoncée », et au plus tard le 1er novembre 2026. Désactiver aussi le déploiement
-      Apps Script du formulaire (il continuerait d'accepter des envois).
+- [ ] **E-mail aux pré-inscrits** (prêt), puis **supprimer le Google Sheet des pré-réservations**
+      (la politique de confidentialité annonce leur suppression une fois la billetterie ouverte, au
+      plus tard le 1er novembre 2026) et **désactiver le déploiement Apps Script** : le formulaire a
+      disparu du site, mais son adresse accepte encore des envois.
+- [ ] **Aperçus de partage** : forcer la mise à jour dans
+      [l'outil de débogage de Facebook](https://developers.facebook.com/tools/debug/)
+      (`https://dernieresseances.fr`, « Scrape Again »). WhatsApp : coller l'adresse en `https://`
+      et attendre la vignette avant d'envoyer.
 - [ ] **Google Analytics — vérifier la mesure** : ouvrir le site, « Tout accepter », puis
       GA4 → Rapports → Temps réel : la visite doit apparaître en moins d'une minute.
-- [ ] **Google Analytics — événement clé** : avec le sélecteur de créneaux, l'événement clé est
-      `billetterie_redirection` (départ vers Pretix avec un créneau choisi, le plus proche d'un
-      achat). Faire un parcours complet jusqu'à « Choisir mes billets », attendre qu'il apparaisse
-      (jusqu'à 24 h) dans Administration → Événements → Événements récents, puis l'étoiler.
-      Sans sélecteur (widget seul), étoiler `clic_billetterie` à la place. Les autres
-      (`clic_billetterie`, `billetterie_affichee`, `billetterie_erreur`) restent des événements simples.
-      Retirer l'étoile de `close_convert_lead` et `qualify_lead` (défauts Google, jamais envoyés).
+- [ ] **Google Analytics — événement clé** : `billetterie_redirection` (clic sur « Payer », le plus
+      proche d'un achat). Faire un parcours complet, attendre qu'il apparaisse (jusqu'à 24 h) dans
+      Administration → Événements → Événements récents, puis l'étoiler. Les autres
+      (`selection_ajout`, `clic_billetterie`, `billetterie_affichee`, `billetterie_erreur`,
+      `billetterie_reprise_panier`) restent des événements simples. Retirer l'étoile de
+      `close_convert_lead` et `qualify_lead` (défauts Google, jamais envoyés).
 - [ ] **Google Search Console** : déclarer le site, soumettre
       `https://dernieresseances.fr/sitemap.xml`, tester la page dans le
       [test des résultats enrichis](https://search.google.com/test/rich-results) (événement).
-- [ ] **Achat réel de contrôle** sur le site en ligne (widget Pretix, paiement, e-mail du billet),
-      puis remboursement depuis Pretix.
+- [ ] Les achats se font dans Pretix : suivre les ventes dans les statistiques Pretix (GA ne
+      voit pas le paiement).
 
 ## Images
 
@@ -77,19 +70,8 @@ Suivi des chantiers restants du site (`/`). Cocher au fil de l'eau.
       des recadrages centrés automatiques.
 - [ ] Remplacer les images dans `src/assets/scenes/` en gardant les mêmes noms : l'optimisation
       (AVIF/WebP, tailles) est faite au build.
-
-## Mesure d'audience (Google Analytics 4 + bandeau de consentement)
-
-- [x] Propriété GA4 « Dernières Séances », flux `https://dernieresseances.fr`, identifiant
-      `G-Y58ZH9T32G` branché (`src/data/analytics.ts`). Ne jamais coller la balise gtag de
-      Google dans le `<head>` : elle se chargerait avant le consentement.
-- [x] Dans le flux : Mesures améliorées → Pages vues → décocher « changements de page basés
-      sur l'historique du navigateur » (sinon chaque clic de menu compte comme une page vue).
-- [x] Dans GA4 : Administration → Collecte et conservation des données → conservation des
-      données sur **14 mois** (annoncé dans la politique de confidentialité) ; laisser les
-      signaux Google désactivés.
-- [ ] Les achats se font dans Pretix : suivre les ventes dans les statistiques Pretix (GA ne
-      voit pas le paiement).
+- [ ] Visuel de partage (`src/assets/partage/og-dernieres-seances.webp`) : export d'origine en
+      meilleure qualité, idéalement avec les dates et le lieu.
 
 ## Vidéos IA (après le lancement)
 
@@ -99,14 +81,12 @@ Suivi des chantiers restants du site (`/`). Cocher au fil de l'eau.
 
 ## Maintenance
 
-- [ ] Nettoyer l'ancienne page d'attente une fois le site immersif en ligne : composants
-      `src/components/{Hero,AvantOuverture,CompteARebours,PreReservation,FormulairePreReservation}.astro`,
-      `src/layouts/Layout.astro`, `src/styles/global.css`, `public/assets/*`,
-      `src/data/evenement.ts` (et `docs/` du formulaire si le formulaire disparaît).
-- [ ] Une seule source de vérité pour l'événement : `evenement.ts` (page d'attente) et
-      `programme.ts` (site immersif) se recoupent.
-- [ ] Façade en double : `public/assets/chateau-*.webp` (page d'attente) et
-      `src/assets/scenes/facade-*.webp` (site immersif).
+- [x] Page d'attente retirée (composants, layout, `global.css`) ; `/visite` redirige vers `/`.
+- [ ] `src/data/evenement.ts` : ne garder que `emailContact` et `ouvertureBilletterie` ;
+      `endpointFormulaire`, `experiences`, `exceptionProgramme` et `ouvertureBilletterieLisible`
+      ne servent plus. Archiver `docs/` (formulaire) une fois Apps Script désactivé.
+- [ ] `public/assets/` : gardé pour les aperçus déjà partagés de la page d'attente ; à supprimer
+      après l'événement.
 - [ ] Ajouter un lint (ESLint + Prettier) et une CI (GitHub Actions : `npm run typecheck`
       et `npm run build` sur chaque PR).
 - [ ] Mettre à jour les dépendances régulièrement (`npm outdated`), surtout avant l'événement.
