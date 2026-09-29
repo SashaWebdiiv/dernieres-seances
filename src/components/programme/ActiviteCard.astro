@@ -26,7 +26,7 @@ const { activite } = Astro.props;
     </p>
   </div>
 
-  <Tarifs tarifs={activite.tarifs} />
+  <Tarifs tarifs={activite.tarifs} venteSurPlace={activite.venteSurPlace} />
 
   {activite.note && <p class="text-xs leading-4.5 text-sable/80 italic">{activite.note}</p>}
 </article>
