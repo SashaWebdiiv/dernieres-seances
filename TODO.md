@@ -10,8 +10,8 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       e-mail du billet. Côté Pretix : couleur principale lisible avec du texte blanc (rouille
       #a25b32 plutôt qu'ambre), CGV `https://dernieresseances.fr/cgv/` à accepter au paiement,
       réservation du panier 30 minutes (article 3 des conditions).
-- [ ] **Sélecteur de créneaux** (jour → expérience → créneau avec places restantes → billets, puis
-      paiement Pretix avec le panier rempli ; code : `api/creneaux.ts`, `SelecteurCreneaux.astro`, `scripts/selecteur.ts`).
+- [ ] **Sélecteur de créneaux** (jour → expérience → créneau avec places restantes → billets, ajoutés
+      à une sélection multi-créneaux, puis paiement Pretix avec le panier rempli ; code : `api/creneaux.ts`, `SelecteurCreneaux.astro`, `scripts/selecteur.ts`).
       Tant que ce n'est pas fait, le widget Pretix s'affiche à sa place automatiquement.
   - Pretix → Organisateur → Équipes : créer une équipe « Site web » limitée à l'événement
     halloween26, avec uniquement la lecture (voir l'événement et ses réglages, sans aucun droit
@@ -22,6 +22,10 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
   - tester : jour, expérience, créneau, billets (+ / −), puis « Payer » : le panier Pretix doit
     contenir exactement ces billets, sur le bon créneau (fenêtre dans Chrome, Edge, Firefox sur
     ordinateur ; nouvel onglet sur mobile et dans Safari). Vérifier qu'un Duo compte bien 2 places et un Trio 3 dans le compteur ;
+  - tester une sélection sur **plusieurs créneaux et plusieurs jours** : un seul panier Pretix doit
+    contenir tous les billets, chacun sur son créneau. Refaire ce test juste avant l'ouverture au
+    public et une fois pendant l'événement : le format `subevent_<créneau>_item_<billet>` vient du code
+    de Pretix, pas de sa documentation, et pourrait changer lors d'une mise à jour ;
   - confirmer que les trous sont voulus : aucun créneau parcours à 16h50 (15h50 le 31) ni
     horrifique à 21h40, tous les jours.
 - [x] **Pages légales** (`/mentions-legales/`, `/confidentialite/`, contenus dans

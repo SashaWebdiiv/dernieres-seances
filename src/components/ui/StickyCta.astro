@@ -45,8 +45,12 @@ import { ticketingHref } from "../../data/navigation";
     transition-delay: 0s;
   }
 
-  /* Le bandeau cookies occupe le bas de l'écran : le bouton fixe s'efface le temps du choix. */
-  :global(.cookies-ouvert) .sticky-cta.is-visible {
+  /*
+   * Le bandeau cookies occupe le bas de l'écran : le bouton fixe s'efface le temps du choix.
+   * Il laisse aussi la place à la barre « Votre sélection » de la billetterie (`SelecteurCreneaux`).
+   */
+  :global(.cookies-ouvert) .sticky-cta.is-visible,
+  :global(.avec-selection) .sticky-cta.is-visible {
     visibility: hidden;
     opacity: 0;
   }
