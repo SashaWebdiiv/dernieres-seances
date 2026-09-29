@@ -1,6 +1,6 @@
 # À faire — Dernières Séances
 
-Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'eau.
+Suivi des chantiers restants du site (`/`). Cocher au fil de l'eau.
 
 ## Avant le lancement (bloquant)
 
@@ -36,12 +36,9 @@ Suivi des chantiers restants du site immersif (`/visite`). Cocher au fil de l'ea
       conditions à accepter au paiement.
 - [ ] **Mention de TVA** : provisoire (« TVA non applicable. »), en attente du comptable ; mettre
       à jour `cgv.mentionTva` avec l'article du CGI qui s'applique (non bloquant).
-- [ ] **Bascule `/visite` → `/`** :
-  - remplacer le contenu de `src/pages/index.astro` par celui de `src/pages/visite.astro` ;
-  - retirer la prop `noindex` ;
-  - passer `accueilHref` à `"/"` dans `src/data/navigation.ts` (retour depuis les pages légales) ;
-  - faire de `/visite` une redirection 301 vers `/` (ou supprimer la page) ;
-  - vérifier que le sitemap (`src/pages/sitemap.xml.ts`) ne liste que `/`.
+- [x] **Bascule `/visite` → `/`** : site immersif en page d'accueil, indexable ; `/visite` redirige
+      vers `/` (`vercel.json`) ; retour des pages légales vers `/` ; page d'attente retirée.
+      En ligne une fois la branche fusionnée dans `main`.
 - [ ] **Tests sur vrais appareils** : iPhone (Safari), Android (Chrome), tablette ; scroll,
       menu burger, bouton de réservation fixe, widget Pretix, mode « mouvement réduit ».
 

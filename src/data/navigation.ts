@@ -23,5 +23,5 @@ export const footerLinks: NavLink[] = [
 
 export const ticketingHref = "#billetterie";
 
-/** Page du site immersif, cible du retour depuis les pages légales. Passe à "/" au lancement. */
-export const accueilHref = "/visite/";
+/** Page d'accueil (site immersif), cible du retour depuis les pages légales. */
+export const accueilHref = "/";

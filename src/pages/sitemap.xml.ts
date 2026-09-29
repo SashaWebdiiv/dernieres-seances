@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro";
 
 /**
- * Plan du site pour les moteurs de recherche. Seules les pages indexables y figurent :
- * /visite (noindex avant lancement) en est volontairement absente.
+ * Plan du site pour les moteurs de recherche : la page d'accueil seule. Les pages légales sont
+ * en noindex, et /visite redirige vers / (vercel.json).
  */
 const pages = ["/"];
 
