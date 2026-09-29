@@ -32,12 +32,16 @@ function animateVeils(scene: HTMLElement, { first, last }: { first: boolean; las
 }
 
 /**
- * Le contenu peut changer de hauteur après coup (widget Pretix, FAQ dépliée) :
+ * Le contenu peut changer de hauteur après coup (sélecteur de créneaux, FAQ dépliée) :
  * toutes les positions de déclenchement situées en dessous doivent être recalculées.
+ *
+ * Recalcul en mode « sûr » (`refresh(true)`) : GSAP attend la fin du défilement, doigt levé.
+ * Un recalcul forcé (`refresh()`) remet la page à la position mémorisée au début du calcul ;
+ * sur iPhone, pendant l'élan d'un défilement au doigt, il la faisait sauter en arrière.
  */
 function refreshOnContentResize(content: Element): () => void {
   let height = content.getBoundingClientRect().height;
-  const refresh = gsap.delayedCall(0.2, () => ScrollTrigger.refresh()).pause();
+  const refresh = gsap.delayedCall(0.2, () => ScrollTrigger.refresh(true)).pause();
 
   const observer = new ResizeObserver(([entry]) => {
     const next = entry?.contentRect.height ?? height;

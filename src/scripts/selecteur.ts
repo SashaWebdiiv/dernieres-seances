@@ -325,7 +325,8 @@ export function initSelecteur(): void {
     );
   };
 
-  const afficherBillets = (defiler: boolean) => {
+  // Aucun défilement automatique : sur mobile, il entrait en conflit avec le défilement au doigt.
+  const afficherBillets = () => {
     const creneau = creneauChoisi();
     const bloc = etape("billets");
     if (!creneau) {
@@ -339,7 +340,6 @@ export function initSelecteur(): void {
     else if (placesDe(quantites) > restantes(creneau)) quantites.clear();
     actualiserBillets();
     bloc.hidden = false;
-    if (defiler) defilerVers(bloc);
   };
 
   const defilerVers = (element: HTMLElement, bloc: ScrollLogicalPosition = "nearest") => {
@@ -421,7 +421,7 @@ export function initSelecteur(): void {
     afficherJours();
     if (choix.jour) afficherExperiences();
     if (choix.jour && choix.experience) afficherCreneaux();
-    afficherBillets(false);
+    afficherBillets();
     afficherSelection();
   };
 
@@ -444,16 +444,16 @@ export function initSelecteur(): void {
       afficherExperiences();
       if (choix.experience) afficherCreneaux();
       else etape("creneau").hidden = true;
-      afficherBillets(false);
+      afficherBillets();
     } else if (input.name === "experience") {
       choix.experience = input.value as ExperienceId;
       await rafraichirSiPerime();
       afficherCreneaux();
-      afficherBillets(false);
+      afficherBillets();
     } else if (input.name === "creneau") {
       choix.creneau = Number(input.value);
       if (Date.now() - chargeA > PERIME && (await charger())) afficherCreneaux();
-      afficherBillets(true);
+      afficherBillets();
     }
   });
 
@@ -483,8 +483,9 @@ export function initSelecteur(): void {
         ? "Ajouté à votre sélection. Choisissez un autre créneau ou payez votre sélection."
         : "Ajouté à votre sélection.",
     );
-    // Sur ordinateur, on montre la sélection ; sur mobile, la barre fixe apparaît.
-    if (window.matchMedia("(min-width: 1024px)").matches) defilerVers(blocSelection);
+    // Sur ordinateur (souris), on montre la sélection ; sur écran tactile, la barre fixe apparaît
+    // et le visiteur garde la main sur le défilement.
+    if (window.matchMedia("(min-width: 1024px) and (pointer: fine)").matches) defilerVers(blocSelection);
   });
 
   lignesSelection.addEventListener("click", (event) => {
@@ -496,8 +497,8 @@ export function initSelecteur(): void {
     if (!billets || billets.size === 0) selection.delete(creneau);
     actualiserTout();
     // Le bouton a disparu : le focus revient au titre de la sélection, ou au bouton d'ajout si elle est vide.
-    if (selection.size > 0) blocSelection.focus();
-    else if (!ajouter.closest("[hidden]")) ajouter.focus();
+    if (selection.size > 0) blocSelection.focus({ preventScroll: true });
+    else if (!ajouter.closest("[hidden]")) ajouter.focus({ preventScroll: true });
   });
 
   const payer = () => {

@@ -107,6 +107,16 @@ const style = {
     padding-block: 5rem;
   }
 
+  /*
+   * Contenu calé en haut de la scène au lieu d'être centré. Pour un contenu qui change de
+   * hauteur pendant qu'on s'en sert (sélecteur de billetterie) : centré, chaque ajout le
+   * faisait remonter de la moitié de sa hauteur, et Safari, sans ancrage du défilement,
+   * le faisait sauter sous le doigt.
+   */
+  .scene--haut > .scene-content {
+    justify-content: flex-start;
+  }
+
   .scene[data-decorative] {
     display: none;
   }
