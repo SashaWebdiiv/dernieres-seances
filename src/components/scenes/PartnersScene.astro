@@ -11,15 +11,15 @@ import { partners } from "../../data/partners";
     <h2 id="titre-partenaires" tabindex="-1" class="text-xs leading-[14.4px] tracking-[2.88px] text-white uppercase">
       Ils rendent cette expérience possible
     </h2>
-    <!-- Deux lignes de trois à toutes les largeurs : les colonnes restent alignées d'une ligne à l'autre. -->
-    <ul class="grid grid-cols-3 gap-x-3 gap-y-8 pt-10 md:grid-cols-[repeat(3,minmax(0,15.125rem))] md:gap-x-1.5 md:gap-y-11.25">
+    <!-- Deux colonnes sur mobile et tablette, deux lignes de trois sur ordinateur. -->
+    <ul class="grid grid-cols-2 gap-x-1.5 gap-y-8 pt-10 md:grid-cols-[repeat(2,15.125rem)] md:gap-y-11.25 lg:grid-cols-[repeat(3,15.125rem)]">
       {
         partners.map((partner) => (
           <li class="flex min-w-0 flex-col items-center gap-1.5" data-reveal>
-            <span class="flex h-11 items-center md:h-15" aria-hidden={partner.logo ? undefined : "true"}>
+            <span class="flex h-12 items-center md:h-15" aria-hidden={partner.logo ? undefined : "true"}>
               {partner.logo && <Image src={partner.logo} alt="" height={60} densities={[1, 2]} class="h-full w-auto max-w-full object-contain" />}
             </span>
-            <span class="text-[11px] leading-[1.5] font-medium tracking-[0.12em] text-balance text-white uppercase md:text-[13.6px] md:leading-[20.4px] md:tracking-[0.15em]">
+            <span class="text-xs leading-[1.5] font-medium tracking-[0.15em] text-white uppercase md:text-[13.6px] md:leading-[20.4px]">
               {partner.name}
             </span>
           </li>
