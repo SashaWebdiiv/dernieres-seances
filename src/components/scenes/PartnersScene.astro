@@ -11,15 +11,22 @@ import { partners } from "../../data/partners";
     <h2 id="titre-partenaires" tabindex="-1" class="text-xs leading-[14.4px] tracking-[2.88px] text-white uppercase">
       Ils rendent cette expérience possible
     </h2>
-    <ul class="flex flex-wrap justify-center gap-x-1.5 gap-y-8 pt-10 md:gap-y-11.25">
+    <!-- Deux colonnes sur mobile et tablette, deux lignes de trois sur ordinateur. -->
+    <ul class="grid grid-cols-2 gap-x-1.5 gap-y-8 pt-10 md:grid-cols-[repeat(2,15.125rem)] md:gap-y-11.25 lg:grid-cols-[repeat(3,15.125rem)]">
       {
         partners.map((partner) => (
-          <li class="flex w-[calc(50%-3px)] flex-col items-center gap-1.5 md:w-60.5" data-reveal>
+          <li class="flex min-w-0 flex-col items-center gap-1.5" data-reveal>
             <span class="flex h-12 items-center md:h-15" aria-hidden={partner.logo ? undefined : "true"}>
-              {partner.logo && <Image src={partner.logo} alt="" height={60} densities={[1, 2]} class="h-full w-auto" />}
+              {partner.logo && <Image src={partner.logo} alt="" height={60} densities={[1, 2]} class="h-full w-auto max-w-full object-contain" />}
             </span>
             <span class="text-xs leading-[1.5] font-medium tracking-[0.15em] text-white uppercase md:text-[13.6px] md:leading-[20.4px]">
-              {partner.name}
+              {/* Mots composés insécables : « Sucy-en-Brie » ne se coupe pas après un trait d'union. */}
+              {partner.name.split(" ").map((mot, i) => (
+                <>
+                  {i > 0 && " "}
+                  {mot.includes("-") ? <span class="whitespace-nowrap">{mot}</span> : mot}
+                </>
+              ))}
             </span>
           </li>
         ))
