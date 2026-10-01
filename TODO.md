@@ -24,6 +24,17 @@ Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026
 - [ ] **Mention de TVA** : provisoire (« TVA non applicable. »), en attente du comptable ; mettre
       à jour `cgv.mentionTva` dans `src/data/legal.ts` (non bloquant).
 
+## Parade (section ajoutée le 01/10, PR en brouillon)
+
+- [ ] **Carte Google Maps** : clé `PUBLIC_GOOGLE_MAPS_KEY` (Vercel, Production et Preview),
+      restreinte à `https://dernieresseances.fr/*` ; plafond quotidien et alerte de budget dans
+      Google Cloud. Vérifier sur la prévisualisation puis en production : « Afficher la carte »,
+      6 étapes, tracé, lien « Ouvrir dans Google Maps ».
+- [ ] **Tracé** : lignes droites entre les étapes. S'il doit suivre les rues, fournir des points
+      intermédiaires (`carte.lieux` dans `src/data/parade.ts`).
+- [ ] **Contenu à confirmer** : parade le samedi 31 octobre seulement (ajouté aux horaires),
+      « 6 lieux différents du quartier », association présente à chaque étape.
+
 ## Tests sur vrais appareils (après les correctifs mobiles du 29/09)
 
 - [x] **iPhone** dans Edge, Safari et Firefox : faire défiler la billetterie par petits coups en
