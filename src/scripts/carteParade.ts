@@ -55,6 +55,9 @@ async function dessiner(conteneur: HTMLElement, mapId: string, lieux: Lieu[]): P
 
   const carte = new Map(conteneur, {
     mapId,
+    // Le style du Map ID est associé au mode sombre : sans cela, la carte s'ouvre en mode clair
+    // (style Google par défaut).
+    colorScheme: "DARK",
     center: lieux[0],
     zoom: 17,
     disableDefaultUI: true,
