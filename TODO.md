@@ -24,12 +24,15 @@ Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026
 - [ ] **Mention de TVA** : provisoire (« TVA non applicable. »), en attente du comptable ; mettre
       à jour `cgv.mentionTva` dans `src/data/legal.ts` (non bloquant).
 
-## Parade (section ajoutée le 01/10, PR en brouillon)
+## Parade (en ligne depuis le 01/10)
 
-- [ ] **Carte Google Maps** : clé `PUBLIC_GOOGLE_MAPS_KEY` (Vercel, Production et Preview),
-      restreinte à `https://dernieresseances.fr/*` ; plafond quotidien et alerte de budget dans
-      Google Cloud. Vérifier sur la prévisualisation puis en production : « Afficher la carte »,
-      6 étapes, tracé, lien « Ouvrir dans Google Maps ».
+- [x] **Carte Google Maps** en production : clé `PUBLIC_GOOGLE_MAPS_KEY` (Vercel, Production et
+      Preview), restreinte à `https://dernieresseances.fr/*` (accès `vercel.app` retiré après les
+      tests). Reste à poser un plafond quotidien et une alerte de budget dans Google Cloud.
+- [ ] **Points d'intérêt de la carte** : dans la console Google Cloud, style lié au Map ID
+      (Styles de carte), masquer commerces, restauration, santé, services (banques) et
+      hébergement ; garder administrations (mairie), sites remarquables (château), parcs. Vérifier
+      que le château reste visible, puis enregistrer **et publier** le style (sans redéploiement).
 - [ ] **Tracé** : lignes droites entre les étapes. S'il doit suivre les rues, fournir des points
       intermédiaires (`carte.lieux` dans `src/data/parade.ts`).
 - [ ] **Contenu à confirmer** : parade le samedi 31 octobre seulement (ajouté aux horaires),
