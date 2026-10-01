@@ -15,6 +15,7 @@ import StickyCta from "../components/ui/StickyCta.astro";
 import { getImage } from "astro:assets";
 import facade from "../assets/scenes/facade-desktop.webp";
 import { eventJsonLd } from "../data/seo";
+import { parade } from "../data/parade";
 
 /*
  * Page d'accueil : le site immersif. Il a remplacé la page d'attente (pré-réservations) au
@@ -49,7 +50,7 @@ const eventImages = await Promise.all(
     <PresentationScene />
     <ExperienceScene />
     <TicketScene />
-    <ParadeScene />
+    {parade.affichee && <ParadeScene />}
     <FaqScene>
       <Footer />
     </FaqScene>

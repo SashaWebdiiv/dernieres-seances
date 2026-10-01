@@ -24,7 +24,12 @@ Suivi des chantiers restants du site (`/`), en ligne depuis le 29 septembre 2026
 - [ ] **Mention de TVA** : provisoire (« TVA non applicable. »), en attente du comptable ; mettre
       à jour `cgv.mentionTva` dans `src/data/legal.ts` (non bloquant).
 
-## Parade (en ligne depuis le 01/10)
+## Parade (masquée le 02/10, en attente de la mairie)
+
+- [ ] **Réafficher la section** une fois parcours et horaires confirmés par la mairie :
+      `affichee: true` dans `src/data/parade.ts` (section, liens du menu et du pied de page,
+      paragraphe « carte » de la politique de confidentialité). La carte du programme « Parade,
+      31 octobre, 18h30 » reste affichée : à corriger aussi si les horaires changent.
 
 - [x] **Carte Google Maps** en production : clé `PUBLIC_GOOGLE_MAPS_KEY` (Vercel, Production et
       Preview), restreinte à `https://dernieresseances.fr/*` (accès `vercel.app` retiré après les
