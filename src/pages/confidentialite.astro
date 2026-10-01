@@ -8,7 +8,8 @@ import { gaMeasurementId } from "../data/analytics";
  * Information des personnes (RGPD, art. 13). Décrit ce que le site fait réellement :
  * formulaire de pré-réservation (Google Sheets), billetterie Pretix + Stripe, contact,
  * journaux de l'hébergeur, et Google Analytics avec consentement quand `gaMeasurementId` est
- * renseigné (`data/analytics.ts`) : les paragraphes correspondants suivent automatiquement.
+ * renseigné (`data/analytics.ts`) : les paragraphes correspondants suivent automatiquement ;
+ * carte Google Maps de la parade, chargée seulement au clic (`scripts/carteParade.ts`).
  * Aucune publicité. Tout nouvel outil doit être décrit ici avant sa mise en ligne.
  */
 const { billetterie, paiement, formulaire } = prestataires;
@@ -97,6 +98,24 @@ const mesure = gaMeasurementId !== null;
     )
   }
 
+  <h3 id="carte">Carte du parcours de la parade</h3>
+  <p>
+    La carte du parcours de la parade est fournie par Google Maps. <strong>Elle ne se charge que si vous cliquez
+    sur « Afficher la carte »</strong> : votre navigateur contacte alors les serveurs de Google, qui
+    reçoivent votre adresse IP et des informations techniques sur votre navigateur, comme pour toute page web.
+    Google peut aussi utiliser ses propres cookies, sur ses domaines. Votre choix est mémorisé dans votre
+    navigateur (sans cookie) pour ne pas vous le redemander ; vous pouvez l'effacer en supprimant les données
+    du site dans votre navigateur. Sans ce clic, rien n'est envoyé à Google ; le lien « Ouvrir dans Google
+    Maps » reste disponible.
+  </p>
+  <ul>
+    <li><strong>Base légale :</strong> votre consentement, donné par le clic.</li>
+    <li>
+      <strong>Traitement par Google :</strong> selon les
+      {" "}<a href={formulaire.site} rel="noopener">règles de confidentialité de Google</a>.
+    </li>
+  </ul>
+
   <h2>Qui a accès à vos données</h2>
   <p>
     Vos données ne sont ni vendues, ni louées, ni cédées. Elles sont accessibles aux seuls membres de
@@ -114,7 +133,7 @@ const mesure = gaMeasurementId !== null;
     </li>
     <li>
       <strong>{formulaire.nom}</strong> (Google Sheets, stockage des pré-réservations
-      {mesure && " ; Google Analytics, mesure d'audience"}), {formulaire.adresse} —
+      {mesure && " ; Google Analytics, mesure d'audience"} ; Google Maps, carte de la parade), {formulaire.adresse} —
       {" "}<a href={formulaire.site} rel="noopener">règles de confidentialité de Google</a>
     </li>
     <li><strong>{hebergeur.nom}</strong> (hébergement du site), {hebergeur.adresse}</li>

@@ -14,6 +14,19 @@ const etiquette = "font-display text-xs leading-4.5 tracking-[2.64px] uppercase"
 const carte = "rounded-lg border border-sable/15 bg-noir/40";
 /* Fausses lignes de l'aperçu de la carte (largeur de la première barre, maquette). */
 const lignesApercu = [72, 96, 64, 88, 76, 104];
+
+/* Clé publique (restreinte au domaine), lue au build : absente, il ne reste que le lien. */
+const cleGoogleMaps: string | undefined = import.meta.env.PUBLIC_GOOGLE_MAPS_KEY || undefined;
+
+/* Repli : le parcours à pied dans Google Maps, étapes dans l'ordre. */
+const points = parade.carte.lieux.map(({ lat, lng }) => `${lat},${lng}`);
+const itineraireGoogleMaps = `https://www.google.com/maps/dir/?${new URLSearchParams({
+  api: "1",
+  origin: points[0],
+  destination: points.at(-1)!,
+  waypoints: points.slice(1, -1).join("|"),
+  travelmode: "walking",
+})}`;
 ---
 
 <!-- Jardin (maquette « Parade », 237:6315). -->
@@ -57,27 +70,65 @@ const lignesApercu = [72, 96, 64, 88, 76, 104];
           <h3 class={`${etiquette} text-ambre`}>Itinéraire</h3>
           <p class="text-base leading-6 text-sable/85">{parade.itineraire}</p>
 
-          <!-- Emplacement de la carte Google Maps (API JavaScript, carte personnalisée) : à venir. -->
+          <!-- Carte Google Maps, chargée seulement après accord (scripts/carteParade.ts). -->
           <div
             class="flex min-h-80 flex-1 flex-col overflow-hidden rounded-lg border border-sable/15 bg-noir"
             data-carte-parade
+            data-cle={cleGoogleMaps}
+            data-map-id={parade.carte.mapId}
+            data-lieux={JSON.stringify(parade.carte.lieux)}
           >
-            <div class="flex items-center justify-between bg-noir/60 p-3">
+            <div class="flex items-center justify-between gap-3 bg-noir/60 p-3">
               <p class={`${etiquette} text-creme`}>Google Maps</p>
-              <p class={`${etiquette} text-sable/60`}>Aperçu</p>
+              <a
+                href={itineraireGoogleMaps}
+                target="_blank"
+                rel="noopener"
+                aria-label="Ouvrir le parcours dans Google Maps (nouvel onglet)"
+                class={`${etiquette} shrink-0 text-sable/80 underline-offset-4 transition-colors hover:text-ambre hover:underline`}
+              >
+                Ouvrir<span class="max-sm:hidden"> dans Google Maps</span>
+              </a>
             </div>
-            <div class="flex flex-col gap-3 p-3" aria-hidden="true">
-              {
-                lignesApercu.map((largeur, index) => (
-                  <>
-                    {index > 0 && <span class="h-px bg-sable/15" />}
-                    <span class="flex gap-3">
-                      <span class="h-3 shrink-0 rounded-md bg-sable/8" style={{ width: `${largeur}px` }} />
-                      <span class="h-3 flex-1 rounded-md bg-sable/8" />
-                    </span>
-                  </>
-                ))
-              }
+            <div class="relative flex-1">
+              <div class="absolute inset-0" hidden data-carte-canevas></div>
+              <div class="absolute inset-0" data-carte-accord>
+                <div class="flex flex-col gap-3 p-3 opacity-60" aria-hidden="true">
+                  {
+                    lignesApercu.map((largeur, index) => (
+                      <>
+                        {index > 0 && <span class="h-px bg-sable/15" />}
+                        <span class="flex gap-3">
+                          <span class="h-3 shrink-0 rounded-md bg-sable/8" style={{ width: `${largeur}px` }} />
+                          <span class="h-3 flex-1 rounded-md bg-sable/8" />
+                        </span>
+                      </>
+                    ))
+                  }
+                </div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-noir/40 p-6 text-center">
+                  <button
+                    type="button"
+                    hidden
+                    class="inline-flex min-h-12 cursor-pointer items-center justify-center rounded-lg bg-ambre-vif px-6 text-base font-extrabold tracking-[0.05em] text-nuit transition-colors hover:bg-ambre-clair disabled:cursor-wait disabled:opacity-70"
+                    data-carte-afficher
+                  >
+                    Afficher la carte
+                  </button>
+                  <p class="max-w-90 text-xs leading-4.5 text-sable/80" role="status" data-carte-statut>
+                    {
+                      cleGoogleMaps
+                        ? "La carte est fournie par Google Maps : en l'affichant, vous acceptez que Google reçoive votre adresse IP."
+                        : "Carte bientôt disponible. En attendant, ouvrez le parcours dans Google Maps."
+                    }
+                  </p>
+                  {cleGoogleMaps && (
+                    <a href="/confidentialite/#carte" class="text-xs leading-4.5 text-ambre underline underline-offset-3">
+                      En savoir plus
+                    </a>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -85,3 +136,27 @@ const lignesApercu = [72, 96, 64, 88, 76, 104];
     </div>
   </div>
 </Scene>
+
+<style>
+  /* Pastilles des étapes, créées par le script dans la carte (hors de la portée des styles Astro). */
+  :global(.carte-etape) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid var(--color-noir);
+    border-radius: 9999px;
+    background: var(--color-ambre);
+    color: var(--color-noir);
+    font-size: 0.9375rem;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
+  }
+</style>
+
+<script>
+  import { initCarteParade } from "../../scripts/carteParade";
+
+  initCarteParade();
+</script>

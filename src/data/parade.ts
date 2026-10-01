@@ -20,6 +20,22 @@ export const parade = {
   horaires: ["Samedi 31 octobre", "De 18h30 à 19h00, départ du château"],
   itineraire:
     "Les associations se produisent dans 6 lieux différents du quartier. Suivez le parcours pour découvrir toutes les représentations.",
+  /**
+   * Carte Google Maps : style personnalisé porté par le Map ID (console Google Cloud), clé
+   * publique `PUBLIC_GOOGLE_MAPS_KEY` (Vercel), restreinte au domaine du site.
+   * Lieux dans l'ordre du parcours, reliés par un tracé en ligne droite.
+   */
+  carte: {
+    mapId: "c0781287449e02409935b400",
+    lieux: [
+      { lat: 48.77124, lng: 2.52182 },
+      { lat: 48.77069, lng: 2.52086 },
+      { lat: 48.77043, lng: 2.51961 },
+      { lat: 48.76881, lng: 2.52041 },
+      { lat: 48.76977, lng: 2.52158 },
+      { lat: 48.77055, lng: 2.52185 },
+    ],
+  },
   associations: [
     { nom: "Groupe 1 – Clodine Barrais", logo: clodineBarrais, taille: [42, 56] },
     { nom: "Groupe 2 – Clodine Barrais", logo: clodineBarrais, taille: [42, 56] },
