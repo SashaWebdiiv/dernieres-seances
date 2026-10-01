@@ -21,9 +21,9 @@ export const parade = {
   itineraire:
     "Les associations se produisent dans 6 lieux différents du quartier. Suivez le parcours pour découvrir toutes les représentations.",
   associations: [
-    { nom: "Groupe 1 – Clôdine Barrais", logo: clodineBarrais, taille: [42, 56] },
-    { nom: "Groupe 2 – Clôdine Barrais", logo: clodineBarrais, taille: [42, 56] },
-    { nom: "Carole – ACDF", logo: acdf, taille: [64, 64] },
+    { nom: "Groupe 1 – Clodine Barrais", logo: clodineBarrais, taille: [42, 56] },
+    { nom: "Groupe 2 – Clodine Barrais", logo: clodineBarrais, taille: [42, 56] },
+    { nom: "ACDF", logo: acdf, taille: [64, 64] },
     { nom: "Destination Danse", logo: destinationDanses, taille: [64, 30] },
     { nom: "GRS", logo: grs, taille: [64, 48] },
     { nom: "Art et Mouvement", logo: artEtMouvement, taille: [64, 64] },
