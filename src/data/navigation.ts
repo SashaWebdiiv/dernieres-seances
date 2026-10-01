@@ -1,3 +1,5 @@
+import { parade } from "./parade";
+
 export interface NavLink {
   /** Ancre d'une scène : `#id` tel que défini dans `data/scenes.ts`. */
   href: `#${string}`;
@@ -9,7 +11,7 @@ export const navLinks: NavLink[] = [
   { href: "#calendrier", label: "Calendrier" },
   { href: "#experience", label: "L'expérience" },
   { href: "#programme", label: "Programme" },
-  { href: "#parade", label: "Parade" },
+  ...(parade.affichee ? [{ href: "#parade", label: "Parade" } as const] : []),
   { href: "#faq", label: "FAQ" },
 ];
 
@@ -19,7 +21,7 @@ export const footerLinks: NavLink[] = [
   { href: "#experience", label: "L'expérience" },
   { href: "#programme", label: "Programme" },
   { href: "#billetterie", label: "Billetterie" },
-  { href: "#parade", label: "Parade" },
+  ...(parade.affichee ? [{ href: "#parade", label: "Parade" } as const] : []),
   { href: "#faq", label: "FAQ" },
 ];
 

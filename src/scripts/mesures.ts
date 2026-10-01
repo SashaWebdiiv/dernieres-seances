@@ -5,8 +5,11 @@ import { mesurer } from "./consent";
  * - `clic_billetterie` : clic vers la billetterie, avec `emplacement` (accueil, menu, bouton_fixe…),
  *   pour savoir quels boutons font vendre.
  * Les événements de la billetterie (`billetterie_affichee`, `billetterie_erreur`) sont dans `pretix.ts`
- * et `selecteur.ts`, qui envoie aussi `billetterie_redirection` (départ vers Pretix, avec
- * `experience`, `jour` et `heure`) : l'étape la plus proche d'un achat que le site puisse mesurer.
+ * et `selecteur.ts`, qui envoie aussi `selection_ajout`, `billetterie_reprise_panier` et
+ * `billetterie_redirection` : clic sur « Payer » (fenêtre Pretix, nouvel onglet ou page Pretix),
+ * avec `creneaux`, `experiences`, `personnes`, `montant` et `mode` (`fenetre`, `onglet`, `page`).
+ * C'est l'étape la plus proche d'un achat que le site puisse mesurer (événement clé dans GA).
+ * La carte de la parade envoie `carte_parade_affichee` et `carte_parade_erreur` (`carteParade.ts`).
  */
 export function initMesures(): void {
   document.addEventListener("click", (event) => {

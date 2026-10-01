@@ -3,6 +3,7 @@ import LegalLayout from "../layouts/LegalLayout.astro";
 import AComplete from "../components/legal/AComplete.astro";
 import { conservation, editeur, hebergeur, manquants, prestataires } from "../data/legal";
 import { gaMeasurementId } from "../data/analytics";
+import { parade } from "../data/parade";
 
 /*
  * Information des personnes (RGPD, art. 13). Décrit ce que le site fait réellement :
@@ -14,6 +15,7 @@ import { gaMeasurementId } from "../data/analytics";
  */
 const { billetterie, paiement, formulaire } = prestataires;
 const mesure = gaMeasurementId !== null;
+const carteParade = parade.affichee;
 ---
 
 <LegalLayout
@@ -98,23 +100,29 @@ const mesure = gaMeasurementId !== null;
     )
   }
 
-  <h3 id="carte">Carte du parcours de la parade</h3>
-  <p>
-    La carte du parcours de la parade est fournie par Google Maps. <strong>Elle ne se charge que si vous cliquez
-    sur « Afficher la carte »</strong> : votre navigateur contacte alors les serveurs de Google, qui
-    reçoivent votre adresse IP et des informations techniques sur votre navigateur, comme pour toute page web.
-    Google peut aussi utiliser ses propres cookies, sur ses domaines. Votre choix est mémorisé dans votre
-    navigateur (sans cookie) pour ne pas vous le redemander ; vous pouvez l'effacer en supprimant les données
-    du site dans votre navigateur. Sans ce clic, rien n'est envoyé à Google ; le lien « Ouvrir dans Google
-    Maps » reste disponible.
-  </p>
-  <ul>
-    <li><strong>Base légale :</strong> votre consentement, donné par le clic.</li>
-    <li>
-      <strong>Traitement par Google :</strong> selon les
-      {" "}<a href={formulaire.site} rel="noopener">règles de confidentialité de Google</a>.
-    </li>
-  </ul>
+  {
+    carteParade && (
+      <>
+        <h3 id="carte">Carte du parcours de la parade</h3>
+        <p>
+          La carte du parcours de la parade est fournie par Google Maps. <strong>Elle ne se charge que si vous cliquez
+          sur « Afficher la carte »</strong> : votre navigateur contacte alors les serveurs de Google, qui
+          reçoivent votre adresse IP et des informations techniques sur votre navigateur, comme pour toute page web.
+          Google peut aussi utiliser ses propres cookies, sur ses domaines. Votre choix est mémorisé dans votre
+          navigateur (sans cookie) pour ne pas vous le redemander ; vous pouvez l'effacer en supprimant les données
+          du site dans votre navigateur. Sans ce clic, rien n'est envoyé à Google ; le lien « Ouvrir dans Google
+          Maps » reste disponible.
+        </p>
+        <ul>
+          <li><strong>Base légale :</strong> votre consentement, donné par le clic.</li>
+          <li>
+            <strong>Traitement par Google :</strong> selon les
+            {" "}<a href={formulaire.site} rel="noopener">règles de confidentialité de Google</a>.
+          </li>
+        </ul>
+      </>
+    )
+  }
 
   <h2>Qui a accès à vos données</h2>
   <p>
@@ -133,7 +141,8 @@ const mesure = gaMeasurementId !== null;
     </li>
     <li>
       <strong>{formulaire.nom}</strong> (Google Sheets, stockage des pré-réservations
-      {mesure && " ; Google Analytics, mesure d'audience"} ; Google Maps, carte de la parade), {formulaire.adresse} —
+      {mesure && " ; Google Analytics, mesure d'audience"}
+      {carteParade && " ; Google Maps, carte de la parade"}), {formulaire.adresse} —
       {" "}<a href={formulaire.site} rel="noopener">règles de confidentialité de Google</a>
     </li>
     <li><strong>{hebergeur.nom}</strong> (hébergement du site), {hebergeur.adresse}</li>

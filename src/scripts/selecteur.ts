@@ -505,13 +505,17 @@ export function initSelecteur(): void {
   const payer = () => {
     const lignes = lignesTriees();
     if (lignes.length === 0) return;
+    const pretix = window.PretixWidget;
+    const nouvelOnglet = paiementDansNouvelOnglet();
+    // Envoyé au clic, quel que soit le mode : `mode` dit comment Pretix s'est ouvert (fenêtre
+    // par-dessus le site, nouvel onglet, ou page Pretix si son script est bloqué).
     mesurer("billetterie_redirection", {
       creneaux: String(lignes.length),
       experiences: [...new Set(lignes.map((l) => l.creneau.experience))].join(","),
       personnes: String(personnesSelection()),
       montant: String(montantSelection()),
+      mode: !pretix?.open ? "page" : nouvelOnglet ? "onglet" : "fenetre",
     });
-    const pretix = window.PretixWidget;
     if (!pretix?.open) {
       // Script Pretix indisponible (bloqueur, réseau) : page du premier créneau, billets à y choisir.
       window.location.assign(new URL(`${lignes[0].creneau.id}/`, boutique).href);
@@ -526,7 +530,7 @@ export function initSelecteur(): void {
       ),
       undefined,
       false,
-      paiementDansNouvelOnglet(),
+      nouvelOnglet,
     );
     arreterSurLePanier();
     // La sélection est maintenant dans le panier Pretix, qui la garde : ce qui est payé ensuite s'y ajoute.

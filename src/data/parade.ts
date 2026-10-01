@@ -17,6 +17,11 @@ export interface Association {
 }
 
 export const parade = {
+  /**
+   * `false` : section, liens du menu et du pied de page, et paragraphe « carte » de la politique
+   * de confidentialité masqués, en attendant la confirmation de la mairie (parcours, horaires).
+   */
+  affichee: false,
   horaires: ["Samedi 31 octobre", "De 18h30 à 19h00, départ du château"],
   itineraire:
     "Les associations se produisent dans 6 lieux différents du quartier. Suivez le parcours pour découvrir toutes les représentations.",
