@@ -80,7 +80,7 @@ export const cgv = {
 };
 
 /** Date affichée en tête des pages légales. À mettre à jour à chaque modification du contenu. */
-export const miseAJour = "28 septembre 2026";
+export const miseAJour = "1er octobre 2026";
 
 const manquantes = (champs: [string, string | null][]) =>
   champs.filter(([, valeur]) => valeur === null).map(([libelle]) => libelle);

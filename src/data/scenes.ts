@@ -18,6 +18,8 @@ import salleEtageDesktop from "../assets/scenes/salle-etage-desktop.webp";
 import salleEtageMobile from "../assets/scenes/salle-etage-mobile.webp";
 import derniereSalleDesktop from "../assets/scenes/derniere-salle-desktop.webp";
 import derniereSalleMobile from "../assets/scenes/derniere-salle-mobile.webp";
+import jardinDesktop from "../assets/scenes/jardin-desktop.webp";
+import jardinMobile from "../assets/scenes/jardin-mobile.webp";
 import sousSolDesktop from "../assets/scenes/sous-sol-desktop.webp";
 import sousSolMobile from "../assets/scenes/sous-sol-mobile.webp";
 
@@ -33,7 +35,7 @@ const voile = [
   `linear-gradient(${noir(0.6)}, ${noir(0.6)})`,
 ].join(", ");
 
-/* Ordre de la visite : façade, hall, escalier, salle à l'étage, salon, dernière salle, sous-sol. */
+/* Ordre de la visite : façade, hall, escalier, salle à l'étage, salon, dernière salle, jardin, sous-sol. */
 export const scenes = {
   hero: {
     id: "accueil",
@@ -87,6 +89,14 @@ export const scenes = {
   tickets: {
     id: "billetterie",
     media: { image: { desktop: derniereSalleDesktop, mobile: derniereSalleMobile, alt: "" } },
+    pinned: false,
+    length: { desktop: 2, mobile: 2 },
+    overlay: voile,
+    animation: "still",
+  },
+  parade: {
+    id: "parade",
+    media: { image: { desktop: jardinDesktop, mobile: jardinMobile, alt: "" } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
     overlay: voile,
