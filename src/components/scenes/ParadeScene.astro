@@ -1,0 +1,84 @@
+---
+import { Image } from "astro:assets";
+import Scene from "./Scene.astro";
+import SectionTitle from "../ui/SectionTitle.astro";
+import { scenes } from "../../data/scenes";
+import { parade } from "../../data/parade";
+
+/*
+ * Agencement de la maquette (237:6315) ; tailles de texte alignées sur le reste du site
+ * (titre de section, étiquettes New Rocker 12 px, texte courant 16 px, cartes du programme).
+ * À partir de 1024 px : titre et horaires sur une ligne, associations à gauche, carte à droite.
+ */
+const etiquette = "font-display text-xs leading-4.5 tracking-[2.64px] uppercase";
+const carte = "rounded-lg border border-sable/15 bg-noir/40";
+/* Fausses lignes de l'aperçu de la carte (largeur de la première barre, maquette). */
+const lignesApercu = [72, 96, 64, 88, 76, 104];
+---
+
+<!-- Jardin (maquette « Parade », 237:6315). -->
+<Scene scene={scenes.parade} labelledBy="titre-parade">
+  <div class="mx-auto flex w-full max-w-360 flex-col px-4 py-15 md:px-6">
+    <div class="flex flex-col gap-6 rounded-lg border border-sable/15 p-3 md:p-8">
+      <header class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-2.5">
+        <SectionTitle id="titre-parade">La parade des associations</SectionTitle>
+        <div class={`${carte} flex flex-col gap-2 p-4 lg:shrink-0`}>
+          <p class={`${etiquette} text-ambre`}>Horaires</p>
+          <p class="text-base leading-6 text-ambre">
+            {parade.horaires.map((ligne) => <span class="block">{ligne}</span>)}
+          </p>
+        </div>
+      </header>
+
+      <div class="flex flex-col gap-6 lg:flex-row">
+        <ul class="flex flex-col gap-3 lg:w-111.5 lg:shrink-0" aria-label="Associations participantes">
+          {
+            parade.associations.map(({ nom, logo, taille: [largeur, hauteur] }) => (
+              <li class={`${carte} flex items-center gap-3 p-4`}>
+                <Image
+                  src={logo}
+                  alt=""
+                  width={largeur}
+                  height={hauteur}
+                  densities={[1, 2, 3]}
+                  class="shrink-0 object-contain"
+                  style={{ width: `${largeur}px`, height: `${hauteur}px` }}
+                />
+                <span class="min-w-0 text-base leading-6 font-semibold text-creme">{nom}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class={`${carte} flex min-w-0 flex-1 flex-col gap-3 p-4`}>
+          <h3 class={`${etiquette} text-ambre`}>Itinéraire</h3>
+          <p class="text-base leading-6 text-sable/85">{parade.itineraire}</p>
+
+          <!-- Emplacement de la carte Google Maps (API JavaScript, carte personnalisée) : à venir. -->
+          <div
+            class="flex min-h-80 flex-1 flex-col overflow-hidden rounded-lg border border-sable/15 bg-noir"
+            data-carte-parade
+          >
+            <div class="flex items-center justify-between bg-noir/60 p-3">
+              <p class={`${etiquette} text-creme`}>Google Maps</p>
+              <p class={`${etiquette} text-sable/60`}>Aperçu</p>
+            </div>
+            <div class="flex flex-col gap-3 p-3" aria-hidden="true">
+              {
+                lignesApercu.map((largeur, index) => (
+                  <>
+                    {index > 0 && <span class="h-px bg-sable/15" />}
+                    <span class="flex gap-3">
+                      <span class="h-3 shrink-0 rounded-md bg-sable/8" style={{ width: `${largeur}px` }} />
+                      <span class="h-3 flex-1 rounded-md bg-sable/8" />
+                    </span>
+                  </>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Scene>
