@@ -5,6 +5,7 @@ import FooterItem from "./FooterItem.astro";
 import { footerLinks, ticketingHref } from "../../data/navigation";
 import { footerColumns } from "../../data/footer";
 import { evenement } from "../../data/seo";
+import { conception } from "../../data/legal";
 import logoCompagnie from "../../assets/logos/acompagnie-improvisee.png";
 import logoSucy from "../../assets/logos/ville-sucy.png";
 
@@ -65,6 +66,18 @@ const link = "text-[15.2px] leading-[22.8px] text-sable/80 hover:text-sable";
         <!-- Coupures entre les morceaux de l'adresse, jamais au milieu. -->
         © 2026 Dernières Séances —{" "}<span class="whitespace-nowrap">{evenement.rue},</span>{" "}
         <span class="whitespace-nowrap">{evenement.codePostal} {evenement.ville}</span>
+        <span class="block pt-1">
+          Développé par{" "}
+          {
+            conception.site ? (
+              <a href={conception.site} target="_blank" rel="noopener" class="underline underline-offset-3 hover:text-sable">
+                {conception.nom}
+              </a>
+            ) : (
+              conception.nom
+            )
+          }
+        </span>
       </p>
       <a href="#accueil" aria-label="Sucy-en-Brie, retour à l'accueil" class:list={[logoLink, "justify-self-end"]} data-jump>
         <Image src={logoSucy} alt="" width={113} class="h-11 w-auto" />
