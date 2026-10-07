@@ -36,7 +36,7 @@ export const hebergeur = {
   site: "https://vercel.com",
 };
 
-export const conception = { nom: "Webdiiv", site: null as string | null };
+export const conception = { nom: "Webdiiv", site: "https://webdiiv.com" as string | null };
 
 /** Prestataires qui traitent des données pour le compte de l'association. */
 export const prestataires = {
