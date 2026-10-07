@@ -24,7 +24,7 @@ export const parade = {
   affichee: true,
   horaires: ["Samedi 31 octobre", "De 18h30 à 19h00, départ du château"],
   itineraire:
-    "Les associations se produisent dans 6 lieux différents du quartier. Suivez le parcours pour découvrir toutes les représentations.",
+    "Les associations se produisent dans 4 lieux différents du quartier. Suivez le parcours pour découvrir toutes les représentations.",
   /**
    * Carte Google Maps : style personnalisé porté par le Map ID (console Google Cloud), clé
    * publique `PUBLIC_GOOGLE_MAPS_KEY` (Vercel), restreinte au domaine du site.
@@ -34,11 +34,9 @@ export const parade = {
     mapId: "c0781287449e02409935b400",
     lieux: [
       { lat: 48.77124, lng: 2.52182 },
-      { lat: 48.77069, lng: 2.52086 },
-      { lat: 48.77043, lng: 2.51961 },
-      { lat: 48.76881, lng: 2.52041 },
-      { lat: 48.76977, lng: 2.52158 },
       { lat: 48.77055, lng: 2.52185 },
+      { lat: 48.77048, lng: 2.51961 },
+      { lat: 48.7695, lng: 2.52062 },
     ],
   },
   associations: [
