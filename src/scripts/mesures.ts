@@ -9,7 +9,8 @@ import { mesurer } from "./consent";
  * `billetterie_redirection` : clic sur « Payer » (fenêtre Pretix, nouvel onglet ou page Pretix),
  * avec `creneaux`, `experiences`, `personnes`, `montant` et `mode` (`fenetre`, `onglet`, `page`).
  * C'est l'étape la plus proche d'un achat que le site puisse mesurer (événement clé dans GA).
- * La carte de la parade envoie `carte_parade_affichee` et `carte_parade_erreur` (`carteParade.ts`).
+ * Choisir à l'étape 2 une activité vendue sur place (jardin ensorcelé) envoie `experience_sur_place`
+ * (`activite`, `jour`). La carte de la parade envoie `carte_parade_affichee` et `carte_parade_erreur` (`carteParade.ts`).
  */
 export function initMesures(): void {
   document.addEventListener("click", (event) => {

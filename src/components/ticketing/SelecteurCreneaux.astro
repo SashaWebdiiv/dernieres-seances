@@ -1,6 +1,7 @@
 ---
 import { activites } from "../../data/programme";
 import { selecteurCreneaux } from "../../data/billetterie";
+import Tarifs from "../programme/Tarifs.astro";
 
 /**
  * Sélecteur de créneau : jour → expérience → créneau (places restantes) → billets, ajoutés à une
@@ -9,6 +10,9 @@ import { selecteurCreneaux } from "../../data/billetterie";
  * nouvel onglet sur mobile et dans Safari, qui bloque les cookies tiers). Les cinq jours sont visibles
  * d'un coup, sans calendrier mensuel (le 1er novembre n'est plus caché sur le mois suivant).
  * Sur mobile, une barre fixe rappelle la sélection et permet de payer depuis n'importe où.
+ *
+ * Les activités vendues sur place (`selecteurCreneaux.surPlace`, ex. le jardin ensorcelé) sont
+ * proposées à l'étape 2 : les choisir affiche horaires du jour et tarifs à la place des étapes 3 et 4.
  *
  * Choix = boutons radio natifs (clavier et lecteurs d'écran), habillés via `has-[:checked]`.
  * Les options sont construites par `scripts/selecteur.ts` à partir des modèles `<template>`.
@@ -26,6 +30,12 @@ const experiences = selecteurCreneaux.experiences.map(({ id, activite }) => {
   const source = activites.find((a) => a.id === activite);
   if (!source) throw new Error(`[billetterie] activité « ${activite} » absente de data/programme.ts`);
   return { id, titre: source.titre, public: source.public };
+});
+
+const surPlace = selecteurCreneaux.surPlace.map(({ id, activite, horaires, parJour }) => {
+  const source = activites.find((a) => a.id === activite);
+  if (!source) throw new Error(`[billetterie] activité « ${activite} » absente de data/programme.ts`);
+  return { id, titre: source.titre, public: source.public, tarifs: source.tarifs, note: source.note, horaires, parJour };
 });
 
 const titreEtape = "block text-left text-xs leading-4.5 font-semibold tracking-[2.64px] text-ambre uppercase";
@@ -62,6 +72,7 @@ const boutonPrincipal = [
   data-stylesheet={new URL("widget/v2.css", shopUrl).href}
   data-peu-de-places={selecteurCreneaux.peuDePlaces}
   data-experiences={JSON.stringify(experiences)}
+  data-sur-place={JSON.stringify(surPlace.map(({ id, titre, public: age, horaires, parJour }) => ({ id, titre, public: age, horaires, parJour })))}
 >
   <p class="py-10 text-center text-base text-sable/80" role="status" data-selecteur-statut>
     Chargement des créneaux…
@@ -77,6 +88,32 @@ const boutonPrincipal = [
       <legend class={etape}>2. Choisissez votre expérience</legend>
       <div class="grid gap-3 sm:grid-cols-2" data-options></div>
     </fieldset>
+
+    {
+      surPlace.map((activite) => (
+        <div
+          hidden
+          class="flex flex-col gap-3 rounded-lg border border-ambre/40 bg-noir/60 p-4 md:p-6"
+          role="group"
+          aria-labelledby={`titre-${activite.id}`}
+          data-etape="sur-place"
+          data-sur-place-id={activite.id}
+        >
+          <p id={`titre-${activite.id}`} class={titreEtape}>
+            {activite.titre}
+          </p>
+          <p class="text-base leading-6 text-creme">
+            Pas de réservation en ligne : les billets s'achètent sur place, le jour même.
+          </p>
+          <p class="text-base leading-6 text-ambre" data-horaires-sur-place />
+          <Tarifs tarifs={activite.tarifs} venteSurPlace />
+          <p class="text-xs leading-4.5 text-sable/80">
+            {activite.public}
+            {activite.note && ` · ${activite.note}`}
+          </p>
+        </div>
+      ))
+    }
 
     <fieldset hidden data-etape="creneau">
       <legend class={etape}>3. Choisissez votre créneau</legend>
