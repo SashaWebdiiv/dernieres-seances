@@ -28,7 +28,8 @@ export const parade = {
   /**
    * Carte Google Maps : style personnalisé porté par le Map ID (console Google Cloud), clé
    * publique `PUBLIC_GOOGLE_MAPS_KEY` (Vercel), restreinte au domaine du site.
-   * Lieux dans l'ordre du parcours, reliés par un tracé en ligne droite.
+   * `lieux` : étapes numérotées sur la carte. `parcours` : ordre de passage (indices dans `lieux`),
+   * tracé en ligne droite et repris par le lien « Ouvrir dans Google Maps » (itinéraire à pied).
    */
   carte: {
     mapId: "c0781287449e02409935b400",
@@ -38,6 +39,8 @@ export const parade = {
       { lat: 48.77048, lng: 2.51961 },
       { lat: 48.7695, lng: 2.52062 },
     ],
+    // 1 → 2 → 3 → 4, puis retour à l'étape 2.
+    parcours: [0, 1, 2, 3, 1],
   },
   associations: [
     { nom: "Groupe 1 – Clodine Barrais", logo: clodineBarrais, taille: [42, 56] },

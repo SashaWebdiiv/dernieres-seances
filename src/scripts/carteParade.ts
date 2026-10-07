@@ -46,7 +46,8 @@ function chargerGoogleMaps(cle: string): Promise<void> {
   return chargement;
 }
 
-async function dessiner(conteneur: HTMLElement, mapId: string, lieux: Lieu[]): Promise<void> {
+/** `parcours` : ordre de passage du tracé (indices dans `lieux`), qui peut repasser par une étape. */
+async function dessiner(conteneur: HTMLElement, mapId: string, lieux: Lieu[], parcours: number[]): Promise<void> {
   const [{ Map, Polyline }, { AdvancedMarkerElement }, { LatLngBounds, event }] = await Promise.all([
     google.maps.importLibrary("maps") as Promise<google.maps.MapsLibrary>,
     google.maps.importLibrary("marker") as Promise<google.maps.MarkerLibrary>,
@@ -75,7 +76,8 @@ async function dessiner(conteneur: HTMLElement, mapId: string, lieux: Lieu[]): P
     if ((carte.getZoom() ?? 0) > ZOOM_MAX) carte.setZoom(ZOOM_MAX);
   });
 
-  new Polyline({ map: carte, path: lieux, strokeColor: "#f5a923", strokeOpacity: 0.9, strokeWeight: 4 });
+  const trace = parcours.map((index) => lieux[index]).filter(Boolean);
+  new Polyline({ map: carte, path: trace.length > 1 ? trace : lieux, strokeColor: "#f5a923", strokeOpacity: 0.9, strokeWeight: 4 });
 
   lieux.forEach((lieu, index) => {
     const pastille = document.createElement("span");
@@ -92,6 +94,7 @@ export function initCarteParade(): void {
   if (!bloc || !cle || !mapId) return;
 
   const lieux = JSON.parse(bloc.dataset.lieux ?? "[]") as Lieu[];
+  const parcours = JSON.parse(bloc.dataset.parcours ?? "[]") as number[];
   const canevas = bloc.querySelector<HTMLElement>("[data-carte-canevas]");
   const accord = bloc.querySelector<HTMLElement>("[data-carte-accord]");
   const bouton = bloc.querySelector<HTMLButtonElement>("[data-carte-afficher]");
@@ -124,7 +127,7 @@ export function initCarteParade(): void {
     try {
       await chargerGoogleMaps(cle);
       canevas.hidden = false;
-      await dessiner(canevas, mapId, lieux);
+      await dessiner(canevas, mapId, lieux, parcours);
       accord.hidden = true;
       statut.textContent = "";
       mesurer("carte_parade_affichee");

@@ -18,8 +18,11 @@ const lignesApercu = [72, 96, 64, 88, 76, 104];
 /* Clé publique (restreinte au domaine), lue au build : absente, il ne reste que le lien. */
 const cleGoogleMaps: string | undefined = import.meta.env.PUBLIC_GOOGLE_MAPS_KEY || undefined;
 
-/* Repli : le parcours à pied dans Google Maps, étapes dans l'ordre. */
-const points = parade.carte.lieux.map(({ lat, lng }) => `${lat},${lng}`);
+/* Repli : le parcours à pied dans Google Maps, dans l'ordre de passage. */
+const points = parade.carte.parcours.map((index) => {
+  const { lat, lng } = parade.carte.lieux[index];
+  return `${lat},${lng}`;
+});
 const itineraireGoogleMaps = `https://www.google.com/maps/dir/?${new URLSearchParams({
   api: "1",
   origin: points[0],
@@ -77,6 +80,7 @@ const itineraireGoogleMaps = `https://www.google.com/maps/dir/?${new URLSearchPa
             data-cle={cleGoogleMaps}
             data-map-id={parade.carte.mapId}
             data-lieux={JSON.stringify(parade.carte.lieux)}
+            data-parcours={JSON.stringify(parade.carte.parcours)}
           >
             <div class="flex items-center justify-between gap-3 bg-noir/60 p-3">
               <p class={`${etiquette} text-creme`}>Google Maps</p>
