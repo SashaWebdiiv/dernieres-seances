@@ -279,8 +279,10 @@ export function initSelecteur(): void {
       bloc.hidden = !visible;
       if (!visible || !activite || !choix.jour) return;
       const { ouverture, fermeture } = horairesDu(activite, choix.jour);
+      // Le jour est déjà choisi à l'étape 1 : seul un horaire inhabituel est signalé.
+      const exception = choix.jour in activite.parJour;
       bloc.querySelector("[data-horaires-sur-place]")!.textContent =
-        `${majuscule(premier(jourComplet.format(date(choix.jour))))}, de ${ouverture} à ${fermeture}`;
+        `${exception ? "Exceptionnellement de" : "De"} ${ouverture} à ${fermeture}`;
     });
   };
 
