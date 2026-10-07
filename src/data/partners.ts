@@ -22,5 +22,5 @@ export const partners: Partner[] = [
   { name: "Ville de Sucy-en-Brie", logo: villeSucy },
   { name: "Webdiiv", logo: webdiiv },
   { name: "Eden Crêpe", logo: edenCrepe },
-  { name: "L'Atelier de MG", logo: atelierMg },
+  { name: "L'Atelier MG", logo: atelierMg },
 ];
