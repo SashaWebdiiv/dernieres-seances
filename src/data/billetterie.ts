@@ -23,6 +23,22 @@ export const selecteurCreneaux = {
     { id: "parcours", activite: "parcours-immersif" },
     { id: "horrifique", activite: "experience-horrifique" },
   ],
+  /**
+   * Activités vendues sur place, hors Pretix : proposées à l'étape 2 pour informer (horaires du
+   * jour choisi, tarifs), sans créneau ni billet. Horaires « HHhMM » repris de `data/programme.ts`,
+   * à modifier aux deux endroits ; `parJour` : exceptions (jour au format AAAA-MM-JJ).
+   */
+  surPlace: [
+    {
+      id: "jardin",
+      activite: "jardin-ensorcele",
+      horaires: { ouverture: "15h00", fermeture: "18h30" },
+      parJour: { "2026-10-31": { ouverture: "14h00", fermeture: "18h00" } } as Record<
+        string,
+        { ouverture: string; fermeture: string }
+      >,
+    },
+  ],
   /** Seuil sous lequel les places restantes sont mises en avant. */
   peuDePlaces: 5,
 } as const;

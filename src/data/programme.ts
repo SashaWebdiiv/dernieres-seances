@@ -1,3 +1,5 @@
+import { parade } from "./parade";
+
 /**
  * Programme affiché dans le hall (maquette « Calendrier », 68:2602). Tarifs validés par
  * l'organisation.
@@ -30,6 +32,8 @@ export interface RendezVous {
   /** Voir `Activite.venteSurPlace`. */
   venteSurPlace?: boolean;
   mention?: string;
+  /** Bouton vers une autre section de la page (ex. la parade). */
+  lien?: { href: `#${string}`; label: string };
 }
 
 export const activites: Activite[] = [
@@ -86,5 +90,6 @@ export const rendezVous: RendezVous[] = [
     surtitre: "31 octobre",
     titre: "Parade",
     lignes: ["À 18h30, départ du château", "Avec la participation de plusieurs associations sucyciennes"],
+    ...(parade.affichee ? { lien: { href: "#parade", label: "Voir la parade" } as const } : {}),
   },
 ];

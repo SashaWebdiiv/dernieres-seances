@@ -39,6 +39,20 @@ interface ExperienceAffichee {
   public: string;
 }
 
+interface Horaires {
+  ouverture: string;
+  fermeture: string;
+}
+
+/** Activité vendue sur place (hors Pretix) : simple information à l'étape 2. */
+interface SurPlaceAffichee {
+  id: string;
+  titre: string;
+  public: string;
+  horaires: Horaires;
+  parJour: Record<string, Horaires>;
+}
+
 /** Sélection : quantité par billet, par créneau. */
 type Selection = Map<number, Map<number, number>>;
 
@@ -96,6 +110,7 @@ export function initSelecteur(): void {
   const boutique = racine.dataset.boutique ?? "";
   const peuDePlaces = Number(racine.dataset.peuDePlaces ?? 0);
   const experiences = JSON.parse(racine.dataset.experiences ?? "[]") as ExperienceAffichee[];
+  const surPlace = JSON.parse(racine.dataset.surPlace ?? "[]") as SurPlaceAffichee[];
 
   const statut = racine.querySelector<HTMLElement>("[data-selecteur-statut]")!;
   const formulaire = racine.querySelector<HTMLFormElement>("[data-selecteur-formulaire]")!;
@@ -119,7 +134,8 @@ export function initSelecteur(): void {
 
   let donnees: ReponseCreneaux | null = null;
   let chargeA = 0;
-  const choix: { jour?: string; experience?: ExperienceId; creneau?: number } = {};
+  /** `surPlace` : activité vendue sur place choisie à l'étape 2 (exclusive avec `experience`). */
+  const choix: { jour?: string; experience?: ExperienceId; surPlace?: string; creneau?: number } = {};
   /** Billets en cours de choix pour le créneau affiché à l'étape 4 (pas encore dans la sélection). */
   const quantites = new Map<number, number>();
   let billetsAffiches: ExperienceId | undefined;
@@ -212,9 +228,8 @@ export function initSelecteur(): void {
 
   const afficherExperiences = () => {
     const jour = choix.jour!;
-    remplir(
-      "experience",
-      experiences.map((experience) => {
+    remplir("experience", [
+      ...experiences.map((experience) => {
         const creneaux = creneauxDu(jour, experience.id);
         const disponibles = libres(creneaux);
         const horaires =
@@ -235,8 +250,38 @@ export function initSelecteur(): void {
           disponibles.length === 0,
         );
       }),
-    );
+      ...surPlace.map((activite) => {
+        const { ouverture, fermeture } = horairesDu(activite, jour);
+        return creerOption(
+          "experience",
+          activite.id,
+          {
+            titre: activite.titre,
+            public: activite.public,
+            horaires: `Ouvert de ${ouverture} à ${fermeture}`,
+            etat: "Vente sur place, sans réservation",
+          },
+          choix.surPlace === activite.id,
+          false,
+        );
+      }),
+    ]);
     etape("experience").hidden = false;
+  };
+
+  const horairesDu = (activite: SurPlaceAffichee, jour: string) => activite.parJour[jour] ?? activite.horaires;
+
+  /** Encadré de l'activité sur place choisie (horaires du jour, tarifs), à la place des étapes 3 et 4. */
+  const afficherSurPlace = () => {
+    formulaire.querySelectorAll<HTMLElement>("[data-sur-place-id]").forEach((bloc) => {
+      const activite = surPlace.find((a) => a.id === bloc.dataset.surPlaceId);
+      const visible = Boolean(activite && choix.jour && choix.surPlace === activite.id);
+      bloc.hidden = !visible;
+      if (!visible || !activite || !choix.jour) return;
+      const { ouverture, fermeture } = horairesDu(activite, choix.jour);
+      bloc.querySelector("[data-horaires-sur-place]")!.textContent =
+        `${majuscule(premier(jourComplet.format(date(choix.jour))))}, de ${ouverture} à ${fermeture}`;
+    });
   };
 
   const texteDesPlaces = (creneau: Creneau) => {
@@ -423,6 +468,7 @@ export function initSelecteur(): void {
     if (choix.jour) afficherExperiences();
     if (choix.jour && choix.experience) afficherCreneaux();
     afficherBillets();
+    afficherSurPlace();
     afficherSelection();
   };
 
@@ -446,8 +492,19 @@ export function initSelecteur(): void {
       if (choix.experience) afficherCreneaux();
       else etape("creneau").hidden = true;
       afficherBillets();
+      afficherSurPlace();
+    } else if (input.name === "experience" && surPlace.some((a) => a.id === input.value)) {
+      // Activité vendue sur place : pas de créneau ni de billet, seulement horaires et tarifs.
+      choix.surPlace = input.value;
+      choix.experience = undefined;
+      etape("creneau").hidden = true;
+      afficherBillets();
+      afficherSurPlace();
+      mesurer("experience_sur_place", { activite: input.value, jour: choix.jour ?? "" });
     } else if (input.name === "experience") {
+      choix.surPlace = undefined;
       choix.experience = input.value as ExperienceId;
+      afficherSurPlace();
       await rafraichirSiPerime();
       afficherCreneaux();
       afficherBillets();

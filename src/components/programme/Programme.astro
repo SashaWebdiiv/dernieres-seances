@@ -32,6 +32,16 @@ const { activites, rendezVous, ctaHref } = Astro.props;
           </p>
           {rdv.tarifs && <Tarifs tarifs={rdv.tarifs} venteSurPlace={rdv.venteSurPlace} />}
           {rdv.mention && <p class="text-xs leading-4.5 text-sable/80">{rdv.mention}</p>}
+          {rdv.lien && (
+            <Button
+              href={rdv.lien.href}
+              variant="outline"
+              class="mt-1 min-h-11 self-start rounded-lg px-5 text-sm leading-[15.6px] font-bold tracking-[1.4px]"
+              data-jump
+            >
+              {rdv.lien.label}
+            </Button>
+          )}
         </li>
       ))
     }
