@@ -37,7 +37,8 @@ export const parade = {
       { lat: 48.77124, lng: 2.52182 },
       { lat: 48.77055, lng: 2.52185 },
       { lat: 48.77048, lng: 2.51961 },
-      { lat: 48.7695, lng: 2.52062 },
+      // Église Saint-Martin, place de l'Église (coordonnées Wikidata Q22915880).
+      { lat: 48.76893, lng: 2.52124 },
     ],
     // 1 → 2 → 3 → 4, puis retour à l'étape 2.
     parcours: [0, 1, 2, 3, 1],
