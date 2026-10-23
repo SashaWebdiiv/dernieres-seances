@@ -17,9 +17,13 @@ import { partners } from "../../data/partners";
         partners.map((partner) => (
           <li class="flex min-w-0 flex-col items-center gap-1.5" data-reveal>
             <span class="flex h-12 items-center md:h-15" aria-hidden={partner.logo ? undefined : "true"}>
-              {partner.logo && <Image src={partner.logo} alt="" height={60} densities={[1, 2]} class="h-full w-auto max-w-full object-contain" />}
+              {partner.logo && <Image src={partner.logo} alt={`Logo ${partner.name}`} height={60} densities={[1, 2]} class="h-full w-auto max-w-full object-contain" />}
             </span>
-            <span class="text-xs leading-[1.5] font-medium tracking-[0.15em] text-white uppercase md:text-[13.6px] md:leading-[20.4px]">
+            {/* Nom déjà donné par le texte alternatif du logo : masqué aux lecteurs d'écran pour ne pas le lire deux fois. */}
+            <span
+              class="text-xs leading-[1.5] font-medium tracking-[0.15em] text-white uppercase md:text-[13.6px] md:leading-[20.4px]"
+              aria-hidden={partner.logo ? "true" : undefined}
+            >
               {/* Mots composés insécables : « Sucy-en-Brie » ne se coupe pas après un trait d'union. */}
               {partner.name.split(" ").map((mot, i) => (
                 <>

@@ -56,7 +56,9 @@ export const scenes = {
   },
   calendar: {
     id: "calendrier",
-    media: { image: { desktop: hallDesktop, mobile: hallMobile, alt: "" } },
+    media: { image: { desktop: hallDesktop, mobile: hallMobile,
+        alt: "Le hall du château et ses colonnes, éclairé de bougies et de lanternes, orné de toiles d'araignée.",
+      } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
     overlay: voile,
@@ -64,7 +66,9 @@ export const scenes = {
   },
   partners: {
     id: "partenaires",
-    media: { image: { desktop: escalierDesktop, mobile: escalierMobile, alt: "" } },
+    media: { image: { desktop: escalierDesktop, mobile: escalierMobile,
+        alt: "Le grand escalier de pierre du château, bordé de lanternes allumées.",
+      } },
     pinned: true,
     length: { desktop: 3, mobile: 2.5 },
     overlay: voile,
@@ -72,7 +76,9 @@ export const scenes = {
   },
   presentation: {
     id: "experience",
-    media: { image: { desktop: salleEtageDesktop, mobile: salleEtageMobile, alt: "" } },
+    media: { image: { desktop: salleEtageDesktop, mobile: salleEtageMobile,
+        alt: "Une salle de l'étage aux murs tapissés, sous un lustre à chandelles, bougies posées sur le parquet.",
+      } },
     pinned: true,
     length: { desktop: 2.5, mobile: 2 },
     overlay: voile,
@@ -80,7 +86,9 @@ export const scenes = {
   },
   experiences: {
     id: "programme",
-    media: { image: { desktop: salonDesktop, mobile: salonMobile, alt: "" } },
+    media: { image: { desktop: salonDesktop, mobile: salonMobile,
+        alt: "Le salon du château, lustre allumé, piano et bougies sur le parquet.",
+      } },
     pinned: true,
     length: { desktop: 5, mobile: 4 },
     overlay: voile,
@@ -88,7 +96,9 @@ export const scenes = {
   },
   tickets: {
     id: "billetterie",
-    media: { image: { desktop: derniereSalleDesktop, mobile: derniereSalleMobile, alt: "" } },
+    media: { image: { desktop: derniereSalleDesktop, mobile: derniereSalleMobile,
+        alt: "Une salle lambrissée avec un portrait ancien, un piano et un bureau éclairés à la bougie.",
+      } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
     overlay: voile,
@@ -96,7 +106,9 @@ export const scenes = {
   },
   parade: {
     id: "parade",
-    media: { image: { desktop: jardinDesktop, mobile: jardinMobile, alt: "" } },
+    media: { image: { desktop: jardinDesktop, mobile: jardinMobile,
+        alt: "Le portail de pierre du jardin, ouvert sur la façade illuminée du château, la nuit.",
+      } },
     pinned: false,
     length: { desktop: 2, mobile: 2 },
     overlay: voile,
@@ -104,7 +116,9 @@ export const scenes = {
   },
   faq: {
     id: "faq",
-    media: { image: { desktop: sousSolDesktop, mobile: sousSolMobile, alt: "" } },
+    media: { image: { desktop: sousSolDesktop, mobile: sousSolMobile,
+        alt: "L'escalier en colimaçon du sous-sol, éclairé par des lanternes.",
+      } },
     pinned: false,
     // Le pied de page prolonge la scène : la FAQ seule n'a pas besoin de deux écrans.
     length: { desktop: 1, mobile: 1 },
