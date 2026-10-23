@@ -14,11 +14,25 @@ import badgeOserez from "../../assets/hero/badge-oserez-vous-entrer.svg?url";
   <div class="flex h-full flex-col items-center px-5.5 pt-18 pb-8 md:justify-center md:gap-8 md:pt-21.5 md:pb-16" data-hero-content>
     <!-- Titre et bouton : centrés dans l'espace libre en mobile, pour que le bouton ressorte. -->
     <div class="flex flex-1 flex-col items-center justify-center gap-4 md:flex-none md:gap-8">
+      <!--
+        Titre dessiné (SVG) : le texte réel du H1 est dans le span masqué, lu par Google et les
+        lecteurs d'écran ; les images gardent leur alt (audits) mais sont cachées à ces derniers
+        pour ne pas être lues en double.
+      -->
       <h1 id="titre-accueil" tabindex="-1" class="flex w-76.75 max-w-full flex-col items-center gap-4 md:w-162 md:gap-8">
-        <img src={titreHalloween} alt="Halloween 2026" width="279" height="39" class="h-auto w-[53.42%] md:w-[43.06%]" />
+        <span class="sr-only">Dernières Séances — Halloween 2026 au Château de Sucy-en-Brie</span>
+        <img
+          src={titreHalloween}
+          alt="Halloween 2026"
+          aria-hidden="true"
+          width="279"
+          height="39"
+          class="h-auto w-[53.42%] md:w-[43.06%]"
+        />
         <img
           src={titreDernieresSeances}
           alt="Dernières Séances"
+          aria-hidden="true"
           width="648"
           height="307"
           fetchpriority="high"
