@@ -55,7 +55,7 @@ const itineraireGoogleMaps = `https://www.google.com/maps/dir/?${new URLSearchPa
                 <div class="flex size-16 shrink-0 items-center justify-center">
                   <Image
                     src={logo}
-                    alt=""
+                    alt={`Logo ${nom}`}
                     width={largeur}
                     height={hauteur}
                     densities={[1, 2, 3]}
@@ -63,7 +63,10 @@ const itineraireGoogleMaps = `https://www.google.com/maps/dir/?${new URLSearchPa
                     style={{ width: `${largeur}px`, height: `${hauteur}px` }}
                   />
                 </div>
-                <span class="min-w-0 text-base leading-6 font-semibold text-creme">{nom}</span>
+                {/* Nom déjà donné par le texte alternatif du logo : lu une seule fois. */}
+                <span class="min-w-0 text-base leading-6 font-semibold text-creme" aria-hidden="true">
+                  {nom}
+                </span>
               </li>
             ))
           }
